@@ -1,0 +1,1 @@
+Formatters are scriptable objects which, given an object, will produce a string. Intended use is to provide more meaningful strings than ToString() might normally provide. Typically used for UI, but no reason you can't use it elsewhere.
