@@ -7,7 +7,11 @@ namespace Game
         public static Hero CreateHero(ILocation location)
         {
             Hero hero = Instantiate(m_instance.m_heroPrefab.gameObject).GetComponent<Hero>();
-            hero.Initialize(location);
+            hero.Initialize(m_instance.m_heroColors[m_instance.m_nextHeroColor++], location);
+
+            if(m_instance.m_nextHeroColor >= m_instance.m_heroColors.Length) {
+                m_instance.m_nextHeroColor = 0;
+            }
 
             return hero;
         }
@@ -15,6 +19,9 @@ namespace Game
         private static HeroFactory m_instance;
 
         [SerializeField] private Hero m_heroPrefab;
+        [SerializeField] private HeroColor[] m_heroColors;
+
+        private int m_nextHeroColor;
 
         private void Awake()
         {

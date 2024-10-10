@@ -5,12 +5,14 @@ using Game;
 using SegoLib;
 using SegoLib.Random;
 using System;
+using Game.UI;
 
 public class Tester : MonoBehaviour
 {
     [SerializeField] private Location[] m_locations;
 
-    [SerializeField] private Hero m_heroPrefab;
+    [SerializeField] private VM_Hero m_vmHeroPrefab;
+    [SerializeField] private Transform m_heroUiContent;
 
     private List<Hero> m_heroes = new List<Hero>();
 
@@ -30,6 +32,9 @@ public class Tester : MonoBehaviour
             Hero newHero = HeroFactory.CreateHero(location);
 
             m_heroes.Add(newHero);
+
+            VM_Hero heroUi = Instantiate(m_vmHeroPrefab, m_heroUiContent).GetComponent<VM_Hero>();
+            heroUi.SetModel(newHero);
         }
     }
 

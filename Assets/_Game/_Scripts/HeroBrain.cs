@@ -1,7 +1,5 @@
 using SegoLib;
 using SegoLib.Random;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Game
@@ -68,6 +66,11 @@ namespace Game
         }
     }
 
+    public interface IStateProvider
+    {
+
+    }
+
     public interface IHeroState
     {
         public delegate void StateCompleteDelegate(IHeroState state);
@@ -78,7 +81,6 @@ namespace Game
         public event ValueChangedWithSourceEvent<IHeroState, float> progressChanged;
 
         public bool StateIsComplete { get; }
-
         public event StateCompleteDelegate stateCompleted;
 
         public void EnterState();
@@ -86,6 +88,8 @@ namespace Game
         public void DoState(float deltaSeconds);
 
         public void ExitState();
+
+        public string GetActionString();
     }
 
     public class State_Empty : IHeroState
@@ -115,6 +119,8 @@ namespace Game
         {
             
         }
+
+        public string GetActionString() => $"Doing nothing.";
     }
 
     public class State_DoLocationAction : IHeroState
@@ -181,6 +187,8 @@ namespace Game
             progressChanged?.Invoke(this, oldValue, newValue);
 
         }
+
+        public string GetActionString() => $"Doing a thing.";
     }
 
     public class State_TravelToRandomNeighbour : IHeroState
@@ -263,5 +271,7 @@ namespace Game
             progressChanged?.Invoke(this, oldValue, newValue);
 
         }
+
+        public string GetActionString() => $"Travelling to {Hero.Movement.CurrentRoute.End.DisplayName}.";
     }
 }

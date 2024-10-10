@@ -40,8 +40,6 @@ namespace SegoLib.UI.MVVM
         public T Model { get; private set; }
         public event Action<VM_Base<T>, T> ModelChanged;
 
-        protected abstract Func<T, T, bool> ModelEquals { get; }
-
         /// <summary>
         /// base.Awake must be called if this is overridden. <br/>
         /// base.Awake ensures all values are properly set to a default value.
@@ -85,7 +83,7 @@ namespace SegoLib.UI.MVVM
         {
             SettingNewModel = true;
 
-            if (ModelEquals(model, Model)) {
+            if (IsEqual(model, Model)) {
                 SettingNewModel = false;
                 return;
             } else if (Model != null) {
@@ -109,6 +107,8 @@ namespace SegoLib.UI.MVVM
 
             SettingNewModel = false;
         }
+
+        protected abstract bool IsEqual(T a, T b);
 
         protected virtual void OnModelChangingFromNotNull() { }
         protected virtual void OnModelChangingFromNull() { }
