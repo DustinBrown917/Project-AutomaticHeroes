@@ -126,6 +126,12 @@ namespace Game
             ILocation oldValue = m_location;
             m_location = newValue;
 
+            if (oldValue != null)
+                oldValue.OnLocationExit(Hero);
+
+            if(newValue != null)
+                newValue.OnLocationEnter(Hero);
+
             locationChanged?.Invoke(this, oldValue, newValue);
         }
 

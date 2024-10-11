@@ -37,20 +37,4 @@ public class Tester : MonoBehaviour
             heroUi.SetModel(newHero);
         }
     }
-
-
-
-    public IRouteTraversal GetRandomRouteToNeighbour(ILocation location, IRandomNumberGenerator rng)
-    {
-        IRoute route = rng.GetRandom(location.Routes);
-
-        IRouteTraversal routeTraversal;
-        if(route.A == location) {
-            routeTraversal = new RouteTraversalAToB(route);
-        } else {
-            routeTraversal = new RouteTraversalBToA(route);
-        }
-
-        return routeTraversal;
-    }
 }

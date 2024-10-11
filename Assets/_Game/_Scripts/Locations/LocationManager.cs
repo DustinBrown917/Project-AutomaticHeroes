@@ -6,26 +6,6 @@ namespace Game
 {
     public class LocationManager : SegoLib.IDisposable
     {
-
-        /*vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv*/
-        #region ========================================== Subclasses ==================================================
-        /*vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv*/
-
-        private class NoLocation : ILocation
-        {
-            public string DisplayName => "No Location";
-
-            public int Id => 0;
-
-            public Vector2 Position => Vector2.zero;
-
-            public IReadOnlyList<IRoute> Routes => Array.Empty<IRoute>();
-        }
-
-        /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
-        #endregion ===================================== End Subclasses ================================================
-        /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
-
         public IReadOnlyList<ILocation> Locations => m_locations;
         private readonly List<ILocation> m_locations = new();
 
@@ -42,7 +22,7 @@ namespace Game
         /// </summary>
         public LocationManager()
         {
-            m_locations.Add(new NoLocation());
+
         }
 
         /// <summary>

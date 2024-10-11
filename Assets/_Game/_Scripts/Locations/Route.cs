@@ -43,7 +43,7 @@ namespace Game
 
         private void OnDrawGizmos()
         {           
-            if(m_locationA == null || m_locationB == null) return;
+            if(m_locationA == null || m_locationB == null || m_routePoints == null) return;
 
             Gizmos.color = Color.yellow;
 

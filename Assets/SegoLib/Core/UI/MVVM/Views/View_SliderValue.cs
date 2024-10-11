@@ -12,6 +12,8 @@ namespace SegoLib.UI.MVVM
         protected override void UpdateFromTargetProperty()
         {
             float value = GetPropertyValue<float>();
+            if (float.IsNaN(value))
+                value = 0f;
             m_slider.value = value;
         }
 

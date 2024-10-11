@@ -10,5 +10,10 @@ namespace Game
         public int Id { get; }
         public Vector2 Position { get; }
         public IReadOnlyList<IRoute> Routes { get; }
+        public IReadOnlyList<Hero> Visitors { get; }
+        public event ValueUpdatedWithSourceEvent<ILocation, IReadOnlyList<Hero>> visitorsUpdated;
+
+        public void OnLocationEnter(Hero hero);
+        public void OnLocationExit(Hero hero);
     }
 }

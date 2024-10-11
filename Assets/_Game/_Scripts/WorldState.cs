@@ -11,6 +11,8 @@ namespace Game
 
         public IRandomNumberGenerator Rng { get; private set; }
 
+        public Wait DefaultWaitStateFactory { get; private set; } = new Wait();
+
         private void Awake()
         {
             if (Instance != null)
