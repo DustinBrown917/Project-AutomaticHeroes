@@ -13,14 +13,19 @@ namespace Game
 
         public Wait DefaultWaitStateFactory { get; private set; } = new Wait();
 
+        public WorldTime Time { get; private set; }
+
         private void Awake()
         {
-            if (Instance != null)
+            if (Instance != null) {
                 Destroy(this);
-            else {
-                Rng = new UnityRNG((int)System.DateTime.Now.Ticks);
-                Instance = this;
+                return;
             }
+
+            Rng = new UnityRNG((int)System.DateTime.Now.Ticks);
+            Time = GetComponentInChildren<WorldTime>();
+
+            Instance = this;
         }
 
         private void OnDestroy()

@@ -20,7 +20,7 @@ namespace Game
             get => m_moveSpeed;
             set => SetMoveSpeed(value);
         }
-        private float m_moveSpeed = 1;
+        private float m_moveSpeed = 4;
         public event ValueChangedWithSourceEvent<HeroMovement, float> moveSpeedChanged;
 
         public float RouteProgress
@@ -39,6 +39,7 @@ namespace Game
         private ILocation m_location;
         public event ValueChangedWithSourceEvent<HeroMovement, ILocation> locationChanged;
 
+        private float m_movePerSecond = 0;
 
         private float m_routeDistanceTravelled;
 
@@ -61,6 +62,8 @@ namespace Game
             transform.position = location.Position;
             Location = location;
 
+            UpdateMovePerSecond();
+
             Initialized = true;
         }
 
@@ -82,7 +85,7 @@ namespace Game
             if (!enabled)
                 return;
 
-            m_routeDistanceTravelled += deltaTime * MoveSpeed;
+            m_routeDistanceTravelled += deltaTime * m_movePerSecond;
             RouteProgress = m_routeDistanceTravelled / m_currentRoute.Length;
             UpdatePosition();
 
@@ -103,7 +106,7 @@ namespace Game
 
             float oldSpeed = m_moveSpeed;
             m_moveSpeed = newSpeed;
-
+            UpdateMovePerSecond();
             moveSpeedChanged?.Invoke(this, oldSpeed, newSpeed);
         }
 
@@ -164,6 +167,11 @@ namespace Game
         private bool IsTraversalComplete()
         {
             return m_routeDistanceTravelled >= CurrentRoute.Length;
+        }
+
+        private void UpdateMovePerSecond()
+        {
+            m_movePerSecond = MoveSpeed / 3600;
         }
     }
 

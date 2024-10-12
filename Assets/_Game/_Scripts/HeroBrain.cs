@@ -1,11 +1,9 @@
 using SegoLib;
-using SegoLib.Random;
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace Game
 {
-    public class HeroBrain : HeroComponent
+    public class HeroBrain : HeroComponent, WorldTime.IListener
     {
         public bool Initialized { get; private set; }
 
@@ -26,13 +24,23 @@ namespace Game
 
             CurrentState = GetRandomState();
 
+            WorldState.Instance.Time.AddListener(this);
+
             Initialized = true;
         }
 
-        private void Update()
+        protected override void OnDestroy()
         {
-            if(CurrentState != null) {
-                CurrentState.DoState(Time.deltaTime);
+            base.OnDestroy();
+            if(WorldState.Instance != null && WorldState.Instance.Time != null) {
+                WorldState.Instance.Time.RemoveListener(this);
+            }
+        }
+
+        public void OnWorldTimeUpdate(float deltaSeconds)
+        {
+            if (CurrentState != null) {
+                CurrentState.DoState(deltaSeconds);
             }
         }
 
@@ -88,6 +96,7 @@ namespace Game
         {
             m_availableStates.Remove(factory);
         }
+
     }
 
 
