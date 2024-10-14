@@ -84,9 +84,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8949027952165340995}
+  - component: {fileID: 2500851365586393087}
   - component: {fileID: 6828676270386493627}
   m_Layer: 5
-  m_Name: sldr_Energy
+  m_Name: sldr_Stamina
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -114,6 +115,23 @@ RectTransform:
   m_AnchoredPosition: {x: 50.5, y: 12.5}
   m_SizeDelta: {x: 8, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &2500851365586393087
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 648362632677672237}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 410865956cd6fb446acd173c5d16b61a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_observedViewModel: {fileID: 7332906488849290921}
+  m_useDropdown: 1
+  m_propertyName: Percent
+  <m_targetPropertyName>k__BackingField: Percent
+  m_slider: {fileID: 6828676270386493627}
 --- !u!114 &6828676270386493627
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -927,6 +945,8 @@ RectTransform:
   - {fileID: 563580205396125126}
   - {fileID: 975079456345926471}
   - {fileID: 125929331298018499}
+  - {fileID: 572490575133758902}
+  - {fileID: 25474133651246796}
   m_Father: {fileID: 4533958890901093310}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -934,6 +954,58 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &4034529809821208051
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 25474133651246796}
+  - component: {fileID: 7332906488849290921}
+  m_Layer: 5
+  m_Name: Stamina
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &25474133651246796
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4034529809821208051}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1675711945479628223}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &7332906488849290921
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4034529809821208051}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b7b124cb27d9473488ea928c568ebff0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_observedViewModel: {fileID: 5445697542514169989}
+  m_useDropdown: 1
+  m_propertyName: Stamina
+  <m_targetPropertyName>k__BackingField: Stamina
 --- !u!1 &4139335708919470505
 GameObject:
   m_ObjectHideFlags: 0
@@ -996,6 +1068,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7988964058262418973}
+  - component: {fileID: 3167794906644975490}
   - component: {fileID: 7593599069375203825}
   m_Layer: 5
   m_Name: sldr_Health
@@ -1026,6 +1099,23 @@ RectTransform:
   m_AnchoredPosition: {x: 42.5, y: 12.5}
   m_SizeDelta: {x: 8, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &3167794906644975490
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4737340941982332583}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 410865956cd6fb446acd173c5d16b61a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_observedViewModel: {fileID: 739404098747823145}
+  m_useDropdown: 1
+  m_propertyName: Percent
+  <m_targetPropertyName>k__BackingField: Percent
+  m_slider: {fileID: 7593599069375203825}
 --- !u!114 &7593599069375203825
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1283,6 +1373,58 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: -10}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &6086063488912072202
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 572490575133758902}
+  - component: {fileID: 739404098747823145}
+  m_Layer: 5
+  m_Name: Health
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &572490575133758902
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6086063488912072202}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1675711945479628223}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &739404098747823145
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6086063488912072202}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a3b941e91cdf18a429b4cbefd720b52c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_observedViewModel: {fileID: 5445697542514169989}
+  m_useDropdown: 1
+  m_propertyName: Health
+  <m_targetPropertyName>k__BackingField: Health
 --- !u!1 &6445014777489403369
 GameObject:
   m_ObjectHideFlags: 0

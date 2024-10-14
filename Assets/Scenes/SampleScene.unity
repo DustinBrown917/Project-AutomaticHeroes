@@ -807,6 +807,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 8153231705256620972, guid: 8745bc6e15abee942a7c5c94aca18df4, type: 3}
       insertIndex: -1
       addedObject: {fileID: 397797190}
+    - targetCorrespondingSourceObject: {fileID: 8153231705256620972, guid: 8745bc6e15abee942a7c5c94aca18df4, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 397797192}
   m_SourcePrefab: {fileID: 100100000, guid: 8745bc6e15abee942a7c5c94aca18df4, type: 3}
 --- !u!4 &312720332 stripped
 Transform:
@@ -892,6 +895,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 531147e6012a58548b3810c2a2cbcda8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_trainingState:
+    <ExpReward>k__BackingField: 10
+--- !u!114 &397797192
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 397797189}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3172378c2de5f634d893f1521c410f80, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_rest:
+    <StaminaRecoveredPerHour>k__BackingField: 12.5
 --- !u!1001 &409493989
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2799,6 +2818,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 531147e6012a58548b3810c2a2cbcda8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_trainingState:
+    <ExpReward>k__BackingField: 10
+--- !u!114 &1009692406
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1009692403}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3172378c2de5f634d893f1521c410f80, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_rest:
+    <StaminaRecoveredPerHour>k__BackingField: 12.5
 --- !u!1001 &1023970450
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3017,6 +3052,11 @@ MonoBehaviour:
   m_routePoints:
   - {fileID: 108854620321530354}
   - {fileID: 1379068220}
+--- !u!1 &1200078537 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8153231705256620972, guid: 8745bc6e15abee942a7c5c94aca18df4, type: 3}
+  m_PrefabInstance: {fileID: 1592465697}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1307339684
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4020,6 +4060,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 8153231705256620972, guid: 8745bc6e15abee942a7c5c94aca18df4, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1481098517}
+    - targetCorrespondingSourceObject: {fileID: 8153231705256620972, guid: 8745bc6e15abee942a7c5c94aca18df4, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1481098519}
   m_SourcePrefab: {fileID: 100100000, guid: 8745bc6e15abee942a7c5c94aca18df4, type: 3}
 --- !u!114 &1481098515 stripped
 MonoBehaviour:
@@ -4049,6 +4092,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 531147e6012a58548b3810c2a2cbcda8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_trainingState:
+    <ExpReward>k__BackingField: 12
+--- !u!114 &1481098519
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 981343097}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3172378c2de5f634d893f1521c410f80, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_rest:
+    <StaminaRecoveredPerHour>k__BackingField: 9
 --- !u!1001 &1503216868
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4742,6 +4801,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 8153231705256620972, guid: 8745bc6e15abee942a7c5c94aca18df4, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1592000001}
+    - targetCorrespondingSourceObject: {fileID: 8153231705256620972, guid: 8745bc6e15abee942a7c5c94aca18df4, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1592000003}
   m_SourcePrefab: {fileID: 100100000, guid: 8745bc6e15abee942a7c5c94aca18df4, type: 3}
 --- !u!4 &1591999999 stripped
 Transform:
@@ -4771,6 +4833,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 531147e6012a58548b3810c2a2cbcda8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_trainingState:
+    <ExpReward>k__BackingField: 10
+--- !u!114 &1592000003
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 736732114}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3172378c2de5f634d893f1521c410f80, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_rest:
+    <StaminaRecoveredPerHour>k__BackingField: 10
 --- !u!1001 &1592465697
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5222,7 +5300,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8153231705256620972, guid: 8745bc6e15abee942a7c5c94aca18df4, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1592465701}
   m_SourcePrefab: {fileID: 100100000, guid: 8745bc6e15abee942a7c5c94aca18df4, type: 3}
 --- !u!4 &1592465698 stripped
 Transform:
@@ -5234,12 +5315,26 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7108896763118586010, guid: 8745bc6e15abee942a7c5c94aca18df4, type: 3}
   m_PrefabInstance: {fileID: 1592465697}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 1200078537}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b2baab441e4d1704b9abd32ec5c5684a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1592465701
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1200078537}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3172378c2de5f634d893f1521c410f80, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_rest:
+    <StaminaRecoveredPerHour>k__BackingField: 12.5
 --- !u!1 &1624700078
 GameObject:
   m_ObjectHideFlags: 0
@@ -6425,6 +6520,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 8153231705256620972, guid: 8745bc6e15abee942a7c5c94aca18df4, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1009692404}
+    - targetCorrespondingSourceObject: {fileID: 8153231705256620972, guid: 8745bc6e15abee942a7c5c94aca18df4, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1009692406}
   m_SourcePrefab: {fileID: 100100000, guid: 8745bc6e15abee942a7c5c94aca18df4, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:

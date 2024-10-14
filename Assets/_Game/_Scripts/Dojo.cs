@@ -5,12 +5,7 @@ namespace Game
 {
     public class Dojo : MonoBehaviour, IHeroStateProvider
     {
-        private Training_General m_trainingState;
-
-        private void Awake()
-        {
-            m_trainingState = new Training_General();
-        }
+        [SerializeField] private Training_General m_trainingState;
 
         public void GetStates(List<IStateFactory> container)
         {

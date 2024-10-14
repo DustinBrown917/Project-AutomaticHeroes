@@ -1,10 +1,8 @@
-
-
-using System.Diagnostics;
 using UnityEngine;
 
 namespace Game
 {
+    [System.Serializable]
     public class Training_General : StateFactory<Training_General.State>
     {
         /*vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv*/
@@ -30,6 +28,8 @@ namespace Game
             {
                 elapsed += deltaSeconds;
 
+                Hero.Stamina.TrySpend(deltaSeconds * HeroStamina.TRAINING_STAMINA_PER_SECOND);
+
                 Progress = elapsed / duration;
 
                 Hero.Level.GainExperience(deltaSeconds * EXP_PER_SECOND);
@@ -50,18 +50,16 @@ namespace Game
         #endregion ===================================== End Subclasses ================================================
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
 
-        public int expReward = 10;
-
-        public override Sprite Sprite { get; }
-
-        public Training_General()
-        {
-            Sprite = SpriteLibrary.GetSprite("Training Icon");
-        }
+        [field: SerializeField] public int ExpReward { get; private set; } = 10;
 
         protected override State CreateState_Internal(Hero hero)
         {
-            return new State(this, hero, expReward);
+            return new State(this, hero, ExpReward);
+        }
+
+        protected override Sprite GetSprite()
+        {
+            return SpriteLibrary.GetSprite("Training Icon");
         }
     } 
 }

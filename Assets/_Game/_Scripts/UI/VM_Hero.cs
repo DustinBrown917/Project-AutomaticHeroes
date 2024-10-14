@@ -1,6 +1,7 @@
 using SegoLib;
 using SegoLib.UI.MVVM;
 using System;
+using UnityEngine.UI;
 
 namespace Game.UI
 {
@@ -34,6 +35,27 @@ namespace Game.UI
         }
         private HeroMovement m_movement;
 
+        public HeroGraphic Graphic
+        {
+            get => m_graphic;
+            private set => PropertySetter.Set(ref m_graphic, value, m_graphic == value, OnPropertyChanged);
+        }
+        private HeroGraphic m_graphic;
+
+        public HeroHealth Health
+        {
+            get => m_health;
+            private set => PropertySetter.Set(ref m_health, value, m_health == value, OnPropertyChanged);
+        }
+        private HeroHealth m_health;
+
+        public HeroStamina Stamina
+        {
+            get => m_stamina;
+            private set => PropertySetter.Set(ref m_stamina, value, m_stamina == value, OnPropertyChanged);
+        }
+        private HeroStamina m_stamina;
+
         protected override bool IsEqual(Hero a, Hero b) => a == b;
 
         protected override void SetValuesToDefault()
@@ -42,6 +64,9 @@ namespace Game.UI
             Brain = null;
             Movement = null;
             Color = null;
+            Graphic = null;
+            Stamina = null;
+            Health = null;
         }
 
         protected override void UpdateValues()
@@ -50,6 +75,9 @@ namespace Game.UI
             Brain = Model.Brain;
             Movement = Model.Movement;
             Color = Model.Color;
+            Graphic = Model.Graphic;
+            Stamina = Model.Stamina;
+            Health = Model.Health;
         }
 
         protected override void OnModelChangedToNotNull()

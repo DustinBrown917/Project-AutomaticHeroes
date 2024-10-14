@@ -2,6 +2,7 @@ using UnityEngine;
 
 namespace Game
 {
+    [System.Serializable]
     public class Wait : StateFactory<Wait.State>
     {
 
@@ -42,13 +43,16 @@ namespace Game
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
 
 
-        private float m_waitDuration = 4;
-
-        public override Sprite Sprite => null;
+        [field: SerializeField] public float WaitDuration { get; private set; } = 4;
 
         protected override State CreateState_Internal(Hero hero)
         {
-            return new State(this, hero, m_waitDuration);
+            return new State(this, hero, WaitDuration);
+        }
+
+        protected override Sprite GetSprite()
+        {
+            return SpriteLibrary.GetSprite("Wait Icon");
         }
     } 
 }

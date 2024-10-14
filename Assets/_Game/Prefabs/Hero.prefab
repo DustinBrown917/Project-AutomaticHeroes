@@ -196,6 +196,8 @@ GameObject:
   - component: {fileID: 7158317994977308614}
   - component: {fileID: 2106680276883580523}
   - component: {fileID: 5951242888094392898}
+  - component: {fileID: 9180355668866634381}
+  - component: {fileID: 3631947360753602002}
   - component: {fileID: 5131149459689021817}
   m_Layer: 0
   m_Name: Hero
@@ -283,6 +285,30 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_graphicGameObject: {fileID: 4100121308280149663}
   m_spriteRenderer: {fileID: 7769671590099120238}
+--- !u!114 &9180355668866634381
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6195090621485750296}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc77c84aa35d6f849af5bde59cb33ba9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &3631947360753602002
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6195090621485750296}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c02aeb10a3ee4d54cb092c7dfd44ab52, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &5131149459689021817
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -5,8 +5,6 @@ namespace Game
 {
     public class TravelToRandomNeighbour : StateFactory<TravelToRandomNeighbour.State>
     {
-
-
         /*vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv*/
         #region ========================================== Subclasses ==================================================
         /*vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv*/
@@ -32,6 +30,8 @@ namespace Game
 
             public override void DoState(float deltaSeconds)
             {
+                Hero.Stamina.TrySpend(HeroStamina.MOVEMENT_STAMINA_PER_SECOND * deltaSeconds);
+
                 Hero.Movement.ProgressBySeconds(deltaSeconds);
                 Progress = Hero.Movement.RouteProgress;
             }
@@ -62,11 +62,14 @@ namespace Game
         #endregion ===================================== End Subclasses ================================================
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
 
-        public override Sprite Sprite => null;
-
         protected override State CreateState_Internal(Hero hero)
         {
             return new State(this, hero);
+        }
+
+        protected override Sprite GetSprite()
+        {
+            return SpriteLibrary.GetSprite("Travel Icon");
         }
     }
 

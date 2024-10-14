@@ -17,7 +17,16 @@ namespace Game
 
     public abstract class StateFactory<T> : IStateFactory where T : IHeroState
     {
-        public abstract Sprite Sprite { get; }
+        public Sprite Sprite
+        {
+            get {
+                if (m_sprite == null)
+                    m_sprite = GetSprite();
+                return m_sprite;
+            }
+        }
+
+        private Sprite m_sprite;
 
         public bool CanCreateNewState { get; set; } = true;
 
@@ -103,5 +112,7 @@ namespace Game
                 UnsubscribeEvents(state);
             }
         }
+
+        protected abstract Sprite GetSprite();
     }
 }
