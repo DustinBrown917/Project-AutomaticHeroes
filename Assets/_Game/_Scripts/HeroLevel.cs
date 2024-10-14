@@ -20,13 +20,13 @@ namespace Game
         private int m_level;
         public event ValueChangedWithSourceEvent<HeroLevel, int> levelChanged;
 
-        public int Experience
+        public float Experience
         {
             get => m_experience;
             set => SetExperience(value);
         }
-        private int m_experience;
-        public event ValueChangedWithSourceEvent<HeroLevel, int> experienceChanged;
+        private float m_experience;
+        public event ValueChangedWithSourceEvent<HeroLevel, float> experienceChanged;
 
         public int ExperienceNeededToLevel
         {
@@ -46,11 +46,11 @@ namespace Game
             Initialized = true;
         }
 
-        public void GainExperience(int amount)
+        public void GainExperience(float amount)
         {
             if (amount <= 0) return;
 
-            int newExperience = Experience + amount;
+            float newExperience = Experience + amount;
 
             while(newExperience >= ExperienceNeededToLevel) {
                 newExperience -= ExperienceNeededToLevel;
@@ -75,14 +75,14 @@ namespace Game
             levelChanged?.Invoke(this, oldValue, newValue);
         }
 
-        public void SetExperience(int newValue)
+        public void SetExperience(float newValue)
         {
             if (newValue < 0)
                 newValue = 0;
 
             if (newValue == m_experience) return;
 
-            int oldValue = m_experience;
+            float oldValue = m_experience;
             m_experience = newValue;
 
             experienceChanged?.Invoke(this, oldValue, newValue);

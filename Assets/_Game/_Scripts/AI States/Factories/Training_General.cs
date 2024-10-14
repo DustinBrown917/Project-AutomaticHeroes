@@ -1,5 +1,8 @@
 
 
+using System.Diagnostics;
+using UnityEngine;
+
 namespace Game
 {
     public class Training_General : StateFactory<Training_General.State>
@@ -10,7 +13,7 @@ namespace Game
 
         public class State : State_Base
         {
-            private const float EXP_PER_SECOND = 1.5f;
+            private const float EXP_PER_SECOND = 8f / 3600;
 
             public float duration = 6;
             public float elapsed = 0;
@@ -20,7 +23,7 @@ namespace Game
             public State(Training_General stateFactory, Hero hero, int expReward) : base(stateFactory, hero)
             {
                 this.expReward = expReward;
-                duration = expReward * EXP_PER_SECOND;
+                duration = expReward / EXP_PER_SECOND;
             }
 
             public override void DoState(float deltaSeconds)
@@ -28,6 +31,8 @@ namespace Game
                 elapsed += deltaSeconds;
 
                 Progress = elapsed / duration;
+
+                Hero.Level.GainExperience(deltaSeconds * EXP_PER_SECOND);
 
                 if(elapsed > duration) {
                     CompleteState();
@@ -39,20 +44,24 @@ namespace Game
             public override void ExitState() { }
 
             public override string GetActionString() => "Training.";
-
-            protected override void OnComplete()
-            {
-                Hero.Level.GainExperience(expReward);
-            }
         }
 
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
         #endregion ===================================== End Subclasses ================================================
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
 
+        public int expReward = 10;
+
+        public override Sprite Sprite { get; }
+
+        public Training_General()
+        {
+            Sprite = SpriteLibrary.GetSprite("Training Icon");
+        }
+
         protected override State CreateState_Internal(Hero hero)
         {
-            return new State(this, hero, WorldState.Instance.Rng.Range(2, 10));
+            return new State(this, hero, expReward);
         }
     } 
 }

@@ -9,8 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ef2660b7c3a9f3c4484c6b4dc273ddaa, type: 3}
-  m_Name: Pink on Teal
+  m_Script: {fileID: 11500000, guid: 8728c60dcb2a0f14fadd544555596e7d, type: 3}
+  m_Name: Action Icons
   m_EditorClassIdentifier: 
-  <Primary>k__BackingField: {r: 0.8396226, g: 0.53466535, b: 0.74599546, a: 1}
-  <Secondary>k__BackingField: {r: 0.30980393, g: 0.5647965, b: 0.6431373, a: 1}
+  m_sprites:
+  - {fileID: 21300000, guid: 05a4e847a2522e749bcc1edc6530edaa, type: 3}

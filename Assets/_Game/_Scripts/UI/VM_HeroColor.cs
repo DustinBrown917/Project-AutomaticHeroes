@@ -6,6 +6,13 @@ namespace Game.UI
 {
     public class VM_HeroColor : VM_Base<HeroColor>
     {
+        public Color Base
+        {
+            get => m_base;
+            set => PropertySetter.Set(ref m_base, value, m_base == value, OnPropertyChanged);
+        }
+        private Color m_base;
+
         public Color Primary
         {
             get => m_primary;
@@ -20,19 +27,38 @@ namespace Game.UI
         }
         private Color m_secondary;
 
+        public Sprite CharacterSprite
+        {
+            get => m_characterSprite;
+            private set => PropertySetter.Set(ref m_characterSprite, value, m_characterSprite == value, OnPropertyChanged);
+        }
+        private Sprite m_characterSprite;
+
+        public Sprite BannerSprite
+        {
+            get => m_bannerSprite;
+            private set => PropertySetter.Set(ref m_bannerSprite, value, m_bannerSprite == value, OnPropertyChanged);
+        }
+        private Sprite m_bannerSprite;
+
         protected override bool IsEqual(HeroColor a, HeroColor b) => a == b;
 
         protected override void SetValuesToDefault()
         {
+            Base = Color.gray;
             Primary = Color.black;
             Secondary = Color.white;
+            CharacterSprite = null;
+            BannerSprite = null;
         }
 
         protected override void UpdateValues()
         {
+            Base = Model.Base;
             Primary = Model.Primary;
             Secondary = Model.Secondary;
+            CharacterSprite = Model.CharacterSprite;
+            BannerSprite = Model.BannerSprite;
         }
-
     }
 }

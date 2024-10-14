@@ -1,5 +1,6 @@
 using SegoLib;
 using SegoLib.UI.MVVM;
+using UnityEngine;
 
 namespace Game.UI
 {
@@ -19,12 +20,12 @@ namespace Game.UI
         }
         private string m_actionString;
 
-        public bool IsComplete
+        public Sprite Sprite
         {
-            get => m_isComplete;
-            private set => PropertySetter.Set(ref m_isComplete, value, m_isComplete == value, OnPropertyChanged);
+            get => m_sprite;
+            private set => PropertySetter.Set(ref m_sprite, value, m_sprite == value, OnPropertyChanged);
         }
-        private bool m_isComplete;
+        private Sprite m_sprite;
 
         protected override bool IsEqual(IHeroState a, IHeroState b) => a == b;
 
@@ -32,31 +33,24 @@ namespace Game.UI
         {
             Progress = 0;
             ActionString = string.Empty;
-            IsComplete = false;
+            Sprite = null;
         }
 
         protected override void UpdateValues()
         {
             Progress = Model.Progress;
             ActionString = Model.GetActionString();
-            IsComplete = Model.StateIsComplete;
+            Sprite = Model.StateFactory.Sprite;
         }
 
         protected override void OnModelChangedToNotNull()
         {
             Model.progressChanged += Model_ProgressChanged;
-            Model.stateCompleted += Model_StateCompleted;
         }
 
         protected override void OnModelChangingFromNotNull()
         {
             Model.progressChanged -= Model_ProgressChanged;
-            Model.stateCompleted -= Model_StateCompleted;
-        }
-
-        private void Model_StateCompleted(IHeroState state)
-        {
-            IsComplete = Model.StateIsComplete;
         }
 
         private void Model_ProgressChanged(IHeroState source, float oldValue, float newValue)

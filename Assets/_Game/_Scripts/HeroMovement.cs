@@ -132,8 +132,13 @@ namespace Game
             if (oldValue != null)
                 oldValue.OnLocationExit(Hero);
 
-            if(newValue != null)
+            if(newValue != null) {
                 newValue.OnLocationEnter(Hero);
+                Hero.Graphic.Disable();
+            } else {
+                Hero.Graphic.Enable();
+            }
+
 
             locationChanged?.Invoke(this, oldValue, newValue);
         }

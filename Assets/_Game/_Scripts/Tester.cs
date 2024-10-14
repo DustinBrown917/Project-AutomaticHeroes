@@ -7,6 +7,7 @@ using SegoLib.Random;
 using System;
 using Game.UI;
 
+
 public class Tester : MonoBehaviour
 {
     [SerializeField] private Location[] m_locations;
@@ -37,4 +38,80 @@ public class Tester : MonoBehaviour
             heroUi.SetModel(newHero);
         }
     }
+}
+
+
+public static class TextureCombiner
+{
+    public static Texture2D Combine(Texture2D baseTexture, Color baseColor, Texture2D primaryTexture, Color primaryColor, Texture2D secondaryTexture, Color secondaryColor)
+    {
+        Color[] pixels = baseTexture.GetPixels();
+
+        for(int i = 0; i < pixels.Length; i++) {
+            Color col = baseColor;
+            col.a = pixels[i].a;
+            pixels[i] = col;
+        }
+
+        Color[] secondaryPixels = secondaryTexture.GetPixels();
+
+        Overlay(pixels, secondaryPixels, secondaryColor);
+
+        Color[] primaryPixels = primaryTexture.GetPixels();
+
+        Overlay(pixels, primaryPixels, primaryColor);
+
+        Texture2D newTex = new Texture2D(baseTexture.width, baseTexture.height, TextureFormat.RGBA32, false);
+        newTex.SetPixels(pixels);
+        newTex.Apply();
+        return newTex;
+    }
+
+    private static void Overlay(Color[] baseTex, Color[] overlayTex, Color overlayColor)
+    {
+        for (int i = 0; i < baseTex.Length && i < overlayTex.Length; i++) {
+            Color newCol = Color.Lerp(baseTex[i], overlayColor, overlayTex[i].a);
+            newCol.a = baseTex[i].a;
+            baseTex[i] = newCol;
+        }
+    }
+}
+
+
+
+
+
+public struct GameTimeDuration
+{
+    public float Seconds
+    {
+        get => m_duration;
+        set => m_duration = value;
+    }
+
+    public float Minutes
+    {
+        get => m_duration / 60;
+        set => m_duration = value * 60;
+    }
+
+    public float Hours
+    {
+        get => m_duration / 3600;
+        set => m_duration = value * 3600;
+    }
+
+    public float Days
+    {
+        get => m_duration / 86_400;
+        set => m_duration = value * 86_400;
+    }
+
+    private float m_duration;
+
+    public GameTimeDuration(float duration)
+    {
+        m_duration = duration;
+    }
+
 }

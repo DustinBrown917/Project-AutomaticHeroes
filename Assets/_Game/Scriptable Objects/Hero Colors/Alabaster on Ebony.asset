@@ -12,5 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef2660b7c3a9f3c4484c6b4dc273ddaa, type: 3}
   m_Name: Alabaster on Ebony
   m_EditorClassIdentifier: 
-  <Primary>k__BackingField: {r: 0.9339623, g: 0.9079401, b: 0.8590691, a: 1}
-  <Secondary>k__BackingField: {r: 0.18970273, g: 0.19356166, b: 0.1981132, a: 1}
+  <CharacterSprite>k__BackingField: {fileID: 21300000, guid: 38d81e2fbe9c7ae409979a82eee6178c, type: 3}
+  <Base>k__BackingField: {r: 0.8679245, g: 0.8679245, b: 0.8679245, a: 1}
+  <Primary>k__BackingField: {r: 0.42212576, g: 0.8157295, b: 0.90699995, a: 1}
+  <Secondary>k__BackingField: {r: 0.7169812, g: 0.49153057, b: 0.18600929, a: 1}
+  m_bannerBase: {fileID: 2800000, guid: 49a364e6866950d4f8df24e5e86bf8e9, type: 3}
+  m_primaryDecal: {fileID: 2800000, guid: 165720a46a83b474e937fa501db781f2, type: 3}
+  m_secondaryDecal: {fileID: 2800000, guid: b623b614c159c644fb3dc440cf93d4e6, type: 3}

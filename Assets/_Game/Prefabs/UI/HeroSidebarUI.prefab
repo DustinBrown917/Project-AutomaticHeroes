@@ -1293,7 +1293,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1389192338639822059}
   - component: {fileID: 1019540402935320528}
-  - component: {fileID: 8576898267504813021}
+  - component: {fileID: 1486075941912082649}
   - component: {fileID: 1714113160068277120}
   m_Layer: 5
   m_Name: img_Graphic
@@ -1329,7 +1329,7 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6445014777489403369}
   m_CullTransparentMesh: 1
---- !u!114 &8576898267504813021
+--- !u!114 &1486075941912082649
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1338,16 +1338,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 6445014777489403369}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6085dc260a61ece489ceacd59c3c1fde, type: 3}
+  m_Script: {fileID: 11500000, guid: 97ba40a1096fd3c4cbc308f27fe67b32, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_observedViewModel: {fileID: 1289839865455291074}
   m_useDropdown: 1
-  m_propertyName: 
-  <m_targetPropertyName>k__BackingField: Primary
-  m_graphic: {fileID: 1714113160068277120}
-  m_overrideAlpha: 0
-  m_alphaOverride: 1
+  m_propertyName: CharacterSprite
+  <m_targetPropertyName>k__BackingField: CharacterSprite
+  m_image: {fileID: 1714113160068277120}
 --- !u!114 &1714113160068277120
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1361,7 +1359,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.373042, g: 0.7828993, b: 0.9528302, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1

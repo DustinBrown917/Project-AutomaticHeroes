@@ -12,5 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef2660b7c3a9f3c4484c6b4dc273ddaa, type: 3}
   m_Name: Gold on Orange
   m_EditorClassIdentifier: 
-  <Primary>k__BackingField: {r: 0.9245283, g: 0.805125, b: 0.082858644, a: 1}
-  <Secondary>k__BackingField: {r: 0.9056604, g: 0.60157245, b: 0.32894266, a: 1}
+  <CharacterSprite>k__BackingField: {fileID: 21300000, guid: 891f45bbf72c1d1479b4cc849e8aa400, type: 3}
+  <Base>k__BackingField: {r: 0.31132078, g: 0.28998896, b: 0.20999467, a: 1}
+  <Primary>k__BackingField: {r: 0.9960785, g: 0.9294118, b: 0.5686275, a: 1}
+  <Secondary>k__BackingField: {r: 0.54883635, g: 0.6254181, b: 0.70199996, a: 1}
+  m_bannerBase: {fileID: 2800000, guid: 49a364e6866950d4f8df24e5e86bf8e9, type: 3}
+  m_primaryDecal: {fileID: 2800000, guid: e7d8892a676ca41498fb1f9337dfcdf3, type: 3}
+  m_secondaryDecal: {fileID: 2800000, guid: 95583198c058f254a9db78fb3ade3c9d, type: 3}

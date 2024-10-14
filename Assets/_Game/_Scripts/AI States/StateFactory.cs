@@ -1,10 +1,13 @@
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace Game
 {
     public interface IStateFactory : SegoLib.IDisposable
     {
+        public Sprite Sprite { get; }
+
         public bool CanCreateNewState { get; set; }
 
         public abstract IHeroState CreateState(Hero hero);
@@ -14,6 +17,8 @@ namespace Game
 
     public abstract class StateFactory<T> : IStateFactory where T : IHeroState
     {
+        public abstract Sprite Sprite { get; }
+
         public bool CanCreateNewState { get; set; } = true;
 
         private readonly HashSet<T> m_createdStates = new();

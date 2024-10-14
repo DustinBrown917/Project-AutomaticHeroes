@@ -44,6 +44,8 @@ namespace Game
 
         private float m_waitDuration = 4;
 
+        public override Sprite Sprite => null;
+
         protected override State CreateState_Internal(Hero hero)
         {
             return new State(this, hero, m_waitDuration);

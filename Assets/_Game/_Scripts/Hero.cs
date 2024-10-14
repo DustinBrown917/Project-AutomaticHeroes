@@ -6,9 +6,11 @@ namespace Game
     [RequireComponent(typeof(HeroLevel))]
     [RequireComponent(typeof(HeroBrain))]
     [RequireComponent(typeof(HeroMovement))]
+    [RequireComponent(typeof(HeroGraphic))]
     public class Hero : MonoBehaviour
     {
         public HeroColor Color { get; private set; }
+        public HeroGraphic Graphic { get; private set; }
         public HeroLevel Level { get; private set; }
         public HeroMovement Movement { get; private set; }
         public HeroBrain Brain { get; private set; }
@@ -20,6 +22,7 @@ namespace Game
             Movement = GetComponent<HeroMovement>();
             Level = GetComponent<HeroLevel>();
             Brain = GetComponent<HeroBrain>();
+            Graphic = GetComponent<HeroGraphic>();
         }
 
         private void Start()
@@ -33,6 +36,8 @@ namespace Game
         {
             Movement = null;
             Brain = null;
+            Level = null;
+            Graphic = null;
         }
 
         /// <summary>
@@ -54,6 +59,7 @@ namespace Game
             Level.Initialize();
             Movement.Initialize(location);
             Brain.Initialize();
+            Graphic.Initialize(color);
 
             Initialized = true;
         }

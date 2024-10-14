@@ -41,6 +41,8 @@ namespace Game
         {
             if (CurrentState != null) {
                 CurrentState.DoState(deltaSeconds);
+            } else {
+                CurrentState = GetRandomState();
             }
         }
 

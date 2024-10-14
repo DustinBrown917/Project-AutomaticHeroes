@@ -1,3 +1,4 @@
+using Game.UI;
 using SegoLib;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,8 +9,7 @@ namespace Game
     {
         public string DisplayName => name;
 
-        public int Id => m_id;
-        private int m_id;
+        public int Id { get; private set; }
 
         public Vector2 Position => transform.position;
 
@@ -28,6 +28,12 @@ namespace Game
         private void Awake()
         {
             m_heroStateProviders = GetComponentsInChildren<IHeroStateProvider>(true);
+        }
+
+        private void Start()
+        {
+            VM_ILocation vm = GetComponent<VM_ILocation>();
+            vm.SetModel(this);
         }
 
         public void AddRoute(IRoute route)

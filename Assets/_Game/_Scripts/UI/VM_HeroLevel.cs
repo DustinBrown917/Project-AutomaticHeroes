@@ -12,12 +12,12 @@ namespace Game.UI
         }
         private int m_level;
 
-        public int Experience
+        public float Experience
         {
             get => m_experience;
             private set => PropertySetter.Set(ref m_experience, value, m_experience == value, OnPropertyChanged);
         }
-        private int m_experience;
+        private float m_experience;
 
         public int ExperienceNeededToLevel
         {
@@ -71,7 +71,7 @@ namespace Game.UI
             Progress = GetProgress();
         }
 
-        private void Model_ExperienceChanged(HeroLevel source, int oldValue, int newValue)
+        private void Model_ExperienceChanged(HeroLevel source, float oldValue, float newValue)
         {
             Experience = newValue;
             Progress = GetProgress();
