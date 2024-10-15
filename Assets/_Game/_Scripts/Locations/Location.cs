@@ -20,8 +20,7 @@ namespace Game
         public event ValueUpdatedWithSourceEvent<ILocation, IReadOnlyList<Hero>> visitorsUpdated;
 
         private readonly List<IRoute> m_routes = new();
-
-        private TravelToRandomNeighbour m_travelToRandomNeighbourFactory = new TravelToRandomNeighbour();
+        private readonly List<Travel> m_travelStates = new();
 
         private IHeroStateProvider[] m_heroStateProviders;
 
@@ -39,6 +38,11 @@ namespace Game
         public void AddRoute(IRoute route)
         {
             m_routes.Add(route);
+            if(route.A == (ILocation)this) {
+                m_travelStates.Add(new Travel(new RouteTraversalAToB(route)));
+            } else {
+                m_travelStates.Add(new Travel(new RouteTraversalBToA(route)));
+            }
         }
 
         public void OnLocationEnter(Hero hero)
@@ -47,9 +51,10 @@ namespace Game
                 m_visitors.Add(hero);
                 visitorsUpdated?.Invoke(this, Visitors);
 
-                hero.Brain.AddStateFactory(m_travelToRandomNeighbourFactory);
-
                 List<IStateFactory> states = UnityEngine.Pool.ListPool<IStateFactory>.Get();
+
+                states.AddRange(m_travelStates);
+
                 foreach(IHeroStateProvider stateProvider in m_heroStateProviders) {
                     stateProvider.GetStates(states);
                 }
@@ -67,9 +72,10 @@ namespace Game
             if (m_visitors.Remove(hero)) {
                 visitorsUpdated?.Invoke(this, Visitors);
 
-                hero.Brain.RemoveStateFactory(m_travelToRandomNeighbourFactory);
-
                 List<IStateFactory> states = UnityEngine.Pool.ListPool<IStateFactory>.Get();
+
+                states.AddRange(m_travelStates);
+
                 foreach (IHeroStateProvider stateProvider in m_heroStateProviders) {
                     stateProvider.GetStates(states);
                 }

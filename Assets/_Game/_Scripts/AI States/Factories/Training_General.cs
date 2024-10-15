@@ -11,17 +11,21 @@ namespace Game
 
         public class State : State_Base
         {
-            private const float EXP_PER_SECOND = 8f / 3600;
 
-            public float duration = 6;
+
+            public float durationInSeconds = 0;
             public float elapsed = 0;
 
-            public int expReward;
+            private float m_expPerSecond;
 
-            public State(Training_General stateFactory, Hero hero, int expReward) : base(stateFactory, hero)
+            public State(Training_General stateFactory, Hero hero, float expPerHour) : base(stateFactory, hero)
             {
-                this.expReward = expReward;
-                duration = expReward / EXP_PER_SECOND;
+                m_expPerSecond = expPerHour / 3600;
+
+                float staminaHours = hero.Stamina.Current / HeroStamina.TRAINING_STAMINA_PER_HOUR;
+
+                float hours = Mathf.Min((int)staminaHours, 6);
+                durationInSeconds = hours * 3600;
             }
 
             public override void DoState(float deltaSeconds)
@@ -30,11 +34,11 @@ namespace Game
 
                 Hero.Stamina.TrySpend(deltaSeconds * HeroStamina.TRAINING_STAMINA_PER_SECOND);
 
-                Progress = elapsed / duration;
+                Progress = elapsed / durationInSeconds;
 
-                Hero.Level.GainExperience(deltaSeconds * EXP_PER_SECOND);
+                Hero.Level.GainExperience(deltaSeconds * m_expPerSecond);
 
-                if(elapsed > duration) {
+                if(elapsed > durationInSeconds) {
                     CompleteState();
                 }
             }
@@ -50,16 +54,43 @@ namespace Game
         #endregion ===================================== End Subclasses ================================================
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
 
-        [field: SerializeField] public int ExpReward { get; private set; } = 10;
+        [field: SerializeField] public TrainingQuality TrainingQuality { get; private set; } = TrainingQuality.Decent;
 
         protected override State CreateState_Internal(Hero hero)
         {
-            return new State(this, hero, ExpReward);
+            return new State(this, hero, TrainingQuality.ExpPerHour());
         }
 
         protected override Sprite GetSprite()
         {
             return SpriteLibrary.GetSprite("Training Icon");
         }
+
+        public override float GetPriority(Hero hero)
+        {
+            return 0.5f * TrainingQuality.GetPriorityImpact() * hero.Stamina.Percent;
+        }
     } 
+
+    public enum TrainingQuality
+    {
+        Terrible,
+        Mediocre,
+        Decent,
+        Good,
+        Excellent
+    }
+
+    public static class TrainingQualityExtensions
+    {
+        public static float ExpPerHour(this TrainingQuality quality)
+        {
+            return ((int)quality * 0.5f) + 0.5f;
+        }
+
+        public static float GetPriorityImpact(this TrainingQuality quality)
+        {
+            return 0.2f + ((int)quality * 0.2f);
+        }
+    }
 }

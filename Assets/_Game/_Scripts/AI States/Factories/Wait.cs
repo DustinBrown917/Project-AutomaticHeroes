@@ -54,5 +54,10 @@ namespace Game
         {
             return SpriteLibrary.GetSprite("Wait Icon");
         }
+
+        public override float GetPriority(Hero hero)
+        {
+            return 0f;
+        }
     } 
 }

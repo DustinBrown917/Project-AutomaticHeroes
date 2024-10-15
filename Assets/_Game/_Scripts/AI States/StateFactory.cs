@@ -13,6 +13,8 @@ namespace Game
         public abstract IHeroState CreateState(Hero hero);
 
         public abstract void CancelCreatedStates();
+
+        public float GetPriority(Hero hero);
     }
 
     public abstract class StateFactory<T> : IStateFactory where T : IHeroState
@@ -114,5 +116,7 @@ namespace Game
         }
 
         protected abstract Sprite GetSprite();
+
+        public abstract float GetPriority(Hero hero);
     }
 }

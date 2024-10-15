@@ -1,4 +1,5 @@
 using SegoLib;
+using SegoLib.Random;
 using System.Collections.Generic;
 
 namespace Game
@@ -74,16 +75,26 @@ namespace Game
         private IHeroState GetRandomState()
         {
             List<IStateFactory> availableStates = UnityEngine.Pool.ListPool<IStateFactory>.Get();
-            
+            List<float> priorities = UnityEngine.Pool.ListPool<float>.Get();
+            float sumOfPriorites = 0;
+
             foreach(IStateFactory factory in m_availableStates) {
-                if(factory.CanCreateNewState)
+                if (factory.CanCreateNewState) {
                     availableStates.Add(factory);
+                    priorities.Add(factory.GetPriority(Hero));
+                    sumOfPriorites += priorities[^1];
+                }
+
             }
 
             if (availableStates.Count == 0)
                 return WorldState.Instance.DefaultWaitStateFactory.CreateState(Hero);
 
-            IStateFactory chosen = WorldState.Instance.Rng.GetRandom(availableStates);
+            int index = WeightedRandom.Naive(priorities, sumOfPriorites, WorldState.Instance.Rng);
+
+            IStateFactory chosen = availableStates[index];
+
+            UnityEngine.Pool.ListPool<float>.Release(priorities);
             UnityEngine.Pool.ListPool<IStateFactory>.Release(availableStates);
 
             return chosen.CreateState(Hero);

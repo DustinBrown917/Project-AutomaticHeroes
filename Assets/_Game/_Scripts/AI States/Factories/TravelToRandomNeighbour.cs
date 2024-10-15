@@ -13,6 +13,12 @@ namespace Game
         {
             public State(TravelToRandomNeighbour stateFactory, Hero hero) : base(stateFactory, hero)
             {
+
+            }
+
+
+            public override void EnterState()
+            {
                 Hero.Movement.CurrentRoute = GetRandomRouteToNeighbour(Hero.Movement.Location, WorldState.Instance.Rng);
                 Hero.Movement.routeCompleted += Movement_RouteCompleted;
             }
@@ -21,11 +27,6 @@ namespace Game
             {
                 Hero.Movement.routeCompleted -= Movement_RouteCompleted;
                 CompleteState();
-            }
-
-            public override void EnterState()
-            {
-                Hero.Movement.BeginMovement();
             }
 
             public override void DoState(float deltaSeconds)
@@ -56,6 +57,7 @@ namespace Game
 
                 return routeTraversal;
             }
+
         }
 
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
@@ -70,6 +72,11 @@ namespace Game
         protected override Sprite GetSprite()
         {
             return SpriteLibrary.GetSprite("Travel Icon");
+        }
+
+        public override float GetPriority(Hero hero)
+        {
+            return 0.3f;
         }
     }
 

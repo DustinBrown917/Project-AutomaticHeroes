@@ -46,16 +46,43 @@ namespace Game
         #endregion ===================================== End Subclasses ================================================
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
 
-        [field: SerializeField] public float StaminaRecoveredPerHour { get; private set; } = 12.5f;
+        [field: SerializeField] public RestQuality RestQuality { get; private set; } = RestQuality.Decent;
 
         protected override State CreateState_Internal(Hero hero)
         {
-            return new State(this, hero, StaminaRecoveredPerHour);
+            return new State(this, hero, RestQuality.StaminaRecoveredPerHour());
         }
 
         protected override Sprite GetSprite()
         {
             return SpriteLibrary.GetSprite("Rest Icon");
         }
+
+        public override float GetPriority(Hero hero)
+        {
+            return (1.0f - hero.Stamina.Percent) * RestQuality.GetPriorityImpact(); 
+        }
     } 
+
+    public enum RestQuality : byte
+    {
+        Terrible,
+        Mediocre,
+        Decent,
+        Good,
+        Excellent
+    }
+
+    public static class RestQualityExtensions
+    {
+        public static float StaminaRecoveredPerHour(this RestQuality restQuality)
+        {
+            return ((int)restQuality * 2.5f) + 5;
+        }
+
+        public static float GetPriorityImpact(this RestQuality restQuality)
+        {
+            return 0.2f + ((int)restQuality * 0.2f);
+        }
+    }
 }

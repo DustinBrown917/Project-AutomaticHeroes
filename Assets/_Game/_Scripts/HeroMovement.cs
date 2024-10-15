@@ -43,16 +43,11 @@ namespace Game
 
         private float m_routeDistanceTravelled;
 
+        public bool RouteCompleted { get; private set; }
         public event RouteCompletedDelegate routeCompleted;
 
         public bool Initialized { get; private set; }
 
-
-        private void OnEnable()
-        {
-            if (m_currentRoute == null || IsTraversalComplete())
-                enabled = false;
-        }
 
         public void Initialize(ILocation location)
         {
@@ -67,22 +62,17 @@ namespace Game
             Initialized = true;
         }
 
-        public void BeginMovement()
+        /// <summary>
+        /// Leaves the current location and enables ProgressBySecons to move the hero.
+        /// </summary>
+        public void Depart()
         {
-            enabled = m_currentRoute != null;
-
-            if (enabled && Location != null)
-                Location = null;
-        }
-
-        public void StopMovement()
-        {
-            enabled = false;
+            Location = null;
         }
 
         public void ProgressBySeconds(float deltaTime)
         {
-            if (!enabled)
+            if (CurrentRoute == null || Location != null)
                 return;
 
             m_routeDistanceTravelled += deltaTime * m_movePerSecond;
@@ -90,7 +80,6 @@ namespace Game
             UpdatePosition();
 
             if (IsTraversalComplete()) {
-                StopMovement();
                 Location = CurrentRoute.End;
                 routeCompleted?.Invoke(this, CurrentRoute);
             }
@@ -139,7 +128,6 @@ namespace Game
                 Hero.Graphic.Enable();
             }
 
-
             locationChanged?.Invoke(this, oldValue, newValue);
         }
 
@@ -150,10 +138,6 @@ namespace Game
             IRouteTraversal oldRoute = m_currentRoute;
             m_currentRoute = newRoute;
 
-            if(m_currentRoute == null) {
-                StopMovement();
-            }
-
             RouteProgress = 0;
             m_routeDistanceTravelled = 0;
 
@@ -161,6 +145,20 @@ namespace Game
                 UpdatePosition();
             }
 
+            currentRouteChanged?.Invoke(this, oldRoute, newRoute);
+        }
+
+        public void ReverseCurrentRoute()
+        {
+            if(m_currentRoute == null) return;
+
+            IRouteTraversal newRoute = m_currentRoute.Reverse();
+            IRouteTraversal oldRoute = m_currentRoute;
+
+            RouteProgress = 1.0f - RouteProgress;
+            m_routeDistanceTravelled = newRoute.Length - m_routeDistanceTravelled;
+
+            m_currentRoute = newRoute;
             currentRouteChanged?.Invoke(this, oldRoute, newRoute);
         }
 

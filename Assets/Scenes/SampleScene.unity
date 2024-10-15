@@ -896,7 +896,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_trainingState:
-    <ExpReward>k__BackingField: 10
+    <TrainingQuality>k__BackingField: 3
 --- !u!114 &397797192
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -910,7 +910,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_rest:
-    <StaminaRecoveredPerHour>k__BackingField: 12.5
+    <RestQuality>k__BackingField: 2
 --- !u!1001 &409493989
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2819,7 +2819,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_trainingState:
-    <ExpReward>k__BackingField: 10
+    <TrainingQuality>k__BackingField: 2
 --- !u!114 &1009692406
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2833,7 +2833,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_rest:
-    <StaminaRecoveredPerHour>k__BackingField: 12.5
+    <RestQuality>k__BackingField: 2
 --- !u!1001 &1023970450
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4093,7 +4093,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_trainingState:
-    <ExpReward>k__BackingField: 12
+    <TrainingQuality>k__BackingField: 4
 --- !u!114 &1481098519
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4107,7 +4107,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_rest:
-    <StaminaRecoveredPerHour>k__BackingField: 9
+    <RestQuality>k__BackingField: 1
 --- !u!1001 &1503216868
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4834,7 +4834,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_trainingState:
-    <ExpReward>k__BackingField: 10
+    <TrainingQuality>k__BackingField: 1
 --- !u!114 &1592000003
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4848,7 +4848,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_rest:
-    <StaminaRecoveredPerHour>k__BackingField: 10
+    <RestQuality>k__BackingField: 3
 --- !u!1001 &1592465697
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5334,7 +5334,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_rest:
-    <StaminaRecoveredPerHour>k__BackingField: 12.5
+    <RestQuality>k__BackingField: 4
 --- !u!1 &1624700078
 GameObject:
   m_ObjectHideFlags: 0
