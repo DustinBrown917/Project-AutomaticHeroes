@@ -14,6 +14,7 @@ namespace Game
         public Wait DefaultWaitStateFactory { get; private set; } = new Wait();
 
         public WorldTime Time { get; private set; }
+        public WorldDate Date { get; private set; }
 
         private void Awake()
         {
@@ -24,6 +25,11 @@ namespace Game
 
             Rng = new UnityRNG((int)System.DateTime.Now.Ticks);
             Time = GetComponentInChildren<WorldTime>();
+            Date = GetComponentInChildren<WorldDate>();
+
+            if(TryGetComponent(out VM_WorldDate vm_worldDate)) {
+                vm_worldDate.SetModel(Date);
+            }
 
             Instance = this;
         }
@@ -32,6 +38,9 @@ namespace Game
         {
             if (Instance == this)
                 Instance = null;
+
+            Time = null;
+            Date = null;
         }
     } 
 }

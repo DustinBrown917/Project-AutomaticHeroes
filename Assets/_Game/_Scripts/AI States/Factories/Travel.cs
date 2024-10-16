@@ -13,7 +13,7 @@ namespace Game
         {
             private IRouteTraversal m_traversal;
 
-            public State(Travel stateFactory, Hero hero, IRouteTraversal traversal) : base(stateFactory, hero)
+            public State(Travel stateFactory, Hero hero, Sprite sprite, IRouteTraversal traversal) : base(stateFactory, sprite, hero)
             {
                 m_traversal = traversal;
             }
@@ -58,9 +58,14 @@ namespace Game
             RouteTraversal = routeTraversal;
         }
 
+        private float CalculateBaseWeight()
+        {
+            return 1.0f / RouteTraversal.Start.Routes.Count;
+        }
+
         protected override State CreateState_Internal(Hero hero)
         {
-            return new State(this, hero, RouteTraversal);
+            return new State(this, hero, Sprite, RouteTraversal);
         }
 
         protected override Sprite GetSprite()
@@ -75,7 +80,7 @@ namespace Game
             if (staminaCost > hero.Stamina.Current)
                 return 0;
 
-            return 0.3f;
+            return CalculateBaseWeight() * hero.Brain.BasePriorities.RandomTravel;
         }
     }
 }

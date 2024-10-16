@@ -1,13 +1,20 @@
 using SegoLib;
+using UnityEditor.ShaderGraph.Internal;
 
 namespace Game
 {
     public class HeroStamina : HeroComponent
     {
+        public const float DEFAULT_STAMINA_PER_HOUR = 6.25f;
+        public const float DEFAULT_STAMINA_PER_SECOND = DEFAULT_STAMINA_PER_HOUR / 3600f;
+
         public const float MOVEMENT_STAMINA_PER_HOUR = 8.4f;
         public const float MOVEMENT_STAMINA_PER_SECOND = MOVEMENT_STAMINA_PER_HOUR / 3600f;
         public const float TRAINING_STAMINA_PER_HOUR = 16f;
         public const float TRAINING_STAMINA_PER_SECOND = TRAINING_STAMINA_PER_HOUR / 3600f;
+
+        public const float CULL_STAMINA_PER_HOUR = MOVEMENT_STAMINA_PER_HOUR;
+        public const float CULL_STAMINA_PER_SECOND = CULL_STAMINA_PER_HOUR / 3600f;
 
         public float Current
         {

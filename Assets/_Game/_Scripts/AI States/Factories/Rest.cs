@@ -11,27 +11,26 @@ namespace Game
 
         public class State : State_Base
         {
-            public float duration = 0;
-            public float elapsed = 0;
+            private float m_elapsed = 0;
 
             private float m_staminaRecoveredPerSecond;
 
-            public State(Rest stateFactory, Hero hero, float staminaRecoveredPerHour) : base(stateFactory, hero)
+            public State(Rest stateFactory, Sprite sprite, Hero hero, float staminaRecoveredPerHour) : base(stateFactory, sprite, hero)
             {
                 m_staminaRecoveredPerSecond = staminaRecoveredPerHour / 3600;
-                duration = (hero.Stamina.Max - hero.Stamina.Current) / m_staminaRecoveredPerSecond;
             }
 
             public override void DoState(float deltaSeconds)
             {
-                elapsed += deltaSeconds;
+                m_elapsed += deltaSeconds;
 
-                Progress = elapsed / duration;
+                Progress = Hero.Stamina.Percent;
 
                 Hero.Stamina.Current += deltaSeconds * m_staminaRecoveredPerSecond;
 
-                if (elapsed > duration) {
-                    CompleteState();
+                if (m_elapsed > 3600) {
+                    m_elapsed -= 3600;
+                    CheckShouldComplete();
                 }
             }
 
@@ -40,17 +39,43 @@ namespace Game
             public override void ExitState() { }
 
             public override string GetActionString() => "Resting.";
+
+            public void CheckShouldComplete()
+            {
+                float chanceToWakeUp = Hero.Stamina.Percent * GetTimeOfDayWakeUpModifier();
+
+                if (WorldState.Instance.Rng.Bool(chanceToWakeUp)) {
+                    CompleteState();
+                }
+            }
+
+            private float GetTimeOfDayWakeUpModifier()
+            {
+                WorldDate.ETimeOfDay timeOfDay = WorldState.Instance.Date.TimeOfDay;
+
+                switch (timeOfDay) {
+                    case WorldDate.ETimeOfDay.Night:
+                        return 0.2f;
+                    case WorldDate.ETimeOfDay.Dawn:
+                        return 0.85f;
+                    case WorldDate.ETimeOfDay.Day:
+                        return 1.0f;
+                    case WorldDate.ETimeOfDay.Dusk:
+                    default:
+                        return 0.5f;
+                }
+            }
         }
 
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
         #endregion ===================================== End Subclasses ================================================
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
 
-        [field: SerializeField] public RestQuality RestQuality { get; private set; } = RestQuality.Decent;
+        [field: SerializeField] public RestQuality RestQuality { get; protected set; } = RestQuality.Decent;
 
         protected override State CreateState_Internal(Hero hero)
         {
-            return new State(this, hero, RestQuality.StaminaRecoveredPerHour());
+            return new State(this, Sprite, hero, RestQuality.StaminaRecoveredPerHour());
         }
 
         protected override Sprite GetSprite()
@@ -60,7 +85,22 @@ namespace Game
 
         public override float GetPriority(Hero hero)
         {
-            return (1.0f - hero.Stamina.Percent) * RestQuality.GetPriorityImpact(); 
+            return hero.Brain.BasePriorities.StaminaRecovery * (1.0f - hero.Stamina.Percent) * RestQuality.GetPriorityImpact() * GetTimeOfDayPriorityModifier(); 
+        }
+
+        protected virtual float GetTimeOfDayPriorityModifier()
+        {
+            WorldDate.ETimeOfDay timeOfDay = WorldState.Instance.Date.TimeOfDay;
+            switch (timeOfDay) {
+                case WorldDate.ETimeOfDay.Night:
+                    return 1.5f;
+                case WorldDate.ETimeOfDay.Dawn:
+                case WorldDate.ETimeOfDay.Day:
+                    return 1.0f;
+                case WorldDate.ETimeOfDay.Dusk:
+                default:
+                    return 1.1f;
+            }
         }
     } 
 

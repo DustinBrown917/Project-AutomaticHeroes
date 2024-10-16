@@ -15,3 +15,6 @@ MonoBehaviour:
   m_sprites:
   - {fileID: 21300000, guid: 05a4e847a2522e749bcc1edc6530edaa, type: 3}
   - {fileID: 21300000, guid: 0ed5c8d06a7a4d0428336fd6bec17043, type: 3}
+  - {fileID: 21300000, guid: 64db4e4b293f90148b96ecfdf7fd9111, type: 3}
+  - {fileID: 21300000, guid: e5f6bdbb53a6e1e47aa0b7153f16f5f6, type: 3}
+  - {fileID: 21300000, guid: d823908dcac23724ea33395f597052d0, type: 3}

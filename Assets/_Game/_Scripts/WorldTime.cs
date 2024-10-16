@@ -10,6 +10,14 @@ namespace Game
         public const float ONE_REAL_SECOND_IS_ONE_WORLD_HOUR = 3_600;
         public const float ONE_REAL_SECOND_IS_ONE_WORLD_DAY = 86_400;
 
+        public const float HOURS_TO_SECONDS = 0.0002778f;
+        public const float MINUTES_TO_SECONDS = 0.0166667f;
+
+        public static float PerHourToPerSecond(float perHour)
+        {
+            return perHour * HOURS_TO_SECONDS;
+        }
+
         public interface IListener
         {
             public void OnWorldTimeUpdate(float deltaSeconds);

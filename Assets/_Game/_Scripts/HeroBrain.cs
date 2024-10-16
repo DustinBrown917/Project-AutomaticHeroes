@@ -1,11 +1,15 @@
 using SegoLib;
 using SegoLib.Random;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Text;
 
 namespace Game
 {
-    public class HeroBrain : HeroComponent, WorldTime.IListener
+    public class HeroBrain : HeroComponent
     {
+        public static Camp Camp { get; } = new Camp();
+
         public bool Initialized { get; private set; }
 
         public IHeroState CurrentState
@@ -16,6 +20,8 @@ namespace Game
         private IHeroState m_currentState;
         public event ValueChangedWithSourceEvent<HeroBrain, IHeroState> stateChanged;
 
+        public BasePriorities BasePriorities { get; } = new BasePriorities(0.98f, 0.3f, 1.0f, 0.5f, 0.5f);
+
         private readonly HashSet<IStateFactory> m_availableStates = new();
 
         public void Initialize()
@@ -23,9 +29,9 @@ namespace Game
             if (Initialized)
                 return;
 
-            CurrentState = GetRandomState();
+            AddStateFactory(Camp);
 
-            WorldState.Instance.Time.AddListener(this);
+            CurrentState = GetRandomState();
 
             Initialized = true;
         }
@@ -33,9 +39,9 @@ namespace Game
         protected override void OnDestroy()
         {
             base.OnDestroy();
-            if(WorldState.Instance != null && WorldState.Instance.Time != null) {
-                WorldState.Instance.Time.RemoveListener(this);
-            }
+            m_currentState = null;
+            stateChanged = null;
+            m_availableStates.Clear();
         }
 
         public void OnWorldTimeUpdate(float deltaSeconds)
@@ -84,8 +90,27 @@ namespace Game
                     priorities.Add(factory.GetPriority(Hero));
                     sumOfPriorites += priorities[^1];
                 }
-
             }
+
+            StringBuilder sb = new StringBuilder();
+            sb.Append("Time of day: ");
+            sb.Append(WorldState.Instance.Date.TimeOfDay.ToString());
+            sb.Append(" || Hero Stamina: ");
+            sb.Append(Hero.Stamina.Percent);
+            sb.Append(" || Hero Health: ");
+            sb.Append(Hero.Health.Percent);
+            sb.Append(" || Hero Treated Wounds: ");
+            sb.Append(Hero.Health.TreatedPercent);
+            sb.Append(" || Hero Location: ");
+            sb.Append(Hero.Movement.Location.DisplayName);
+            sb.AppendLine();
+            for (int i = 0; i < availableStates.Count; i++) {
+                sb.Append(availableStates[i].GetType().Name);
+                sb.Append(" = ");
+                sb.Append(priorities[i]);
+                sb.AppendLine();
+            }
+            UnityEngine.Debug.Log(sb.ToString());
 
             if (availableStates.Count == 0)
                 return WorldState.Instance.DefaultWaitStateFactory.CreateState(Hero);
@@ -109,7 +134,6 @@ namespace Game
         {
             m_availableStates.Remove(factory);
         }
-
     }
 
 

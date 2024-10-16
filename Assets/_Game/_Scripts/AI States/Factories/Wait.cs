@@ -15,7 +15,7 @@ namespace Game
             private float m_targetTime;
             private float m_elapsedTime = 0;
 
-            public State(Wait stateFactory, Hero hero, float duration) : base(stateFactory, hero)
+            public State(Wait stateFactory, Sprite sprite, Hero hero, float duration) : base(stateFactory, sprite, hero)
             {
                 m_targetTime = duration;
             }
@@ -47,7 +47,7 @@ namespace Game
 
         protected override State CreateState_Internal(Hero hero)
         {
-            return new State(this, hero, WaitDuration);
+            return new State(this, Sprite, hero, WaitDuration);
         }
 
         protected override Sprite GetSprite()

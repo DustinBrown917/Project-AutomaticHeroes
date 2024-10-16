@@ -17,6 +17,8 @@ namespace Game
         private float m_progress;
         public event ValueChangedWithSourceEvent<IHeroState, float> progressChanged;
 
+        public Sprite Sprite { get; private set;  }
+
         public bool StateIsComplete { get; private set; }
         public event IHeroState.StateCompleteDelegate stateCompleted;
 
@@ -26,10 +28,11 @@ namespace Game
         public bool IsDisposed { get; private set; }
         public event Action<SegoLib.IDisposable> disposed;
 
-        public State_Base(IStateFactory stateFactory, Hero hero)
+        public State_Base(IStateFactory stateFactory, Sprite sprite, Hero hero)
         {
             StateFactory = stateFactory;
             Hero = hero;
+            Sprite = sprite;
         }
 
         public abstract void DoState(float deltaSeconds);
@@ -76,6 +79,7 @@ namespace Game
             OnDisposing();
 
             Hero = null;
+            Sprite = null;
             StateFactory = null;
 
             progressChanged = null;

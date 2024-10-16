@@ -40,7 +40,7 @@ namespace Game.UI
         {
             Progress = Model.Progress;
             ActionString = Model.GetActionString();
-            Sprite = Model.StateFactory.Sprite;
+            Sprite = Model.Sprite;
         }
 
         protected override void OnModelChangedToNotNull()

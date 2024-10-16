@@ -18,13 +18,13 @@ namespace Game
 
             private float m_expPerSecond;
 
-            public State(Training_General stateFactory, Hero hero, float expPerHour) : base(stateFactory, hero)
+            public State(Training_General stateFactory, Sprite sprite, Hero hero, float expPerHour) : base(stateFactory, sprite, hero)
             {
                 m_expPerSecond = expPerHour / 3600;
 
                 float staminaHours = hero.Stamina.Current / HeroStamina.TRAINING_STAMINA_PER_HOUR;
 
-                float hours = Mathf.Min((int)staminaHours, 6);
+                float hours = Mathf.Min((int)staminaHours, 4);
                 durationInSeconds = hours * 3600;
             }
 
@@ -58,7 +58,7 @@ namespace Game
 
         protected override State CreateState_Internal(Hero hero)
         {
-            return new State(this, hero, TrainingQuality.ExpPerHour());
+            return new State(this, Sprite, hero, TrainingQuality.ExpPerHour());
         }
 
         protected override Sprite GetSprite()
@@ -68,7 +68,7 @@ namespace Game
 
         public override float GetPriority(Hero hero)
         {
-            return 0.5f * TrainingQuality.GetPriorityImpact() * hero.Stamina.Percent;
+            return hero.Brain.BasePriorities.Training * TrainingQuality.GetPriorityImpact() * hero.Stamina.Percent;
         }
     } 
 

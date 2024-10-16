@@ -9,7 +9,7 @@ namespace Game
     [RequireComponent(typeof(HeroGraphic))]
     [RequireComponent(typeof(HeroStamina))]
     [RequireComponent(typeof(HeroHealth))]
-    public class Hero : MonoBehaviour
+    public class Hero : MonoBehaviour, WorldTime.IListener
     {
         public HeroColor Color { get; private set; }
         public HeroGraphic Graphic { get; private set; }
@@ -40,6 +40,10 @@ namespace Game
 
         private void OnDestroy()
         {
+            if (WorldState.Instance != null && WorldState.Instance.Time != null) {
+                WorldState.Instance.Time.RemoveListener(this);
+            }
+
             Movement = null;
             Brain = null;
             Level = null;
@@ -66,12 +70,20 @@ namespace Game
 
             Level.Initialize();
             Movement.Initialize(location);
-            Brain.Initialize();
             Graphic.Initialize(color);
             Health.Initialize();
             Stamina.Initialize();
+            Brain.Initialize();
+
+            WorldState.Instance.Time.AddListener(this);
 
             Initialized = true;
+        }
+
+        public void OnWorldTimeUpdate(float deltaSeconds)
+        {
+            Brain.OnWorldTimeUpdate(deltaSeconds);
+            Health.Recover(deltaSeconds);
         }
     }
 }

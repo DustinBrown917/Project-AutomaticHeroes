@@ -5,21 +5,36 @@ namespace Game
 {
     public class HeroHealth : HeroComponent
     {
-        public int Current
+        public const float HEALTH_PERCENT_RECOVERED_PER_HOUR = 0.01f;
+        public const float HEALTH_PERCENT_RECOVERED_PER_SECOND = HEALTH_PERCENT_RECOVERED_PER_HOUR / 3600;
+
+        public float Current
         {
             get => m_current;
             set => SetCurrent(value);
         }
-        private int m_current;
-        public event ValueChangedWithSourceEvent<HeroHealth, int> currentChanged;
+        private float m_current = 1;
+        public event ValueChangedWithSourceEvent<HeroHealth, float> currentChanged;
 
-        public int Max
+        public float Max
         {
             get => m_max;
             set => SetMax(value);
         }
-        private int m_max;
-        public event ValueChangedWithSourceEvent<HeroHealth, int> maxChanged;
+        private float m_max = 1;
+        public event ValueChangedWithSourceEvent<HeroHealth, float> maxChanged;
+
+        public float Percent { get; private set; }
+
+        public float Treated
+        {
+            get => m_treated;
+            set => SetTreated(value);
+        }
+        private float m_treated;
+        public event ValueChangedWithSourceEvent<HeroHealth, float> treatedChanged;
+
+        public float TreatedPercent { get; private set; }
 
         public bool Initialized { get; private set; }
 
@@ -29,11 +44,23 @@ namespace Game
 
             Max = 100;
             Current = Max;
+            UpdateTreatedPercent();
 
             Initialized = true;
         }
 
-        public void SetCurrent(int newValue)
+        public void Recover(float deltaSeconds)
+        {
+            if (Current >= Max) return;
+
+            float recovery = GetRecoveryPerSecond() * deltaSeconds;
+            Current += recovery;
+
+            float treatedRecovery = Mathf.Min(recovery * 0.5f, Treated);
+            Current += treatedRecovery;
+        }
+
+        public void SetCurrent(float newValue)
         {
             if (newValue < 0) newValue = 0;
 
@@ -42,26 +69,82 @@ namespace Game
             if (m_current == newValue)
                 return;
 
-            int oldValue = m_current;
+            float oldValue = m_current;
             m_current = newValue;
 
+            UpdateTreated();
+            UpdatePercent();
+            UpdateTreatedPercent();
             currentChanged?.Invoke(this, oldValue, newValue);
         }
 
-        public void SetMax(int newValue)
+        public void SetMax(float newValue)
         {
-            if (newValue < 0) newValue = 0;
+            if (newValue < 1) newValue = 1;
 
             if (m_max == newValue)
                 return;
 
-            int oldValue = m_max;
+            float oldValue = m_max;
             m_max = newValue;
 
             if(Current > Max) 
                 Current = Max;
 
+            UpdateTreated();
+            UpdatePercent();
+            UpdateTreatedPercent();
             maxChanged?.Invoke(this, oldValue, newValue);
+        }
+
+        public void SetTreated(float newValue)
+        {
+            newValue = Mathf.Clamp(newValue, 0, Max - Current);
+
+            if (newValue == m_treated)
+                return;
+
+            float oldValue = m_treated;
+            m_treated = newValue;
+
+            UpdateTreatedPercent();
+            treatedChanged?.Invoke(this, oldValue, newValue);
+        }
+
+        private void UpdateTreated()
+        {
+            if (Treated > Max - Current)
+                Treated = Max - Current;
+        }
+
+        private void UpdatePercent()
+        {
+            if (Max == 0) {
+                Percent =  0;
+            } else {
+                Percent = Current / Max;
+            }
+        }
+
+        private void UpdateTreatedPercent()
+        {
+            float maxTreated = Max - Current;
+            if (maxTreated == 0)
+                TreatedPercent = 0;
+            else
+                TreatedPercent = Treated / maxTreated;
+        }
+
+        public bool NeedsTreatment()
+        {
+            float missingHealth = Max - Current;
+
+            return Treated + float.Epsilon < missingHealth;
+        }
+
+        private float GetRecoveryPerSecond()
+        {
+            return HEALTH_PERCENT_RECOVERED_PER_SECOND * Max;
         }
     } 
 }

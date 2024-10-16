@@ -1,4 +1,5 @@
 using SegoLib;
+using UnityEngine;
 
 namespace Game
 {
@@ -12,6 +13,8 @@ namespace Game
 
         public float Progress { get; }
         public event ValueChangedWithSourceEvent<IHeroState, float> progressChanged;
+
+        public Sprite Sprite { get; }
 
         public bool StateIsComplete { get; }
         public event StateCompleteDelegate stateCompleted;
