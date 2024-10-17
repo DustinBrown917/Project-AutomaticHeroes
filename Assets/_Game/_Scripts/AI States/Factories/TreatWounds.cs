@@ -30,7 +30,7 @@ namespace Game
 
                 Progress = Hero.Health.TreatedPercent;
 
-                Hero.Stamina.TrySpend(HeroStamina.DEFAULT_STAMINA_PER_SECOND * deltaSeconds);
+                Hero.Stamina.TrySpendEnergy(HeroStamina.DEFAULT_STAMINA_PER_SECOND * deltaSeconds);
 
                 if (Hero.Health.TreatedPercent >= 0.999f) {
                     CompleteState();

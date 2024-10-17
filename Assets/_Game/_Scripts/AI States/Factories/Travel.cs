@@ -33,7 +33,7 @@ namespace Game
 
             public override void DoState(float deltaSeconds)
             {
-                Hero.Stamina.TrySpend(HeroStamina.MOVEMENT_STAMINA_PER_SECOND * deltaSeconds);
+                Hero.Stamina.TrySpendEnergy(HeroStamina.MOVEMENT_STAMINA_PER_SECOND * deltaSeconds);
 
                 Hero.Movement.ProgressBySeconds(deltaSeconds);
                 Progress = Hero.Movement.RouteProgress;
@@ -77,7 +77,7 @@ namespace Game
         {
             float staminaCost = (RouteTraversal.Length / hero.Movement.MoveSpeed) * HeroStamina.MOVEMENT_STAMINA_PER_HOUR;
 
-            if (staminaCost > hero.Stamina.Current)
+            if (staminaCost > hero.Stamina.Energy)
                 return 0;
 
             return CalculateBaseWeight() * hero.Brain.BasePriorities.RandomTravel;

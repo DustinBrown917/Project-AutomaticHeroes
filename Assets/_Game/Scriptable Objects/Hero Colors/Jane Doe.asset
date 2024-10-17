@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ef2660b7c3a9f3c4484c6b4dc273ddaa, type: 3}
-  m_Name: Crimson on Ash
+  m_Name: Jane Doe
   m_EditorClassIdentifier: 
-  <CharacterSprite>k__BackingField: {fileID: 21300000, guid: 2e6c5de6a5ae34b488266e5268f0bd40, type: 3}
-  <Base>k__BackingField: {r: 0, g: 0, b: 0, a: 1}
-  <Primary>k__BackingField: {r: 0.6603774, g: 0, b: 0, a: 1}
-  <Secondary>k__BackingField: {r: 0.5294118, g: 0.43921572, b: 0.40784317, a: 1}
+  <CharacterSprite>k__BackingField: {fileID: 21300000, guid: 9ceb2e9cf4d68cd4aadf61c513f7e892, type: 3}
+  <Base>k__BackingField: {r: 0.13033998, g: 0.24164476, b: 0.2735849, a: 1}
+  <Primary>k__BackingField: {r: 0.63857144, g: 0.7503214, b: 0.894, a: 1}
+  <Secondary>k__BackingField: {r: 0.6603774, g: 0.6603774, b: 0.6603774, a: 1}
   m_bannerBase: {fileID: 2800000, guid: 49a364e6866950d4f8df24e5e86bf8e9, type: 3}
   m_primaryDecal: {fileID: 2800000, guid: 15378bb189379bd45a069a0c2857726d, type: 3}
   m_secondaryDecal: {fileID: 2800000, guid: 57b6a61f7debe4e4687922bcaffbe2de, type: 3}

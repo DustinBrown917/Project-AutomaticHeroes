@@ -47,7 +47,10 @@ namespace SegoLib.UI.MVVM
         protected override void Awake()
         {
             base.Awake();
-            SetValuesToDefault();
+            if (Model == null)
+                SetValuesToDefault();
+            else
+                UpdateValues();
         }
 
         /// <summary>

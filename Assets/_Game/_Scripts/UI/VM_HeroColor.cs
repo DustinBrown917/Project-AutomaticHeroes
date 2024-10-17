@@ -6,6 +6,13 @@ namespace Game.UI
 {
     public class VM_HeroColor : VM_Base<HeroColor>
     {
+        public string Name
+        {
+            get => m_name;
+            set => PropertySetter.Set(ref m_name, value, m_name == value, OnPropertyChanged);
+        }
+        private string m_name;
+
         public Color Base
         {
             get => m_base;
@@ -45,6 +52,7 @@ namespace Game.UI
 
         protected override void SetValuesToDefault()
         {
+            Name = string.Empty;
             Base = Color.gray;
             Primary = Color.black;
             Secondary = Color.white;
@@ -54,6 +62,7 @@ namespace Game.UI
 
         protected override void UpdateValues()
         {
+            Name = Model.Name;
             Base = Model.Base;
             Primary = Model.Primary;
             Secondary = Model.Secondary;

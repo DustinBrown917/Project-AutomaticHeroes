@@ -92,25 +92,25 @@ namespace Game
                 }
             }
 
-            StringBuilder sb = new StringBuilder();
-            sb.Append("Time of day: ");
-            sb.Append(WorldState.Instance.Date.TimeOfDay.ToString());
-            sb.Append(" || Hero Stamina: ");
-            sb.Append(Hero.Stamina.Percent);
-            sb.Append(" || Hero Health: ");
-            sb.Append(Hero.Health.Percent);
-            sb.Append(" || Hero Treated Wounds: ");
-            sb.Append(Hero.Health.TreatedPercent);
-            sb.Append(" || Hero Location: ");
-            sb.Append(Hero.Movement.Location.DisplayName);
-            sb.AppendLine();
-            for (int i = 0; i < availableStates.Count; i++) {
-                sb.Append(availableStates[i].GetType().Name);
-                sb.Append(" = ");
-                sb.Append(priorities[i]);
-                sb.AppendLine();
-            }
-            UnityEngine.Debug.Log(sb.ToString());
+            //StringBuilder sb = new StringBuilder();
+            //sb.Append("Time of day: ");
+            //sb.Append(WorldState.Instance.Date.TimeOfDay.ToString());
+            //sb.Append(" || Hero Stamina: ");
+            //sb.Append(Hero.Stamina.EnergyPercent);
+            //sb.Append(" || Hero Health: ");
+            //sb.Append(Hero.Health.Percent);
+            //sb.Append(" || Hero Treated Wounds: ");
+            //sb.Append(Hero.Health.TreatedPercent);
+            //sb.Append(" || Hero Location: ");
+            //sb.Append(Hero.Movement.Location.DisplayName);
+            //sb.AppendLine();
+            //for (int i = 0; i < availableStates.Count; i++) {
+            //    sb.Append(availableStates[i].GetType().Name);
+            //    sb.Append(" = ");
+            //    sb.Append(priorities[i]);
+            //    sb.AppendLine();
+            //}
+            //UnityEngine.Debug.Log(sb.ToString());
 
             if (availableStates.Count == 0)
                 return WorldState.Instance.DefaultWaitStateFactory.CreateState(Hero);

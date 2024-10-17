@@ -13,6 +13,8 @@ namespace Game
         {
             private float m_elapsed = 0;
 
+            private float m_exhaustionRecoveredPerSecond = 25f / (8 * 3600);
+
             private float m_staminaRecoveredPerSecond;
 
             public State(Rest stateFactory, Sprite sprite, Hero hero, float staminaRecoveredPerHour) : base(stateFactory, sprite, hero)
@@ -24,9 +26,10 @@ namespace Game
             {
                 m_elapsed += deltaSeconds;
 
-                Progress = Hero.Stamina.Percent;
+                Progress = Hero.Stamina.EnergyPercent;
 
-                Hero.Stamina.Current += deltaSeconds * m_staminaRecoveredPerSecond;
+                Hero.Stamina.Energy += deltaSeconds * m_staminaRecoveredPerSecond;
+                Hero.Stamina.RecoverExhaustion(m_exhaustionRecoveredPerSecond * deltaSeconds);
 
                 if (m_elapsed > 3600) {
                     m_elapsed -= 3600;
@@ -42,7 +45,7 @@ namespace Game
 
             public void CheckShouldComplete()
             {
-                float chanceToWakeUp = Hero.Stamina.Percent * GetTimeOfDayWakeUpModifier();
+                float chanceToWakeUp = GetTimeOfDayWakeUpModifier();
 
                 if (WorldState.Instance.Rng.Bool(chanceToWakeUp)) {
                     CompleteState();
@@ -54,15 +57,21 @@ namespace Game
                 WorldDate.ETimeOfDay timeOfDay = WorldState.Instance.Date.TimeOfDay;
 
                 switch (timeOfDay) {
-                    case WorldDate.ETimeOfDay.Night:
-                        return 0.2f;
                     case WorldDate.ETimeOfDay.Dawn:
-                        return 0.85f;
                     case WorldDate.ETimeOfDay.Day:
-                        return 1.0f;
+                        if (Hero.Stamina.Exhaustion > 10) {
+                            return 0.3f;
+                        } else {
+                            return 1.0f;
+                        }
                     case WorldDate.ETimeOfDay.Dusk:
+                    case WorldDate.ETimeOfDay.Night:
                     default:
-                        return 0.5f;
+                        if (Hero.Stamina.Exhaustion > 10) {
+                            return 0.01f;
+                        } else {
+                            return 0.2f;
+                        }
                 }
             }
         }
@@ -85,7 +94,9 @@ namespace Game
 
         public override float GetPriority(Hero hero)
         {
-            return hero.Brain.BasePriorities.StaminaRecovery * (1.0f - hero.Stamina.Percent) * RestQuality.GetPriorityImpact() * GetTimeOfDayPriorityModifier(); 
+            //return hero.Brain.BasePriorities.StaminaRecovery * (1.0f - hero.Stamina.EnergyPercent) * RestQuality.GetPriorityImpact() * GetTimeOfDayPriorityModifier(); 
+
+            return CalculatePriority(hero);
         }
 
         protected virtual float GetTimeOfDayPriorityModifier()
@@ -100,6 +111,31 @@ namespace Game
                 case WorldDate.ETimeOfDay.Dusk:
                 default:
                     return 1.1f;
+            }
+        }
+
+        private float CalculatePriority(Hero hero)
+        {
+            WorldDate.ETimeOfDay timeOfDay = WorldState.Instance.Date.TimeOfDay;
+            switch (timeOfDay) {
+                case WorldDate.ETimeOfDay.Dawn:
+                case WorldDate.ETimeOfDay.Day:
+                    if (hero.Stamina.Exhaustion < 25)
+                        return 0;
+                    else
+                        return hero.Stamina.ExhaustionPercent;
+
+                case WorldDate.ETimeOfDay.Dusk:
+                    if (hero.Stamina.Exhaustion < 25)
+                        return 0.4f;
+                    else
+                        return 1f;
+                case WorldDate.ETimeOfDay.Night:
+                default:
+                    if (hero.Stamina.Exhaustion < 25)
+                        return 1;
+                    else
+                        return 1.5f;
             }
         }
     } 

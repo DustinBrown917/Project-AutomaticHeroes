@@ -22,7 +22,7 @@ namespace Game
             {
                 m_expPerSecond = expPerHour / 3600;
 
-                float staminaHours = hero.Stamina.Current / HeroStamina.TRAINING_STAMINA_PER_HOUR;
+                float staminaHours = hero.Stamina.Energy / HeroStamina.TRAINING_STAMINA_PER_HOUR;
 
                 float hours = Mathf.Min((int)staminaHours, 4);
                 durationInSeconds = hours * 3600;
@@ -32,7 +32,7 @@ namespace Game
             {
                 elapsed += deltaSeconds;
 
-                Hero.Stamina.TrySpend(deltaSeconds * HeroStamina.TRAINING_STAMINA_PER_SECOND);
+                Hero.Stamina.TrySpendEnergy(deltaSeconds * HeroStamina.TRAINING_STAMINA_PER_SECOND);
 
                 Progress = elapsed / durationInSeconds;
 
@@ -68,7 +68,7 @@ namespace Game
 
         public override float GetPriority(Hero hero)
         {
-            return hero.Brain.BasePriorities.Training * TrainingQuality.GetPriorityImpact() * hero.Stamina.Percent;
+            return hero.Brain.BasePriorities.Training * TrainingQuality.GetPriorityImpact() * hero.Stamina.EnergyPercent;
         }
     } 
 

@@ -84,6 +84,7 @@ namespace Game
         {
             Brain.OnWorldTimeUpdate(deltaSeconds);
             Health.Recover(deltaSeconds);
+            Stamina.RecoverEnergy(deltaSeconds);
         }
     }
 }

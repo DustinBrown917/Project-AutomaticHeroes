@@ -1,80 +1,107 @@
 using SegoLib;
 using SegoLib.UI.MVVM;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 
 namespace Game.UI
 {
     public class VM_HeroStamina : VM_Base<HeroStamina>
     {
-        public float Current
-        {
-            get => m_current;
-            private set => PropertySetter.Set(ref m_current, value, m_current == value, OnPropertyChanged);
-        }
-        private float m_current;
 
-        public float Max
+        public float TotalStaminaPool
         {
-            get => m_max;
-            private set => PropertySetter.Set(ref m_max, value, m_max == value, OnPropertyChanged);
+            get => m_totalStaminaPool;
+            private set => PropertySetter.Set(ref m_totalStaminaPool, value, m_totalStaminaPool == value, OnPropertyChanged);
         }
-        private float m_max;
+        private float m_totalStaminaPool;
 
-        public float Percent
+        public float Energy
         {
-            get => m_percent;
-            private set => PropertySetter.Set(ref m_percent, value, m_percent == value, OnPropertyChanged);
+            get => m_energy;
+            private set => PropertySetter.Set(ref m_energy, value, m_energy == value, OnPropertyChanged);
         }
-        private float m_percent;
+        private float m_energy;
+
+        public float Exhaustion
+        {
+            get => m_exhaustion;
+            private set => PropertySetter.Set(ref m_exhaustion, value, m_exhaustion == value, OnPropertyChanged);
+        }
+        private float m_exhaustion;
+
+        public float EnergyPercent
+        {
+            get => m_energyPercent;
+            private set => PropertySetter.Set(ref m_energyPercent, value, m_energyPercent == value, OnPropertyChanged);
+        }
+        private float m_energyPercent;
+
+        public float ExhaustionPercent
+        {
+            get => m_exhaustionPercent;
+            private set => PropertySetter.Set(ref m_exhaustionPercent, value, m_exhaustionPercent == value, OnPropertyChanged);
+        }
+        private float m_exhaustionPercent;
 
         protected override bool IsEqual(HeroStamina a, HeroStamina b) => a == b;
 
         protected override void SetValuesToDefault()
         {
-            Current = 0;
-            Max = 0;
-            Percent = 0;
+            Energy = 0;
+            TotalStaminaPool = 0;
+            EnergyPercent = 0;
+            Exhaustion = 0;
         }
 
         protected override void UpdateValues()
         {
-            Current = Model.Current;
-            Max = Model.Max;
-            UpdatePercent();
+            Energy = Model.Energy;
+            TotalStaminaPool = Model.TotalStaminaPool;
+            UpdateEnergyPercent();
+            Exhaustion = Model.Exhaustion;
+            UpdateExhaustionPercent();
         }
 
         protected override void OnModelChangedToNotNull()
         {
-            Model.currentChanged += Model_CurrentChanged;
-            Model.maxChanged += Model_MaxChanged;
+            Model.energyChanged += Model_EnergyChanged;
+            Model.totalStaminaPoolChanged += Model_TotalStaminaPoolChanged;
+            Model.exhaustionChanged += Model_ExhaustionChanged;
         }
+
 
         protected override void OnModelChangingFromNotNull()
         {
-            Model.currentChanged -= Model_CurrentChanged;
-            Model.maxChanged -= Model_MaxChanged;
+            Model.energyChanged -= Model_EnergyChanged;
+            Model.totalStaminaPoolChanged -= Model_TotalStaminaPoolChanged;
+            Model.exhaustionChanged -= Model_ExhaustionChanged;
         }
 
-        private void Model_MaxChanged(HeroStamina source, float oldValue, float newValue)
+        private void Model_TotalStaminaPoolChanged(HeroStamina source, float oldValue, float newValue)
         {
-            Max = newValue;
-            UpdatePercent();
+            TotalStaminaPool = newValue;
+            UpdateEnergyPercent();
+            UpdateExhaustionPercent();
         }
 
-        private void Model_CurrentChanged(HeroStamina source, float oldValue, float newValue)
+        private void Model_EnergyChanged(HeroStamina source, float oldValue, float newValue)
         {
-            Current = newValue;
-            UpdatePercent();
+            Energy = newValue;
+            UpdateEnergyPercent();
         }
 
-        private void UpdatePercent()
+        private void Model_ExhaustionChanged(HeroStamina source, float oldValue, float newValue)
         {
-            if (Max == 0)
-                Percent = 0;
-            else
-                Percent = Current / Max;
+            Exhaustion = newValue;
+            UpdateExhaustionPercent();
+        }
+
+        private void UpdateEnergyPercent()
+        {
+            EnergyPercent = Model.EnergyPercent;
+        }
+
+        private void UpdateExhaustionPercent()
+        {
+            ExhaustionPercent = Model.ExhaustionPercent;
         }
     }
 }

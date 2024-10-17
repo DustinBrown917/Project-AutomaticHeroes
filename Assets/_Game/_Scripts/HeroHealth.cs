@@ -54,10 +54,9 @@ namespace Game
             if (Current >= Max) return;
 
             float recovery = GetRecoveryPerSecond() * deltaSeconds;
+            recovery += Mathf.Min(recovery * 0.75f, Treated);
+            Treated -= recovery;
             Current += recovery;
-
-            float treatedRecovery = Mathf.Min(recovery * 0.5f, Treated);
-            Current += treatedRecovery;
         }
 
         public void SetCurrent(float newValue)

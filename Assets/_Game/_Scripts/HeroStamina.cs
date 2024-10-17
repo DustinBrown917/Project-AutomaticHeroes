@@ -1,5 +1,6 @@
 using SegoLib;
-using UnityEditor.ShaderGraph.Internal;
+using Unity.VisualScripting;
+using UnityEngine;
 
 namespace Game
 {
@@ -16,27 +17,41 @@ namespace Game
         public const float CULL_STAMINA_PER_HOUR = MOVEMENT_STAMINA_PER_HOUR;
         public const float CULL_STAMINA_PER_SECOND = CULL_STAMINA_PER_HOUR / 3600f;
 
-        public float Current
-        {
-            get => m_current;
-            set => SetCurrent(value);
-        }
-        private float m_current;
-        public event ValueChangedWithSourceEvent<HeroStamina, float> currentChanged;
+        public const float ENERGY_PERCENT_RECOVERED_PER_HOUR = 0.15f;
+        public const float ENERGY_PERCENT_RECOVERED_PER_SECOND = ENERGY_PERCENT_RECOVERED_PER_HOUR / 3600;
 
-        public float Max
+        public float TotalStaminaPool
         {
-            get => m_max;
-            set => SetMax(value);
+            get => m_totalStaminaPool;
+            set => SetTotalStaminaPool(value);
         }
-        private float m_max;
-        public event ValueChangedWithSourceEvent<HeroStamina, float> maxChanged;
+        private float m_totalStaminaPool;
+        public event ValueChangedWithSourceEvent<HeroStamina, float> totalStaminaPoolChanged;
 
-        public float Percent
+        public float Energy
         {
-            get => m_percent;
+            get => m_energy;
+            set => SetCurrentEnergy(value);
         }
-        private float m_percent;
+        private float m_energy;
+        public event ValueChangedWithSourceEvent<HeroStamina, float> energyChanged;
+
+        public float Exhaustion
+        {
+            get => m_exhaustion;
+            set => SetExhaustion(value);
+        }
+        private float m_exhaustion;
+        public event ValueChangedWithSourceEvent<HeroStamina, float> exhaustionChanged;
+
+
+        public float EnergyPercent { get; private set; }
+
+        public float ExhaustionPercent { get; private set; }
+
+
+
+        public float MaxEnergy => TotalStaminaPool - Exhaustion;
 
         public bool Initialized { get; private set; }
 
@@ -44,60 +59,105 @@ namespace Game
         {
             if (Initialized) return;
 
-            Max = 100;
-            Current = Max;
+            TotalStaminaPool = 100;
+            Energy = TotalStaminaPool;
 
             Initialized = true;
         }
 
-        public void SetCurrent(float newValue)
+        public void SetCurrentEnergy(float newValue)
+        {
+            newValue = Mathf.Clamp(newValue, 0, MaxEnergy);
+
+            if (m_energy == newValue)
+                return;
+
+            float oldValue = m_energy;
+            m_energy = newValue;
+
+            UpdateEnergyPercent();
+            energyChanged?.Invoke(this, oldValue, newValue);
+        }
+
+        public void SetTotalStaminaPool(float newValue)
         {
             if (newValue < 0) newValue = 0;
 
-            if (newValue > Max) newValue = Max;
-
-            if (m_current == newValue)
+            if (m_totalStaminaPool == newValue)
                 return;
 
-            float oldValue = m_current;
-            m_current = newValue;
+            float oldValue = m_totalStaminaPool;
+            m_totalStaminaPool = newValue;
 
-            UpdatePercent();
-            currentChanged?.Invoke(this, oldValue, newValue);
+            if (m_totalStaminaPool > Energy)
+                Energy = m_totalStaminaPool;
+
+            UpdateEnergyPercent();
+            UpdateExuastionPercent();
+            totalStaminaPoolChanged?.Invoke(this, oldValue, newValue);
         }
 
-        public void SetMax(float newValue)
+        public void SetExhaustion(float newValue)
         {
-            if (newValue < 0) newValue = 0;
+            newValue = Mathf.Clamp(newValue, 0, TotalStaminaPool);
 
-            if (m_max == newValue)
+            if (newValue == m_exhaustion)
                 return;
 
-            float oldValue = m_max;
-            m_max = newValue;
+            float oldValue = m_exhaustion;
+            m_exhaustion = newValue;
 
-            if (m_max > Current)
-                Current = m_max;
+            UpdateExuastionPercent();
 
-            UpdatePercent();
-            maxChanged?.Invoke(this, oldValue, newValue);
+            if(Energy > MaxEnergy)
+                Energy = MaxEnergy;
+
+            exhaustionChanged?.Invoke(this, oldValue, newValue);
         }
 
-        public bool TrySpend(float amount)
+        public bool TrySpendEnergy(float amount)
         {
-            if(amount > m_current) return false;
-            Current -= amount;
+            if(amount > m_energy) return false;
+            Energy -= amount;
+
+            Exhaustion += amount * 0.1f;
 
             return true;
         }
 
-        private void UpdatePercent()
+        public void RecoverEnergy(float deltaSeconds)
         {
-            if (Max == 0)
-                m_percent = 0;
+            Energy += GetEnergyRecoveryPerSecond() * deltaSeconds;
+        }
 
-            m_percent = Current / Max;
+        public void RecoverExhaustion(float amount)
+        {
+            amount = Mathf.Min(amount, m_exhaustion);
 
+            Exhaustion -= amount;
+
+            Energy += amount;
+        }
+
+        private void UpdateEnergyPercent()
+        {
+            if (TotalStaminaPool == 0)
+                EnergyPercent = 0;
+
+            EnergyPercent = Energy / TotalStaminaPool;
+        }
+
+        private void UpdateExuastionPercent()
+        {
+            if (TotalStaminaPool == 0)
+                ExhaustionPercent = 0;
+
+            ExhaustionPercent = Exhaustion / TotalStaminaPool;
+        }
+
+        private float GetEnergyRecoveryPerSecond()
+        {
+            return ENERGY_PERCENT_RECOVERED_PER_SECOND * TotalStaminaPool;
         }
     } 
 }

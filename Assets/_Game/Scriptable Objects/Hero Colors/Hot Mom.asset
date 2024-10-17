@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ef2660b7c3a9f3c4484c6b4dc273ddaa, type: 3}
-  m_Name: Brown on Grey
+  m_Name: Hot Mom
   m_EditorClassIdentifier: 
-  <CharacterSprite>k__BackingField: {fileID: 21300000, guid: bf4c4e9355e897f4dbf10fb23a7b8ded, type: 3}
-  <Base>k__BackingField: {r: 0.5568628, g: 0.69411767, b: 0.4784314, a: 1}
-  <Primary>k__BackingField: {r: 0.5588175, g: 0.695, b: 0.47898647, a: 1}
-  <Secondary>k__BackingField: {r: 0.18459181, g: 0.47993866, b: 0.603, a: 1}
+  <CharacterSprite>k__BackingField: {fileID: 21300000, guid: 976940182aee29c4c871e5568c065498, type: 3}
+  <Base>k__BackingField: {r: 0.254717, g: 0.254717, b: 0.254717, a: 1}
+  <Primary>k__BackingField: {r: 0.5188679, g: 0.08059166, b: 0, a: 1}
+  <Secondary>k__BackingField: {r: 0.9811321, g: 0.9626681, b: 0.8469206, a: 1}
   m_bannerBase: {fileID: 2800000, guid: 49a364e6866950d4f8df24e5e86bf8e9, type: 3}
   m_primaryDecal: {fileID: 2800000, guid: be98750939a850347ae36d8e3db0a998, type: 3}
   m_secondaryDecal: {fileID: 2800000, guid: 30b52f7d15089ee4fbb78c332968c25b, type: 3}

@@ -55,7 +55,7 @@ namespace Game
             get => m_currentDay;
             private set => SetCurrentDay(value);
         }
-        [SerializeField, ReadOnly] private int m_currentDay;
+        private int m_currentDay = 1;
         public event ValueChangedWithSourceEvent<WorldDate, int> currentDayChanged;
 
         public ETimeOfDay TimeOfDay

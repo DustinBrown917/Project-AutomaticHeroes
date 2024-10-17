@@ -17,7 +17,7 @@ namespace Game
             get => m_level;
             set => SetLevel(value);
         }
-        private int m_level;
+        private int m_level = 1;
         public event ValueChangedWithSourceEvent<HeroLevel, int> levelChanged;
 
         public float Experience
