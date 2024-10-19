@@ -25,7 +25,7 @@ namespace Game.UI
 
         protected override void UpdateValues()
         {
-            CurrentState = Model.CurrentState;
+            CurrentState = Model.CurrentBehaviour;
         }
 
         protected override void OnModelChangedToNotNull()

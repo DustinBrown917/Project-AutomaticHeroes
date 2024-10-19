@@ -9,7 +9,7 @@ namespace Game
         #region ========================================== Subclasses ==================================================
         /*vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv*/
 
-        public class State : State_Base
+        public class State : HeroState
         {
 
 
@@ -26,6 +26,8 @@ namespace Game
 
                 float hours = Mathf.Min((int)staminaHours, 4);
                 durationInSeconds = hours * 3600;
+
+                ActionString = "Training.";
             }
 
             public override void DoState(float deltaSeconds)
@@ -39,15 +41,13 @@ namespace Game
                 Hero.Level.GainExperience(deltaSeconds * m_expPerSecond);
 
                 if(elapsed > durationInSeconds) {
-                    CompleteState();
+                    SucceedState();
                 }
             }
 
             public override void EnterState() { }
 
             public override void ExitState() { }
-
-            public override string GetActionString() => "Training.";
         }
 
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/

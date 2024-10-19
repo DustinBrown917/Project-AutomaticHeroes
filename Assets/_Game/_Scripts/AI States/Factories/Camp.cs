@@ -13,9 +13,8 @@ namespace Game
         {
             public State(Camp stateFactory, Sprite sprite, Hero hero, float staminaRecoveredPerHour) : base(stateFactory, sprite, hero, staminaRecoveredPerHour)
             {
+                ActionString = "Resting at camp.";
             }
-
-            public override string GetActionString() => "Resting at camp.";
         }
 
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/

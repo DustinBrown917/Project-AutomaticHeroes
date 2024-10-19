@@ -15,6 +15,8 @@ namespace Game
         public abstract void CancelCreatedStates();
 
         public float GetPriority(Hero hero);
+
+        public bool CanHeroDoState(Hero hero);
     }
 
     public abstract class StateFactory<T> : IStateFactory where T : IHeroState
@@ -63,15 +65,13 @@ namespace Game
 
         private void SubscribeToEvents(T state)
         {
-            state.stateCancelled += StateCancelled;
-            state.stateCompleted += StateCompleted;
+            state.stateConcluded += StateConcluded;
             state.disposed += StateDisposed;
         }
 
         private void UnsubscribeEvents(T state)
         {
-            state.stateCancelled -= StateCancelled;
-            state.stateCompleted -= StateCancelled;
+            state.stateConcluded -= StateConcluded;
             state.disposed -= StateDisposed;
         }
 
@@ -81,12 +81,7 @@ namespace Game
             UnsubscribeEvents(state);
         }
 
-        private void StateCompleted(IHeroState state)
-        {
-            RemoveStateFromTracking((T)state);
-        }
-
-        private void StateCancelled(IHeroState state)
+        private void StateConcluded(IHeroState state, IHeroState.EResult result)
         {
             RemoveStateFromTracking((T)state);
         }
@@ -118,5 +113,7 @@ namespace Game
         protected abstract Sprite GetSprite();
 
         public abstract float GetPriority(Hero hero);
+
+        public virtual bool CanHeroDoState(Hero hero) => true;
     }
 }

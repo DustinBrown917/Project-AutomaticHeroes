@@ -22,11 +22,11 @@ namespace Game
         private readonly List<IRoute> m_routes = new();
         private readonly List<Travel> m_travelStates = new();
 
-        private IHeroStateProvider[] m_heroStateProviders;
+        private IHeroBehaviourProvider[] m_heroBehaviourProviders;
 
         private void Awake()
         {
-            m_heroStateProviders = GetComponentsInChildren<IHeroStateProvider>(true);
+            m_heroBehaviourProviders = GetComponentsInChildren<IHeroBehaviourProvider>(true);
         }
 
         private void Start()
@@ -51,19 +51,19 @@ namespace Game
                 m_visitors.Add(hero);
                 visitorsUpdated?.Invoke(this, Visitors);
 
-                List<IStateFactory> states = UnityEngine.Pool.ListPool<IStateFactory>.Get();
+                List<IHeroBehaviour> behaviours = UnityEngine.Pool.ListPool<IHeroBehaviour>.Get();
 
-                states.AddRange(m_travelStates);
+                behaviours.AddRange(m_travelStates);
 
-                foreach(IHeroStateProvider stateProvider in m_heroStateProviders) {
-                    stateProvider.GetStates(states);
+                foreach(IHeroBehaviourProvider stateProvider in m_heroBehaviourProviders) {
+                    stateProvider.GetStates(behaviours);
                 }
 
-                foreach(IStateFactory stateFactory in states) {
-                    hero.Brain.AddStateFactory(stateFactory);
+                foreach(IHeroBehaviour behaviour in behaviours) {
+                    hero.Brain.AddBehaviour(behaviour);
                 }
 
-                UnityEngine.Pool.ListPool<IStateFactory>.Release(states);
+                UnityEngine.Pool.ListPool<IHeroBehaviour>.Release(behaviours);
             }
         }
 
@@ -72,19 +72,19 @@ namespace Game
             if (m_visitors.Remove(hero)) {
                 visitorsUpdated?.Invoke(this, Visitors);
 
-                List<IStateFactory> states = UnityEngine.Pool.ListPool<IStateFactory>.Get();
+                List<IHeroBehaviour> behaviours = UnityEngine.Pool.ListPool<IHeroBehaviour>.Get();
 
-                states.AddRange(m_travelStates);
+                behaviours.AddRange(m_travelStates);
 
-                foreach (IHeroStateProvider stateProvider in m_heroStateProviders) {
-                    stateProvider.GetStates(states);
+                foreach (IHeroBehaviourProvider stateProvider in m_heroBehaviourProviders) {
+                    stateProvider.GetStates(behaviours);
                 }
 
-                foreach (IStateFactory stateFactory in states) {
-                    hero.Brain.RemoveStateFactory(stateFactory);
+                foreach (IHeroBehaviour behaviour in behaviours) {
+                    hero.Brain.RemoveBehaviour(behaviour);
                 }
 
-                UnityEngine.Pool.ListPool<IStateFactory>.Release(states);
+                UnityEngine.Pool.ListPool<IHeroBehaviour>.Release(behaviours);
             }
         }
     }

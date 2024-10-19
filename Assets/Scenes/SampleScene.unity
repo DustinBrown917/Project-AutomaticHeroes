@@ -1390,7 +1390,7 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 8153231705256620972, guid: 8745bc6e15abee942a7c5c94aca18df4, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 781614381}
+      addedObject: {fileID: 781614383}
   m_SourcePrefab: {fileID: 100100000, guid: 8745bc6e15abee942a7c5c94aca18df4, type: 3}
 --- !u!4 &409493990 stripped
 Transform:
@@ -3018,7 +3018,7 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 8153231705256620972, guid: 8745bc6e15abee942a7c5c94aca18df4, type: 3}
   m_PrefabInstance: {fileID: 409493989}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &781614381
+--- !u!114 &781614383
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -3027,36 +3027,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 781614379}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 04b8bec3ae6cfd341830d680570ea1ab, type: 3}
+  m_Script: {fileID: 11500000, guid: 2acdafb65f164e44cafc0ed104059280, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_cull:
-    m_monsterPopulations:
-    - <Monster>k__BackingField: {fileID: 11400000, guid: dbc1fedcf95939043916af58759e0472, type: 2}
-      <Level>k__BackingField:
-        m_min: 1
-        m_max: 3
-      <Population>k__BackingField: 0.4
-    - <Monster>k__BackingField: {fileID: 11400000, guid: dbc7780369251184997535ff1b40848a, type: 2}
-      <Level>k__BackingField:
-        m_min: 1
-        m_max: 4
-      <Population>k__BackingField: 0.3
-    - <Monster>k__BackingField: {fileID: 11400000, guid: ae005161ec28e3c4086ed0df8d15c6c7, type: 2}
-      <Level>k__BackingField:
-        m_min: 2
-        m_max: 6
-      <Population>k__BackingField: 0.15
-    - <Monster>k__BackingField: {fileID: 11400000, guid: dee65525f7cd9aa48a38eedae4051f53, type: 2}
-      <Level>k__BackingField:
-        m_min: 3
-        m_max: 7
-      <Population>k__BackingField: 0.1
-    - <Monster>k__BackingField: {fileID: 11400000, guid: a3e897dec8719e84fabc67468c805585, type: 2}
-      <Level>k__BackingField:
-        m_min: 4
-        m_max: 8
-      <Population>k__BackingField: 0.05
 --- !u!1001 &811744022
 PrefabInstance:
   m_ObjectHideFlags: 0

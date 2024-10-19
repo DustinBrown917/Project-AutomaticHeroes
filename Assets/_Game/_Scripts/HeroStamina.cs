@@ -118,11 +118,16 @@ namespace Game
         public bool TrySpendEnergy(float amount)
         {
             if(amount > m_energy) return false;
+            SpendEnergy(amount);
+            return true;
+        }
+
+        public void SpendEnergy(float amount)
+        {
+            amount = Mathf.Min(amount, Energy);
             Energy -= amount;
 
             Exhaustion += amount * 0.1f;
-
-            return true;
         }
 
         public void RecoverEnergy(float deltaSeconds)

@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Game
 {
-    public class Wildlands : MonoBehaviour, IHeroStateProvider
+    public class Wildlands : MonoBehaviour, IHeroBehaviourProvider
     {
         [SerializeField] private Cull m_cull = new Cull();
 

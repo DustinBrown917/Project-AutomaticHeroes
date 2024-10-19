@@ -4,6 +4,8 @@ namespace Game
 {
     public class HeroLevel : HeroComponent
     {
+        public delegate void LevelUpDelegate(HeroLevel heroLevel);
+
         private static int GetExperienceNeededToLevel(int level)
         {
             if (level < 0)
@@ -36,6 +38,11 @@ namespace Game
         private int m_experienceNeededToLevel;
         public event ValueChangedWithSourceEvent<HeroLevel, int> experienceNeededToLevelChanged;
 
+        /// <summary>
+        /// Raised when a level is gained due to GainExperience.
+        /// </summary>
+        public event LevelUpDelegate leveledUp;
+
         public bool Initialized { get; private set; }
 
         public void Initialize()
@@ -55,6 +62,8 @@ namespace Game
             while(newExperience >= ExperienceNeededToLevel) {
                 newExperience -= ExperienceNeededToLevel;
                 Level++;
+                leveledUp?.Invoke(this);
+                ActionFeed.Post($"{Hero.Color.ColoredName} has reached level {Level}!");
             }
 
             Experience = newExperience;

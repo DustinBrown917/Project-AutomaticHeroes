@@ -1,95 +1,48 @@
 using SegoLib;
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Game
 {
-    public abstract class State_Base : IHeroState
+    public abstract class HeroState : IHeroState
     {
-        public IStateFactory StateFactory { get; private set; }
 
-        public Hero Hero { get; private set; }
-        public float Progress
+
+
+        public void Cancel(int blackboardIndex)
         {
-            get => m_progress;
-            protected set => SetProgress(value);
-        }
-        private float m_progress;
-        public event ValueChangedWithSourceEvent<IHeroState, float> progressChanged;
-
-        public Sprite Sprite { get; private set;  }
-
-        public bool StateIsComplete { get; private set; }
-        public event IHeroState.StateCompleteDelegate stateCompleted;
-
-        public bool StateIsCancelled { get; private set; }
-        public event IHeroState.StateCancelledDelegate stateCancelled;
-
-        public bool IsDisposed { get; private set; }
-        public event Action<SegoLib.IDisposable> disposed;
-
-        public State_Base(IStateFactory stateFactory, Sprite sprite, Hero hero)
-        {
-            StateFactory = stateFactory;
-            Hero = hero;
-            Sprite = sprite;
+            throw new NotImplementedException();
         }
 
-        public abstract void DoState(float deltaSeconds);
-
-        public abstract void EnterState();
-
-        public abstract void ExitState();
-
-        public abstract string GetActionString();
-
-        protected virtual void OnComplete() { }
-
-        protected void CompleteState()
+        public void CancelAllBlackboards()
         {
-            if(StateIsComplete) return;
-            StateIsComplete = true;
-            OnComplete();
-            stateCompleted?.Invoke(this);
+            throw new NotImplementedException();
         }
 
-        public void Cancel()
+        public bool CanHeroDoState(Hero hero)
         {
-            if (StateIsCancelled) return;
-            StateIsCancelled = true;
-            stateCancelled?.Invoke(this);
+            throw new NotImplementedException();
         }
 
-        private void SetProgress(float newValue)
+        public void DoState(int blackboardIndex, float deltaSeconds)
         {
-            newValue = Mathf.Clamp01(newValue);
-
-            if (m_progress == newValue) return;
-
-            float oldValue = m_progress;
-            m_progress = newValue;
-
-            progressChanged?.Invoke(this, oldValue, newValue);
+            throw new NotImplementedException();
         }
 
-        public void Dispose()
+        public IHeroState.IBlackboard EnterState()
         {
-            if(IsDisposed) return;
-            IsDisposed = true;
-            OnDisposing();
-
-            Hero = null;
-            Sprite = null;
-            StateFactory = null;
-
-            progressChanged = null;
-            stateCompleted = null;
-            stateCancelled = null;
-
-            disposed?.Invoke(this);
-            disposed = null;
+            throw new NotImplementedException();
         }
 
-        protected virtual void OnDisposing() { }
-    } 
+        public void ExitState(int blackboardIndex)
+        {
+            throw new NotImplementedException();
+        }
+
+        public float GetPriority(Hero hero)
+        {
+            throw new NotImplementedException();
+        }
+    }
 }

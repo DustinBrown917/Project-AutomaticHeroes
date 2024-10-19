@@ -23,10 +23,8 @@ namespace Game
             [field: SerializeField] public float Population { get; private set; }
         }
 
-        public class State : State_Base
+        public class State : HeroState
         {
-            private StringBuilder m_stringBuilder = new StringBuilder();
-
             private MonsterPopulation[] m_monsterPopulations;
             private float m_sumOfPopulation = 0;
 
@@ -42,6 +40,7 @@ namespace Game
                 m_desiredKillCount = desiredKillCount;
                 m_monsterPopulations = monsterPopulations;
                 m_nextEngagementTime = GetNextEngagementTime();
+                ActionString = "Culling creatures.";
 
                 foreach(MonsterPopulation population in monsterPopulations) {
                     m_sumOfPopulation += population.Population;
@@ -70,15 +69,13 @@ namespace Game
                 }
 
                 if (TaskIsComplete()) {
-                    CompleteState();
+                    SucceedState();
                 }
             }
 
             public override void EnterState() { }
 
             public override void ExitState() { }
-
-            public override string GetActionString() => "Culling creatures.";
 
             private void DoEngagement()
             {
@@ -93,7 +90,7 @@ namespace Game
                 int expGained = 0;
 
                 if(monsterRoll > heroRoll) {
-                    damageReceived = Mathf.RoundToInt(WorldState.Instance.Rng.Float01() * monster.AttackDamage);
+                    damageReceived = Mathf.RoundToInt(WorldState.Instance.Rng.Float01() * monster.DPS);
                     Hero.Health.Current -= damageReceived;
                 } 
 
@@ -108,35 +105,6 @@ namespace Game
                     Progress = (float)m_currentKillCount / m_desiredKillCount;
                 }
 
-
-                m_stringBuilder.Append(Hero.Color.ColoredName);
-                if(couldSpendEnergy)
-                    m_stringBuilder.Append(" defeated ");
-                else
-                    m_stringBuilder.Append(" encountered ");
-                m_stringBuilder.Append("a level ");
-                m_stringBuilder.Append(monster.Level);
-                m_stringBuilder.Append(' ');
-                m_stringBuilder.Append(monster.Def.name);
-                if(damageReceived > 0) {
-                    m_stringBuilder.Append(", taking ");
-                    m_stringBuilder.Append(damageReceived);
-                    m_stringBuilder.Append(" damage");
-                }
-
-                if (couldSpendEnergy) {
-                    if (damageReceived > 0)
-                        m_stringBuilder.Append(" and gaining ");
-                    else
-                        m_stringBuilder.Append(", gaining ");
-                    m_stringBuilder.Append(expGained);
-                    m_stringBuilder.Append(" exp.");
-                } else {
-                    m_stringBuilder.Append(" but could not defeat it.");
-                }
-
-                ActionFeed.Post(m_stringBuilder.ToString());
-                m_stringBuilder.Clear();
                 m_nextEngagementTime = GetNextEngagementTime();
             }
 

@@ -1,37 +1,35 @@
 using SegoLib;
 using SegoLib.Random;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Text;
+using UnityEngine;
 
 namespace Game
 {
     public class HeroBrain : HeroComponent
     {
-        public static Camp Camp { get; } = new Camp();
-
         public bool Initialized { get; private set; }
 
-        public IHeroState CurrentState
+        private Rest m_restAtCamp = new Rest() { RestQuality = RestQuality.Terrible };
+
+        public IHeroBehaviour.IState CurrentState
         {
             get => m_currentState;
-            set => SetState(value);
         }
-        private IHeroState m_currentState;
-        public event ValueChangedWithSourceEvent<HeroBrain, IHeroState> stateChanged;
+        private IHeroBehaviour.IState m_currentState;
+        public event ValueChangedWithSourceEvent<HeroBrain, IHeroBehaviour.IState> stateChanged;
 
         public BasePriorities BasePriorities { get; } = new BasePriorities(0.98f, 0.3f, 1.0f, 0.5f, 0.5f);
 
-        private readonly HashSet<IStateFactory> m_availableStates = new();
+        private readonly HashSet<IHeroBehaviour> m_availableBehaviours = new();
 
         public void Initialize()
         {
             if (Initialized)
                 return;
 
-            AddStateFactory(Camp);
+            AddBehaviour(m_restAtCamp);
 
-            CurrentState = GetRandomState();
+            SetBehaviour(GetRandomState());
 
             Initialized = true;
         }
@@ -41,53 +39,45 @@ namespace Game
             base.OnDestroy();
             m_currentState = null;
             stateChanged = null;
-            m_availableStates.Clear();
+            m_availableBehaviours.Clear();
         }
 
-        public void OnWorldTimeUpdate(float deltaSeconds)
+        private void SetBehaviour(IHeroBehaviour newBehaviour)
         {
-            if (CurrentState != null) {
-                CurrentState.DoState(deltaSeconds);
-            } else {
-                CurrentState = GetRandomState();
-            }
-        }
-
-        private void SetState(IHeroState newValue)
-        {
-            if (newValue == null || newValue == CurrentState) 
+            if (newBehaviour == null) 
                 return;
 
-            IHeroState oldValue = m_currentState;
-            m_currentState = newValue;
+            if (m_currentState != null && m_currentState.Behaviour == newBehaviour)
+                return;
 
-            if(oldValue != null) {
-                oldValue.ExitState();
-                oldValue.stateCompleted -= CurrentStateCompleted;
+            IHeroBehaviour.IState oldState = m_currentState;
+
+            if(oldState != null && !oldState.Status.IsConcludedSatus()) {
+                m_currentState.stateConcluded -= OnBehaviourConcluded;
+                oldState.Cancel();
+                m_currentState = null;
             }
 
+            m_currentState = newBehaviour.BeginBehaviour(Hero);
 
-            m_currentState.stateCompleted += CurrentStateCompleted;
-            m_currentState.EnterState();
-
-            stateChanged?.Invoke(this, oldValue, newValue);
+            stateChanged?.Invoke(this, oldState, m_currentState);
         }
 
-        private void CurrentStateCompleted(IHeroState state)
+        private void OnBehaviourConcluded(IHeroBehaviour.IState state, IHeroBehaviour.EResult result)
         {
-            CurrentState = GetRandomState();
+            throw new System.NotImplementedException();
         }
 
-        private IHeroState GetRandomState()
+        private IHeroBehaviour GetRandomState()
         {
-            List<IStateFactory> availableStates = UnityEngine.Pool.ListPool<IStateFactory>.Get();
+            List<IHeroBehaviour> availableBehaviours = UnityEngine.Pool.ListPool<IHeroBehaviour>.Get();
             List<float> priorities = UnityEngine.Pool.ListPool<float>.Get();
             float sumOfPriorites = 0;
 
-            foreach(IStateFactory factory in m_availableStates) {
-                if (factory.CanCreateNewState) {
-                    availableStates.Add(factory);
-                    priorities.Add(factory.GetPriority(Hero));
+            foreach(IHeroBehaviour behaviour in m_availableBehaviours) {
+                if (behaviour.CanHeroDoBehaviour(Hero)) {
+                    availableBehaviours.Add(behaviour);
+                    priorities.Add(behaviour.GetPriority(Hero));
                     sumOfPriorites += priorities[^1];
                 }
             }
@@ -112,33 +102,28 @@ namespace Game
             //}
             //UnityEngine.Debug.Log(sb.ToString());
 
-            if (availableStates.Count == 0)
-                return WorldState.Instance.DefaultWaitStateFactory.CreateState(Hero);
+            // TODO: SET DEFAULT BEHAVIOUR HERE
+            if (availableBehaviours.Count == 0)
+                return null;
 
             int index = WeightedRandom.Naive(priorities, sumOfPriorites, WorldState.Instance.Rng);
 
-            IStateFactory chosen = availableStates[index];
+            IHeroBehaviour chosen = availableBehaviours[index];
 
             UnityEngine.Pool.ListPool<float>.Release(priorities);
-            UnityEngine.Pool.ListPool<IStateFactory>.Release(availableStates);
+            UnityEngine.Pool.ListPool<IHeroBehaviour>.Release(availableBehaviours);
 
-            return chosen.CreateState(Hero);
+            return chosen;
         }
 
-        public void AddStateFactory(IStateFactory factory)
+        public void AddBehaviour(IHeroBehaviour behaviour)
         {
-            m_availableStates.Add(factory);
+            m_availableBehaviours.Add(behaviour);
         }
 
-        public void RemoveStateFactory(IStateFactory factory)
+        public void RemoveBehaviour(IHeroBehaviour behaviour)
         {
-            m_availableStates.Remove(factory);
+            m_availableBehaviours.Remove(behaviour);
         }
     }
-
-
-
-
-
-
 }

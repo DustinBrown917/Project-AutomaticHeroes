@@ -10,7 +10,7 @@ namespace Game
         #region ========================================== Subclasses ==================================================
         /*vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv*/
 
-        public class State : State_Base
+        public class State : HeroState
         {
             private float m_targetTime;
             private float m_elapsedTime = 0;
@@ -18,6 +18,7 @@ namespace Game
             public State(Wait stateFactory, Sprite sprite, Hero hero, float duration) : base(stateFactory, sprite, hero)
             {
                 m_targetTime = duration;
+                ActionString = "Waiting...";
             }
 
 
@@ -28,14 +29,12 @@ namespace Game
                 Progress = m_elapsedTime / m_targetTime;
 
                 if (m_elapsedTime >= m_targetTime) {
-                    CompleteState();
+                    SucceedState();
                 }
             }
 
             public override void EnterState() { }
             public override void ExitState() { }
-
-            public override string GetActionString() => "Waiting...";
         }
 
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/

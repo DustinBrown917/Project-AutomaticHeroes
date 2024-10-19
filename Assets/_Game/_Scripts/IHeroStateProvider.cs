@@ -2,8 +2,8 @@ using System.Collections.Generic;
 
 namespace Game
 {
-    public interface IHeroStateProvider
+    public interface IHeroBehaviourProvider
     {
-        public void GetStates(List<IStateFactory> container);
+        public void GetStates(List<IHeroBehaviour> container);
     } 
 }

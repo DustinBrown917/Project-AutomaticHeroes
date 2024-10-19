@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Game
 {
-    public class Clinic : MonoBehaviour, IHeroStateProvider
+    public class Clinic : MonoBehaviour, IHeroBehaviourProvider
     {
 
         [SerializeField] private TreatWounds m_treatWounds;

@@ -9,7 +9,7 @@ namespace Game
         #region ========================================== Subclasses ==================================================
         /*vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv*/
 
-        public class State : State_Base
+        public class State : HeroState
         {
             public float duration = 0;
             public float elapsed = 0;
@@ -20,6 +20,7 @@ namespace Game
             public State(TreatWounds stateFactory, Sprite sprite, Hero hero, float treatmentPerHour) : base(stateFactory, sprite, hero)
             {
                 m_treatmentPerSecond = WorldTime.PerHourToPerSecond(treatmentPerHour);
+                ActionString = "Treating wounds.";
             }
 
             public override void DoState(float deltaSeconds)
@@ -33,15 +34,13 @@ namespace Game
                 Hero.Stamina.TrySpendEnergy(HeroStamina.DEFAULT_STAMINA_PER_SECOND * deltaSeconds);
 
                 if (Hero.Health.TreatedPercent >= 0.999f) {
-                    CompleteState();
+                    SucceedState();
                 }
             }
 
             public override void EnterState() { }
 
             public override void ExitState() { }
-
-            public override string GetActionString() => "Treating Wounds.";
         }
 
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
