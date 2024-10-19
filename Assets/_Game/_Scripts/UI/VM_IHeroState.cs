@@ -4,21 +4,21 @@ using UnityEngine;
 
 namespace Game.UI
 {
-    public class VM_IHeroState : VM_Base<IHeroState>
+    public class VM_IHeroBehaviourState : VM_Base<IHeroBehaviour.IState>
     {
-        public float Progress
+        public string StateString
         {
-            get => m_progress;
-            private set => PropertySetter.Set(ref m_progress, value, m_progress == value, OnPropertyChanged);
+            get => m_stateString;
+            private set => PropertySetter.Set(ref m_stateString, value, m_stateString == value, OnPropertyChanged);
         }
-        private float m_progress;
+        private string m_stateString;
 
-        public string ActionString
+        public string FlavourString
         {
-            get => m_actionString;
-            private set => PropertySetter.Set(ref m_actionString, value, m_actionString == value, OnPropertyChanged);
+            get => m_flavourString;
+            private set => PropertySetter.Set(ref m_flavourString, value, m_flavourString == value, OnPropertyChanged);
         }
-        private string m_actionString;
+        private string m_flavourString;
 
         public Sprite Sprite
         {
@@ -27,51 +27,53 @@ namespace Game.UI
         }
         private Sprite m_sprite;
 
-        protected override bool IsEqual(IHeroState a, IHeroState b) => a == b;
+        protected override bool IsEqual(IHeroBehaviour.IState a, IHeroBehaviour.IState b) => a == b;
 
         protected override void SetValuesToDefault()
         {
-            Progress = 0;
-            ActionString = string.Empty;
+            StateString = string.Empty;
+            FlavourString = string.Empty;
             Sprite = null;
         }
 
         protected override void UpdateValues()
         {
-            Progress = Model.Progress;
-            ActionString = Model.ActionString;
+            StateString = Model.StateString;
+            FlavourString = Model.FlavourString;
             Sprite = Model.Sprite;
         }
 
         protected override void OnModelChangedToNotNull()
         {
-            Model.progressChanged += Model_ProgressChanged;
             Model.spriteChanged += Model_SpriteChanged;
-            Model.actionStringChanged += Model_ActionStringChanged;
+            Model.stateStringChanged += Model_StateStringChanged;
+            Model.flavourStringChanged += Model_FlavourStringChanged;
             Model.disposed += Model_Disposed;
         }
 
+
+
         protected override void OnModelChangingFromNotNull()
         {
-            Model.progressChanged -= Model_ProgressChanged;
             Model.spriteChanged -= Model_SpriteChanged;
-            Model.actionStringChanged -= Model_ActionStringChanged;
+            Model.stateStringChanged -= Model_StateStringChanged;
+            Model.flavourStringChanged -= Model_FlavourStringChanged;
             Model.disposed -= Model_Disposed;
         }
 
-        private void Model_ProgressChanged(IHeroState source, float oldValue, float newValue)
+        private void Model_FlavourStringChanged(IHeroBehaviour.IState source, string oldValue, string newValue)
         {
-            Progress = newValue;
+            FlavourString = newValue;
         }
 
-        private void Model_SpriteChanged(IHeroState source, Sprite oldValue, Sprite newValue)
+        private void Model_SpriteChanged(IHeroBehaviour.IState source, Sprite oldValue, Sprite newValue)
         {
             Sprite = newValue;
         }
 
-        private void Model_ActionStringChanged(IHeroState source, string oldValue, string newValue)
+        private void Model_StateStringChanged(IHeroBehaviour.IState source, string oldValue, string newValue)
         {
-            ActionString = newValue;
+            StateString = newValue;
         }
 
         private void Model_Disposed(IDisposable obj)

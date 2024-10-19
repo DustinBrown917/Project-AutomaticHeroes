@@ -9,7 +9,8 @@ namespace Game
     {
         public bool Initialized { get; private set; }
 
-        private Rest m_restAtCamp = new Rest() { RestQuality = RestQuality.Terrible };
+        private Rest m_restAtCamp = new Rest() { StateString = "Resting at camp.", RestQuality = RestQuality.Terrible, Sprite = SpriteLibrary.GetSprite("fire")};
+        private Wait m_wait = new Wait() { StateString = "Waiting...", Sprite = SpriteLibrary.GetSprite("Wait Icon") };
 
         public IHeroBehaviour.IState CurrentState
         {
@@ -37,7 +38,13 @@ namespace Game
         protected override void OnDestroy()
         {
             base.OnDestroy();
-            m_currentState = null;
+            if(m_currentState != null) {
+                m_currentState.stateConcluded -= OnBehaviourConcluded;
+                m_currentState.disposed -= CurrentStateDisposed;
+                m_currentState.Cancel();
+                m_currentState = null;
+            }
+
             stateChanged = null;
             m_availableBehaviours.Clear();
         }
@@ -47,25 +54,38 @@ namespace Game
             if (newBehaviour == null) 
                 return;
 
-            if (m_currentState != null && m_currentState.Behaviour == newBehaviour)
+            if (m_currentState != null && m_currentState.Behaviour == newBehaviour && !m_currentState.Status.IsConcludedSatus())
                 return;
 
             IHeroBehaviour.IState oldState = m_currentState;
 
-            if(oldState != null && !oldState.Status.IsConcludedSatus()) {
+            if(oldState != null) {
                 m_currentState.stateConcluded -= OnBehaviourConcluded;
-                oldState.Cancel();
+                m_currentState.disposed -= CurrentStateDisposed;
+
+                if (!oldState.Status.IsConcludedSatus()) {
+                    oldState.Cancel();
+                }
+
                 m_currentState = null;
             }
 
             m_currentState = newBehaviour.BeginBehaviour(Hero);
+            m_currentState.stateConcluded += OnBehaviourConcluded;
+            m_currentState.disposed += CurrentStateDisposed;
 
             stateChanged?.Invoke(this, oldState, m_currentState);
         }
 
+        private void CurrentStateDisposed(IDisposable obj)
+        {
+            Debug.LogError($"CurrentState was disposed before it was removed from HeroBrain. This shouldn't happen.");
+            SetBehaviour(GetRandomState());
+        }
+
         private void OnBehaviourConcluded(IHeroBehaviour.IState state, IHeroBehaviour.EResult result)
         {
-            throw new System.NotImplementedException();
+            SetBehaviour(GetRandomState());
         }
 
         private IHeroBehaviour GetRandomState()
@@ -102,9 +122,8 @@ namespace Game
             //}
             //UnityEngine.Debug.Log(sb.ToString());
 
-            // TODO: SET DEFAULT BEHAVIOUR HERE
             if (availableBehaviours.Count == 0)
-                return null;
+                return m_wait;
 
             int index = WeightedRandom.Naive(priorities, sumOfPriorites, WorldState.Instance.Rng);
 

@@ -44,10 +44,7 @@ namespace Game
             }
             private Flavour m_flavour = DefaultFlavour;
 
-            public State(IHeroBehaviour behaviour, WorldState worldState, Hero hero) : base(behaviour, worldState, hero)
-            {
-                Sprite = SpriteLibrary.GetSprite("Rest Icon");
-            }
+            public State(IHeroBehaviour behaviour, WorldState worldState, Hero hero) : base(behaviour, worldState, hero) { }
 
             public void SetFlavour(Flavour flavourState)
             {
@@ -76,11 +73,17 @@ namespace Game
 
             public List<Flavour> flavours = new();
 
+            public string stateString = "Resting.";
+
+            public Sprite sprite;
+
             public Behaviour(IHeroBehaviour parentBehaviour) : base(parentBehaviour) { }
 
             protected override State CreateNewState(Hero hero) 
             {
                 State state = new State(ParentBehaviour, WorldState.Instance, hero);
+                state.StateString = stateString;
+                state.Sprite = sprite;
                 return state;
             }
             protected override void OnWorldTimeUpdate(State bb, float deltaSeconds)
@@ -150,16 +153,21 @@ namespace Game
 
         public List<Flavour> Flavours => m_behaviour.flavours;
         public RestQuality RestQuality { get => m_behaviour.restQuality; set => m_behaviour.restQuality = value; }
+        public string StateString { get => m_behaviour.stateString; set => m_behaviour.stateString = value; }
+        public Sprite Sprite { get => m_behaviour.sprite; set => m_behaviour.sprite = value; }
 
         public Rest()
         {
             m_behaviour = new Behaviour(this);
+        }
 
+        protected override IHeroBehaviour.IBehaviour InitializeBehaviour()
+        {
             Flavours.Add(new Flavour() { flavorText = "Sleeping soundly.", energyRecoveryImpact = 1.05f, exhaustionRecoveryImpact = 1.05f });
             Flavours.Add(new Flavour() { flavorText = "Having a restful sleep.", energyRecoveryImpact = 1.05f, exhaustionRecoveryImpact = 1.05f });
             Flavours.Add(new Flavour() { flavorText = "Tossing and turning.", energyRecoveryImpact = 0.95f, exhaustionRecoveryImpact = 0.95f });
             Flavours.Add(new Flavour() { flavorText = "Having trouble falling asleep", energyRecoveryImpact = 0.95f, exhaustionRecoveryImpact = 0.95f });
-            Flavours.Add(new Flavour() { flavorText = "Having a peaceful dream."});
+            Flavours.Add(new Flavour() { flavorText = "Having a peaceful dream." });
             Flavours.Add(new Flavour() { flavorText = "Snoring loudly." });
             Flavours.Add(new Flavour() { flavorText = "Having a fitful dream." });
             Flavours.Add(new Flavour() { flavorText = "Dreaming of a delicious meal." });
@@ -169,11 +177,7 @@ namespace Game
             Flavours.Add(new Flavour() { flavorText = "Dreaming of a better time." });
             Flavours.Add(new Flavour() { flavorText = "Dreaming of the road ahead." });
             Flavours.Add(new Flavour() { flavorText = "Dreaming about waterfalls." });
-        }
 
-        protected override IHeroBehaviour.IBehaviour InitializeBehaviour()
-        {
-            m_behaviour = new Behaviour(this);
             return m_behaviour;
         }
 

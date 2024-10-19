@@ -127,7 +127,7 @@ namespace Game
             public IHeroBehaviour Behaviour { get; }
 
             public int Index { get; }
-
+            public WorldState WorldState { get; }
             public Hero Hero { get; }
 
             public float ElapsedTime { get; }
@@ -139,6 +139,11 @@ namespace Game
             public event ValueChangedWithSourceEvent<IState, Sprite> spriteChanged;
             public string FlavourString { get; }
             public event ValueChangedWithSourceEvent<IState, string> flavourStringChanged;
+            public string StateString { get; }
+            public event ValueChangedWithSourceEvent<IState, string> stateStringChanged;
+
+            public bool IsDisposed { get; }
+            public event Action<SegoLib.IDisposable> disposed;
 
             public void Cancel();
         }
@@ -180,10 +185,18 @@ namespace Game
             public Sprite Sprite
             {
                 get => m_sprite;
-                protected set => SetSprite(value);
+                set => SetSprite(value);
             }
             private Sprite m_sprite;
             public event ValueChangedWithSourceEvent<IState, Sprite> spriteChanged;
+
+            public string StateString
+            {
+                get => m_stateString;
+                set => SetStateString(value);
+            }
+            private string m_stateString;
+            public event ValueChangedWithSourceEvent<IState, string> stateStringChanged;
 
             public string FlavourString
             {
@@ -230,6 +243,20 @@ namespace Game
 
                 flavourStringChanged?.Invoke(this, oldValue, newValue);
             } 
+
+            protected void SetStateString(string newValue)
+            {
+                if (newValue == null)
+                    newValue = string.Empty;
+
+                if(newValue == m_stateString) 
+                    return;
+
+                string oldValue = m_stateString;
+                m_stateString = newValue;
+
+                stateStringChanged?.Invoke(this, oldValue, newValue);
+            }
 
             public void UpdateIndex(int newIndex)
             {
@@ -283,6 +310,7 @@ namespace Game
 
                 spriteChanged = null;
                 flavourStringChanged = null;
+                stateStringChanged = null;
 
                 disposed?.Invoke(this);
                 disposed = null;

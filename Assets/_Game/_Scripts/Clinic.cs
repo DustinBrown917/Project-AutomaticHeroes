@@ -9,7 +9,7 @@ namespace Game
         [SerializeField] private TreatWounds m_treatWounds;
 
 
-        public void GetStates(List<IStateFactory> container)
+        public void GetStates(List<IHeroBehaviour> container)
         {
             container.Add(m_treatWounds);
         }

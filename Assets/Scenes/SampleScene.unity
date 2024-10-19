@@ -903,7 +903,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_trainingState:
-    <TrainingQuality>k__BackingField: 3
+    m_behaviour:
+      flavours: []
+      stateString: Training.
+      sprite: {fileID: 21300000, guid: 41ef6c35f155bcb43952d5da316374fd, type: 3}
 --- !u!114 &397797192
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -917,7 +920,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_rest:
-    <RestQuality>k__BackingField: 2
+    m_behaviour:
+      restQuality: 3
+      flavours: []
+      stateString: Resting.
+      sprite: {fileID: 21300000, guid: 125417720d99f9b4c9be33196ad91861, type: 3}
 --- !u!114 &397797194
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -931,7 +938,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_treatWounds:
-    <TreatmentQuality>k__BackingField: 4
+    m_behaviour:
+      stateString: Treating Wounds.
+      treatmentQuality: 3
+      flavours: []
+      sprite: {fileID: 21300000, guid: e5f6bdbb53a6e1e47aa0b7153f16f5f6, type: 3}
 --- !u!1001 &409493989
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1387,10 +1398,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 8153231705256620972, guid: 8745bc6e15abee942a7c5c94aca18df4, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 781614383}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8745bc6e15abee942a7c5c94aca18df4, type: 3}
 --- !u!4 &409493990 stripped
 Transform:
@@ -1402,7 +1410,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7108896763118586010, guid: 8745bc6e15abee942a7c5c94aca18df4, type: 3}
   m_PrefabInstance: {fileID: 409493989}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 781614379}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b2baab441e4d1704b9abd32ec5c5684a, type: 3}
@@ -1982,10 +1990,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 8153231705256620972, guid: 8745bc6e15abee942a7c5c94aca18df4, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1186702135}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8745bc6e15abee942a7c5c94aca18df4, type: 3}
 --- !u!4 &492528341 stripped
 Transform:
@@ -1997,7 +2002,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7108896763118586010, guid: 8745bc6e15abee942a7c5c94aca18df4, type: 3}
   m_PrefabInstance: {fileID: 492528340}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1186702133}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b2baab441e4d1704b9abd32ec5c5684a, type: 3}
@@ -3013,23 +3018,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 749276323757739308, guid: 35f9f532907d43c4e809fa34bfe81dd1, type: 3}
   m_PrefabInstance: {fileID: 766946305}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &781614379 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8153231705256620972, guid: 8745bc6e15abee942a7c5c94aca18df4, type: 3}
-  m_PrefabInstance: {fileID: 409493989}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &781614383
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 781614379}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2acdafb65f164e44cafc0ed104059280, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &811744022
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3436,7 +3424,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_trainingState:
-    <TrainingQuality>k__BackingField: 2
+    m_behaviour:
+      flavours: []
+      stateString: Training.
+      sprite: {fileID: 21300000, guid: 41ef6c35f155bcb43952d5da316374fd, type: 3}
 --- !u!114 &1009692406
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3450,7 +3441,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_rest:
-    <RestQuality>k__BackingField: 2
+    m_behaviour:
+      restQuality: 2
+      flavours: []
+      stateString: Resting.
+      sprite: {fileID: 21300000, guid: 125417720d99f9b4c9be33196ad91861, type: 3}
 --- !u!114 &1009692408
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3464,7 +3459,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_treatWounds:
-    <TreatmentQuality>k__BackingField: 2
+    m_behaviour:
+      stateString: Treating Wounds.
+      treatmentQuality: 2
+      flavours: []
+      sprite: {fileID: 21300000, guid: e5f6bdbb53a6e1e47aa0b7153f16f5f6, type: 3}
 --- !u!1001 &1023970450
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3634,45 +3633,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 749276323757739308, guid: 35f9f532907d43c4e809fa34bfe81dd1, type: 3}
   m_PrefabInstance: {fileID: 1182670005}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1186702133 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8153231705256620972, guid: 8745bc6e15abee942a7c5c94aca18df4, type: 3}
-  m_PrefabInstance: {fileID: 492528340}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1186702135
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1186702133}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 04b8bec3ae6cfd341830d680570ea1ab, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_cull:
-    m_monsterPopulations:
-    - <Monster>k__BackingField: {fileID: 11400000, guid: e8cd268d0e2109240bce0902376ec7d6, type: 2}
-      <Level>k__BackingField:
-        m_min: 1
-        m_max: 2
-      <Population>k__BackingField: 0.5
-    - <Monster>k__BackingField: {fileID: 11400000, guid: 937216b4efea2a8479fbedf9a9077f16, type: 2}
-      <Level>k__BackingField:
-        m_min: 1
-        m_max: 3
-      <Population>k__BackingField: 0.2
-    - <Monster>k__BackingField: {fileID: 11400000, guid: 6dd260ba34231d1459591b118f7efb2b, type: 2}
-      <Level>k__BackingField:
-        m_min: 3
-        m_max: 6
-      <Population>k__BackingField: 0.2
-    - <Monster>k__BackingField: {fileID: 11400000, guid: d245e7a13cf773f4d8309d22cae9e200, type: 2}
-      <Level>k__BackingField:
-        m_min: 5
-        m_max: 10
-      <Population>k__BackingField: 0.01
 --- !u!1 &1192019042
 GameObject:
   m_ObjectHideFlags: 0
@@ -5023,7 +4983,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_trainingState:
-    <TrainingQuality>k__BackingField: 4
+    m_behaviour:
+      flavours: []
+      stateString: Training.
+      sprite: {fileID: 21300000, guid: 41ef6c35f155bcb43952d5da316374fd, type: 3}
 --- !u!114 &1481098519
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5037,7 +5000,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_rest:
-    <RestQuality>k__BackingField: 1
+    m_behaviour:
+      restQuality: 1
+      flavours: []
+      stateString: Resting.
+      sprite: {fileID: 21300000, guid: 125417720d99f9b4c9be33196ad91861, type: 3}
 --- !u!114 &1481098521
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5051,7 +5018,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_treatWounds:
-    <TreatmentQuality>k__BackingField: 2
+    m_behaviour:
+      stateString: Treating Wounds.
+      treatmentQuality: 2
+      flavours: []
+      sprite: {fileID: 21300000, guid: e5f6bdbb53a6e1e47aa0b7153f16f5f6, type: 3}
 --- !u!1001 &1503216868
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5785,7 +5756,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_trainingState:
-    <TrainingQuality>k__BackingField: 1
+    m_behaviour:
+      flavours: []
+      stateString: Training.
+      sprite: {fileID: 21300000, guid: 41ef6c35f155bcb43952d5da316374fd, type: 3}
 --- !u!114 &1592000003
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5799,7 +5773,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_rest:
-    <RestQuality>k__BackingField: 3
+    m_behaviour:
+      restQuality: 1
+      flavours: []
+      stateString: Resting.
+      sprite: {fileID: 21300000, guid: 125417720d99f9b4c9be33196ad91861, type: 3}
 --- !u!114 &1592000005
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5813,7 +5791,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_treatWounds:
-    <TreatmentQuality>k__BackingField: 3
+    m_behaviour:
+      stateString: Treating Wounds.
+      treatmentQuality: 4
+      flavours: []
+      sprite: {fileID: 21300000, guid: e5f6bdbb53a6e1e47aa0b7153f16f5f6, type: 3}
 --- !u!1001 &1592465697
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6306,7 +6288,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_rest:
-    <RestQuality>k__BackingField: 4
+    m_behaviour:
+      restQuality: 4
+      flavours: []
+      stateString: Resting.
+      sprite: {fileID: 21300000, guid: 125417720d99f9b4c9be33196ad91861, type: 3}
 --- !u!114 &1592465703
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6320,7 +6306,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_treatWounds:
-    <TreatmentQuality>k__BackingField: 2
+    m_behaviour:
+      stateString: Treating Wounds.
+      treatmentQuality: 2
+      flavours: []
+      sprite: {fileID: 21300000, guid: e5f6bdbb53a6e1e47aa0b7153f16f5f6, type: 3}
 --- !u!1 &1624700078
 GameObject:
   m_ObjectHideFlags: 0

@@ -192,12 +192,13 @@ GameObject:
   m_Component:
   - component: {fileID: 7058089731345908914}
   - component: {fileID: 9136296130780974435}
-  - component: {fileID: 2625718563815138711}
-  - component: {fileID: 7158317994977308614}
-  - component: {fileID: 2106680276883580523}
   - component: {fileID: 5951242888094392898}
+  - component: {fileID: 8752129951964351240}
+  - component: {fileID: 2106680276883580523}
   - component: {fileID: 9180355668866634381}
   - component: {fileID: 3631947360753602002}
+  - component: {fileID: 2625718563815138711}
+  - component: {fileID: 7158317994977308614}
   - component: {fileID: 5131149459689021817}
   m_Layer: 0
   m_Name: Hero
@@ -235,42 +236,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff8ff483ae85e0e4c911a8413e0ae715, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &2625718563815138711
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6195090621485750296}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bb273c0fc6f3c934dac01c36e22c3a31, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &7158317994977308614
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6195090621485750296}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9e8117b296e4acd49879b62fba99de56, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &2106680276883580523
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6195090621485750296}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6d5ee2fab79ac5a4d989fc1fd1c3c3a3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &5951242888094392898
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -285,6 +250,30 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_graphicGameObject: {fileID: 4100121308280149663}
   m_spriteRenderer: {fileID: 7769671590099120238}
+--- !u!114 &8752129951964351240
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6195090621485750296}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b100f827bec07d34496fb18fbd885648, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &2106680276883580523
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6195090621485750296}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d5ee2fab79ac5a4d989fc1fd1c3c3a3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &9180355668866634381
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -307,6 +296,30 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c02aeb10a3ee4d54cb092c7dfd44ab52, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &2625718563815138711
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6195090621485750296}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bb273c0fc6f3c934dac01c36e22c3a31, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &7158317994977308614
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6195090621485750296}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e8117b296e4acd49879b62fba99de56, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &5131149459689021817

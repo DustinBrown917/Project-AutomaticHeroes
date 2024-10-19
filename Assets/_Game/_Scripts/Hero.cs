@@ -9,6 +9,7 @@ namespace Game
     [RequireComponent(typeof(HeroGraphic))]
     [RequireComponent(typeof(HeroStamina))]
     [RequireComponent(typeof(HeroHealth))]
+    [RequireComponent(typeof(HeroSkills))]
     public class Hero : MonoBehaviour, WorldTime.IListener
     {
         public HeroColor Color { get; private set; }
@@ -18,6 +19,7 @@ namespace Game
         public HeroBrain Brain { get; private set; }
         public HeroHealth Health { get; private set; }
         public HeroStamina Stamina { get; private set; }
+        public HeroSkills Skills { get; private set; }
 
         public bool Initialized { get; private set; }
 
@@ -29,6 +31,7 @@ namespace Game
             Graphic = GetComponent<HeroGraphic>();
             Health = GetComponent<HeroHealth>();
             Stamina = GetComponent<HeroStamina>();
+            Skills = GetComponent<HeroSkills>();
         }
 
         private void Start()
@@ -50,6 +53,7 @@ namespace Game
             Graphic = null;
             Health = null;
             Stamina = null;
+            Skills = null;
         }
 
         /// <summary>
@@ -68,6 +72,7 @@ namespace Game
 
             Color = color;
 
+            Skills.Initialize();
             Level.Initialize();
             Movement.Initialize(location);
             Graphic.Initialize(color);
@@ -82,7 +87,6 @@ namespace Game
 
         public void OnWorldTimeUpdate(float deltaSeconds)
         {
-            Brain.OnWorldTimeUpdate(deltaSeconds);
             Health.Recover(deltaSeconds);
             Stamina.RecoverEnergy(deltaSeconds);
         }

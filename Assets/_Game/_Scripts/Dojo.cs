@@ -5,9 +5,9 @@ namespace Game
 {
     public class Dojo : MonoBehaviour, IHeroBehaviourProvider
     {
-        [SerializeField] private Training_General m_trainingState;
+        [SerializeField] private Training m_trainingState;
 
-        public void GetStates(List<IStateFactory> container)
+        public void GetStates(List<IHeroBehaviour> container)
         {
             container.Add(m_trainingState);
         }

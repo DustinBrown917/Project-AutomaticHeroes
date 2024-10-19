@@ -1,7 +1,6 @@
 using SegoLib.Random;
 using System.Collections.Generic;
 using UnityEngine;
-using static Game.Rest;
 
 namespace Game
 {
@@ -12,9 +11,9 @@ namespace Game
         /*vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv*/
 
         [System.Serializable]
-        public class Flavour
+        protected class Flavour
         {
-            public string flavorText;
+            public string text;
             public float energyCostImpact = 1.0f;
             public float speedImpact = 1.0f;
         }
@@ -48,7 +47,7 @@ namespace Game
                     return;
 
                 m_flavour = flavour;
-                FlavourString = m_flavour.flavorText;
+                FlavourString = m_flavour.text;
             }
 
             public void OnRouteCompleted(HeroMovement heroMovement, IRouteTraversal route)
@@ -78,6 +77,8 @@ namespace Game
         {
             public IRouteTraversal traversal;
 
+            public string stateString = "Travelling.";
+
             public List<Flavour> flavours = new();
 
             public Behaviour(IHeroBehaviour parentBehaviour) : base(parentBehaviour) { }
@@ -85,6 +86,7 @@ namespace Game
             protected override State CreateNewState(Hero hero)
             {
                 State state = new State(ParentBehaviour, WorldState.Instance, hero);
+                state.StateString = stateString;
                 return state;
             }
 
@@ -121,31 +123,32 @@ namespace Game
         #endregion ===================================== End Behaviour ================================================
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
 
-        private static Flavour DefaultFlavour { get; } = new() { flavorText = string.Empty };
+        private static Flavour DefaultFlavour { get; } = new() { text = string.Empty };
 
         private Behaviour m_behaviour;
 
-        public List<Flavour> Flavours => m_behaviour.flavours;
+        private List<Flavour> Flavours => m_behaviour.flavours;
 
         public Travel(IRouteTraversal routeTraversal)
         {
             m_behaviour = new Behaviour(this);
             m_behaviour.traversal = routeTraversal;
+            m_behaviour.stateString = $"Travelling to {routeTraversal.End.DisplayName}";
 
-            Flavours.Add(new Flavour() { flavorText = "Marching steadily onward." });
-            Flavours.Add(new Flavour() { flavorText = "Moving at decent pace.", speedImpact = 1.05f, energyCostImpact = 1.05f });
-            Flavours.Add(new Flavour() { flavorText = "Moving hurriedly.", speedImpact = 1.1f, energyCostImpact = 1.1f});
-            Flavours.Add(new Flavour() { flavorText = "Taking their time.", speedImpact = 0.95f, energyCostImpact = 0.95f});
-            Flavours.Add(new Flavour() { flavorText = "Singing an old marching tune." });
-            Flavours.Add(new Flavour() { flavorText = "Whistling a song from their home." });
-            Flavours.Add(new Flavour() { flavorText = "Thinking intently as they walk." });
-            Flavours.Add(new Flavour() { flavorText = "Daydreaming absently." });
-            Flavours.Add(new Flavour() { flavorText = "Having a conversation with themelf." });
-            Flavours.Add(new Flavour() { flavorText = "Reflecting on past challenges." });
-            Flavours.Add(new Flavour() { flavorText = "Looking forward to taking a rest." });
-            Flavours.Add(new Flavour() { flavorText = "Anticipating their destination." });
-            Flavours.Add(new Flavour() { flavorText = "Trying to ignore their aching feet." });
-            Flavours.Add(new Flavour() { flavorText = "Thinking about what to eat." });
+            Flavours.Add(new Flavour() { text = "Marching steadily onward." });
+            Flavours.Add(new Flavour() { text = "Moving at decent pace.", speedImpact = 1.05f, energyCostImpact = 1.05f });
+            Flavours.Add(new Flavour() { text = "Moving hurriedly.", speedImpact = 1.1f, energyCostImpact = 1.1f});
+            Flavours.Add(new Flavour() { text = "Taking their time.", speedImpact = 0.95f, energyCostImpact = 0.95f});
+            Flavours.Add(new Flavour() { text = "Singing an old marching tune." });
+            Flavours.Add(new Flavour() { text = "Whistling a song from their home." });
+            Flavours.Add(new Flavour() { text = "Thinking intently as they walk." });
+            Flavours.Add(new Flavour() { text = "Daydreaming absently." });
+            Flavours.Add(new Flavour() { text = "Having a conversation with themelf." });
+            Flavours.Add(new Flavour() { text = "Reflecting on past challenges." });
+            Flavours.Add(new Flavour() { text = "Looking forward to taking a rest." });
+            Flavours.Add(new Flavour() { text = "Anticipating their destination." });
+            Flavours.Add(new Flavour() { text = "Trying to ignore their aching feet." });
+            Flavours.Add(new Flavour() { text = "Thinking about what to eat." });
         }
 
         protected override IHeroBehaviour.IBehaviour InitializeBehaviour()

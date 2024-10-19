@@ -50,6 +50,8 @@ namespace Game
             if (Initialized)
                 return;
 
+            ExperienceNeededToLevel = GetExperienceNeededToLevel(m_level);
+
             Initialized = true;
         }
 

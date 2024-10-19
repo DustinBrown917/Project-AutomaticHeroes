@@ -1,0 +1,97 @@
+using SegoLib;
+
+namespace Game
+{
+    public class HeroSkill
+    {
+        public static int GetExperienceNeededToLevel(int currentLevel)
+        {
+            return (currentLevel + 1) * 10;
+        }
+
+        public HeroSkillDef Def { get; }
+
+        public int Level
+        {
+            get => m_level;
+            set => SetLevel(value);
+        }
+        private int m_level = 1;
+        public event ValueChangedEvent<int> levelChanged;
+
+        public int ExperienceNeededToLevel
+        {
+            get => m_experienceNeededToLevel;
+            private set => SetExperienceNeededToLevel(value);
+        }
+        private int m_experienceNeededToLevel = GetExperienceNeededToLevel(1);
+        public event ValueChangedEvent<int> experienceNeededToLevelChanged;
+
+        public float Experience
+        {
+            get => m_experience;
+            private set => SetExperience(value);
+        }
+        private float m_experience;
+        public event ValueChangedEvent<float> experienceChanged;
+
+        public HeroSkill(HeroSkillDef def)
+        {
+            Def = def;
+        }
+
+        public void GainExperience(float exp)
+        {
+            float newExp = Experience + exp;
+
+            while (newExp >= ExperienceNeededToLevel) {
+                Level++;
+            }
+
+            Experience = newExp;
+        }
+
+        public void SetLevel(int newValue)
+        {
+            if (newValue < 1)
+                newValue = 1;
+
+            if (newValue == m_level)
+                return;
+
+            int oldValue = m_level;
+            m_level = newValue;
+
+            ExperienceNeededToLevel = GetExperienceNeededToLevel(m_level);
+
+            levelChanged?.Invoke(oldValue, m_level);
+        }
+
+        private void SetExperienceNeededToLevel(int newValue)
+        {
+            if (newValue < 1)
+                newValue = 1;
+
+            if (newValue == m_experienceNeededToLevel)
+                return;
+
+            int oldValue = m_experienceNeededToLevel;
+            m_experienceNeededToLevel = newValue;
+
+            Experience = 0;
+
+            experienceNeededToLevelChanged?.Invoke(oldValue, newValue);
+        }
+
+        private void SetExperience(float newValue)
+        {
+            if (newValue == m_experience)
+                return;
+
+            float oldValue = m_experience;
+            m_experience = newValue;
+
+            experienceChanged?.Invoke(oldValue, m_experience);
+        }
+    }
+}

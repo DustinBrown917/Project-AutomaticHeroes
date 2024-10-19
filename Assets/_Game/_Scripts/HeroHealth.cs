@@ -25,6 +25,7 @@ namespace Game
         public event ValueChangedWithSourceEvent<HeroHealth, float> maxChanged;
 
         public float Percent { get; private set; }
+        public float MissingHealth => Max - Current;
 
         public float Treated
         {
