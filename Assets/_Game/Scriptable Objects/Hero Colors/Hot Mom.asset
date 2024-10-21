@@ -19,3 +19,4 @@ MonoBehaviour:
   m_bannerBase: {fileID: 2800000, guid: 49a364e6866950d4f8df24e5e86bf8e9, type: 3}
   m_primaryDecal: {fileID: 2800000, guid: be98750939a850347ae36d8e3db0a998, type: 3}
   m_secondaryDecal: {fileID: 2800000, guid: 30b52f7d15089ee4fbb78c332968c25b, type: 3}
+  m_unnarmedWeapon: {fileID: 11400000, guid: a260a17c51e37394aa97495440244cec, type: 2}

@@ -17,7 +17,7 @@ namespace Game
             set => SetLevel(value);
         }
         private int m_level = 1;
-        public event ValueChangedEvent<int> levelChanged;
+        public event ValueChangedWithSourceEvent<HeroSkill, int> levelChanged;
 
         public int ExperienceNeededToLevel
         {
@@ -25,7 +25,7 @@ namespace Game
             private set => SetExperienceNeededToLevel(value);
         }
         private int m_experienceNeededToLevel = GetExperienceNeededToLevel(1);
-        public event ValueChangedEvent<int> experienceNeededToLevelChanged;
+        public event ValueChangedWithSourceEvent<HeroSkill, int> experienceNeededToLevelChanged;
 
         public float Experience
         {
@@ -33,7 +33,15 @@ namespace Game
             private set => SetExperience(value);
         }
         private float m_experience;
-        public event ValueChangedEvent<float> experienceChanged;
+        public event ValueChangedWithSourceEvent<HeroSkill, float> experienceChanged;
+
+        public float ExperienceGainMultiplier
+        {
+            get => m_experienceGainMultiplier;
+            set => SetExperienceGainMultiplier(value);
+        }
+        private float m_experienceGainMultiplier = 1.0f;
+        public event ValueChangedWithSourceEvent<HeroSkill, float> experienceGainMultiplierChanged;
 
         public HeroSkill(HeroSkillDef def)
         {
@@ -42,9 +50,10 @@ namespace Game
 
         public void GainExperience(float exp)
         {
-            float newExp = Experience + exp;
+            float newExp = Experience + (exp * m_experienceGainMultiplier);
 
             while (newExp >= ExperienceNeededToLevel) {
+                newExp -= ExperienceNeededToLevel;
                 Level++;
             }
 
@@ -64,7 +73,7 @@ namespace Game
 
             ExperienceNeededToLevel = GetExperienceNeededToLevel(m_level);
 
-            levelChanged?.Invoke(oldValue, m_level);
+            levelChanged?.Invoke(this, oldValue, m_level);
         }
 
         private void SetExperienceNeededToLevel(int newValue)
@@ -80,7 +89,7 @@ namespace Game
 
             Experience = 0;
 
-            experienceNeededToLevelChanged?.Invoke(oldValue, newValue);
+            experienceNeededToLevelChanged?.Invoke(this, oldValue, newValue);
         }
 
         private void SetExperience(float newValue)
@@ -91,7 +100,21 @@ namespace Game
             float oldValue = m_experience;
             m_experience = newValue;
 
-            experienceChanged?.Invoke(oldValue, m_experience);
+            experienceChanged?.Invoke(this, oldValue, m_experience);
+        }
+
+        public void SetExperienceGainMultiplier(float newValue)
+        {
+            if(newValue < 0)
+                newValue = 0;
+
+            if (newValue == m_experienceGainMultiplier)
+                return;
+
+            float oldValue = m_experienceGainMultiplier;
+            m_experienceGainMultiplier = newValue;
+
+            experienceGainMultiplierChanged?.Invoke(this, oldValue, newValue);
         }
     }
 }

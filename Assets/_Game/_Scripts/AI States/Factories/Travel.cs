@@ -38,7 +38,7 @@ namespace Game
 
             public State(IHeroBehaviour behaviour, WorldState worldState, Hero hero) : base(behaviour, worldState, hero)
             {
-                Sprite = SpriteLibrary.GetSprite("Travel Icon");
+                ForegroundSprite = SpriteLibrary.GetSprite("Travel Icon");
             }
 
             public void SetFlavour(Flavour flavour)

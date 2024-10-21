@@ -11,7 +11,7 @@ namespace Game
 
         public bool Initialized { get; private set; }
 
-        public void Initialize(HeroColor heroColor)
+        public void Initialize()
         {
             if (Initialized)
                 return;

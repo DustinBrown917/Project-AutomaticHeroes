@@ -135,8 +135,12 @@ namespace Game
             public EStatus Status { get; }
             public event BehaviourConcludedDelegate stateConcluded;
 
-            public Sprite Sprite { get; }
-            public event ValueChangedWithSourceEvent<IState, Sprite> spriteChanged;
+            public Sprite ForegroundSprite { get; }
+            public event ValueChangedWithSourceEvent<IState, Sprite> foregroundSpriteChanged;
+
+            public Sprite BackgroundSprite { get; }
+            public event ValueChangedWithSourceEvent<IState, Sprite> backgroundSpriteChanged;
+
             public string FlavourString { get; }
             public event ValueChangedWithSourceEvent<IState, string> flavourStringChanged;
             public string StateString { get; }
@@ -182,13 +186,21 @@ namespace Game
             public EStatus Status { get; private set; } = EStatus.NotYetEntered;
             public event BehaviourConcludedDelegate stateConcluded;
 
-            public Sprite Sprite
+            public Sprite ForegroundSprite
             {
-                get => m_sprite;
-                set => SetSprite(value);
+                get => m_foregroundSprite;
+                set => SetForegroundSprite(value);
             }
-            private Sprite m_sprite;
-            public event ValueChangedWithSourceEvent<IState, Sprite> spriteChanged;
+            private Sprite m_foregroundSprite;
+            public event ValueChangedWithSourceEvent<IState, Sprite> foregroundSpriteChanged;
+
+            public Sprite BackgroundSprite
+            {
+                get => m_backgroundSprite;
+                set => SetBackgroundSprite(value);
+            }
+            private Sprite m_backgroundSprite;
+            public event ValueChangedWithSourceEvent<IState, Sprite> backgroundSpriteChanged;
 
             public string StateString
             {
@@ -219,17 +231,27 @@ namespace Game
             }
 
             #region SETTERS
-            protected void SetSprite(Sprite newValue)
+            protected void SetForegroundSprite(Sprite newValue)
             {
-                if (newValue == Sprite)
+                if (newValue == ForegroundSprite)
                     return;
 
-                Sprite oldValue = m_sprite;
-                m_sprite = newValue;
+                Sprite oldValue = m_foregroundSprite;
+                m_foregroundSprite = newValue;
 
-                spriteChanged?.Invoke(this, oldValue, newValue);
+                foregroundSpriteChanged?.Invoke(this, oldValue, newValue);
             }
 
+            protected void SetBackgroundSprite(Sprite newValue)
+            {
+                if (newValue == BackgroundSprite)
+                    return;
+
+                Sprite oldValue = m_backgroundSprite;
+                m_backgroundSprite = newValue;
+
+                backgroundSpriteChanged?.Invoke(this, oldValue, newValue);
+            }
             protected void SetFlavourString(string newValue)
             {
                 if (newValue == null)
@@ -305,10 +327,10 @@ namespace Game
 
                 WorldState = null;
                 Hero = null;
-                m_sprite = null;
+                m_foregroundSprite = null;
                 m_flavourString = null;
 
-                spriteChanged = null;
+                foregroundSpriteChanged = null;
                 flavourStringChanged = null;
                 stateStringChanged = null;
 

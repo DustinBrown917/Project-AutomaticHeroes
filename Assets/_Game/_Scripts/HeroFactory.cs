@@ -19,7 +19,7 @@ namespace Game
         private static HeroFactory m_instance;
 
         [SerializeField] private Hero m_heroPrefab;
-        [SerializeField] private HeroColor[] m_heroColors;
+        [SerializeField] private HeroCore[] m_heroColors;
 
         private int m_nextHeroColor;
 

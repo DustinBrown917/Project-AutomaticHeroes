@@ -10,9 +10,10 @@ namespace Game
     [RequireComponent(typeof(HeroStamina))]
     [RequireComponent(typeof(HeroHealth))]
     [RequireComponent(typeof(HeroSkills))]
+    [RequireComponent(typeof(HeroEquipment))]
     public class Hero : MonoBehaviour, WorldTime.IListener
     {
-        public HeroColor Color { get; private set; }
+        public HeroCore Core { get; private set; }
         public HeroGraphic Graphic { get; private set; }
         public HeroLevel Level { get; private set; }
         public HeroMovement Movement { get; private set; }
@@ -20,6 +21,7 @@ namespace Game
         public HeroHealth Health { get; private set; }
         public HeroStamina Stamina { get; private set; }
         public HeroSkills Skills { get; private set; }
+        public HeroEquipment Equipment { get; private set; }
 
         public bool Initialized { get; private set; }
 
@@ -32,6 +34,7 @@ namespace Game
             Health = GetComponent<HeroHealth>();
             Stamina = GetComponent<HeroStamina>();
             Skills = GetComponent<HeroSkills>();
+            Equipment = GetComponent<HeroEquipment>();
         }
 
         private void Start()
@@ -54,6 +57,7 @@ namespace Game
             Health = null;
             Stamina = null;
             Skills = null;
+            Equipment = null;
         }
 
         /// <summary>
@@ -61,7 +65,7 @@ namespace Game
         /// </summary>
         /// <param name="location">Where the hero starts. Cannot be null.</param>
         /// <exception cref="System.ArgumentNullException"></exception>
-        public void Initialize(HeroColor color, ILocation location)
+        public void Initialize(HeroCore core, ILocation location)
         {
             if (Initialized)
                 return;
@@ -70,14 +74,15 @@ namespace Game
                 throw new System.ArgumentNullException(nameof(location));
             }
 
-            Color = color;
+            Core = core;
 
             Skills.Initialize();
             Level.Initialize();
             Movement.Initialize(location);
-            Graphic.Initialize(color);
+            Graphic.Initialize();
             Health.Initialize();
             Stamina.Initialize();
+            Equipment.Initialize();
             Brain.Initialize();
 
             WorldState.Instance.Time.AddListener(this);

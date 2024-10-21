@@ -12,5 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d54a64e0fd5ddf24093c53af4fa71d0e, type: 3}
   m_Name: All HeroSkillDefs
   m_EditorClassIdentifier: 
-  m_defs:
-  - {fileID: 11400000, guid: f700ab94e1c350d44a6a8331f62f8bed, type: 2}
+  m_items:
+  - {fileID: 11400000, guid: 8c5fb86cf4f9f6c48838482ff3f5a159, type: 2}
+  - {fileID: 11400000, guid: b05f8422ed57e6b4ca934bdb68468a67, type: 2}
+  - {fileID: 11400000, guid: 9a6ef905a0005a442843e8c598590b86, type: 2}
+  - {fileID: 11400000, guid: 59d7ace8967c0814abffd10b3c94f3d7, type: 2}

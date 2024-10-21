@@ -5,8 +5,8 @@ using System;
 
 namespace Game
 {
-    [CreateAssetMenu(fileName = "New Hero Color", menuName = "Game/Hero Color")]
-    public class HeroColor : ScriptableObject
+    [CreateAssetMenu(fileName = "New Hero Core", menuName = "Game/Hero Core")]
+    public class HeroCore : ScriptableObject
     {
         public string Name => name;
 
@@ -28,6 +28,9 @@ namespace Game
         [field: SerializeField] public Texture2D m_bannerBase;
         [field: SerializeField] public Texture2D m_primaryDecal;
         [field: SerializeField] public Texture2D m_secondaryDecal;
+
+        public IWeapon UnnarmedWeapon => m_unnarmedWeapon;
+        [SerializeField] private ScriptableWeapon m_unnarmedWeapon;
 
         public Sprite BannerSprite
         {

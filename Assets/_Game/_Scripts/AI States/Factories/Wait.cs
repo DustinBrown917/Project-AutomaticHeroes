@@ -74,7 +74,7 @@ namespace Game
             {
                 State state = new State(ParentBehaviour, WorldState.Instance, hero);
                 state.StateString = stateString;
-                state.Sprite = sprite;
+                state.ForegroundSprite = sprite;
                 return state;
             }
 

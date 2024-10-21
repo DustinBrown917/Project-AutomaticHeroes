@@ -904,9 +904,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_trainingState:
     m_behaviour:
-      flavours: []
-      stateString: Training.
-      sprite: {fileID: 21300000, guid: 41ef6c35f155bcb43952d5da316374fd, type: 3}
+      flavours:
+      - flavorText: Learning techniques from a retired soldier.
+      - flavorText: Practicing with the local guards.
+      - flavorText: Working on form.
+      - flavorText: Working on balance.
+      - flavorText: Working on conditioning.
+      - flavorText: Working on accuracy.
+      - flavorText: Practicing neat tricks.
+      - flavorText: Practicing forms from an old manual.
+      - flavorText: Learning from a mentor.
+      stateString: Training {0}.
+      backgroundSprite: {fileID: 21300000, guid: 05a4e847a2522e749bcc1edc6530edaa, type: 3}
+      m_trainerLevel: 10
+      m_skillDef: {fileID: 11400000, guid: 9a6ef905a0005a442843e8c598590b86, type: 2}
 --- !u!114 &397797192
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1398,7 +1409,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8153231705256620972, guid: 8745bc6e15abee942a7c5c94aca18df4, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1119288170}
   m_SourcePrefab: {fileID: 100100000, guid: 8745bc6e15abee942a7c5c94aca18df4, type: 3}
 --- !u!4 &409493990 stripped
 Transform:
@@ -1410,7 +1424,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7108896763118586010, guid: 8745bc6e15abee942a7c5c94aca18df4, type: 3}
   m_PrefabInstance: {fileID: 409493989}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 1119288168}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b2baab441e4d1704b9abd32ec5c5684a, type: 3}
@@ -1990,7 +2004,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8153231705256620972, guid: 8745bc6e15abee942a7c5c94aca18df4, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 881797829}
   m_SourcePrefab: {fileID: 100100000, guid: 8745bc6e15abee942a7c5c94aca18df4, type: 3}
 --- !u!4 &492528341 stripped
 Transform:
@@ -2002,7 +2019,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7108896763118586010, guid: 8745bc6e15abee942a7c5c94aca18df4, type: 3}
   m_PrefabInstance: {fileID: 492528340}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 881797827}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b2baab441e4d1704b9abd32ec5c5684a, type: 3}
@@ -3142,6 +3159,41 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 749276323757739308, guid: 35f9f532907d43c4e809fa34bfe81dd1, type: 3}
   m_PrefabInstance: {fileID: 876825930}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &881797827 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8153231705256620972, guid: 8745bc6e15abee942a7c5c94aca18df4, type: 3}
+  m_PrefabInstance: {fileID: 492528340}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &881797829
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 881797827}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 18d8adc0063765e48a91ba2689a9318e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_monsterHunt:
+    m_behaviour:
+      foregroundSprite: {fileID: 21300000, guid: 64db4e4b293f90148b96ecfdf7fd9111, type: 3}
+      stateString: Hunting Monsters.
+      monsterLevelRange:
+        m_min: 1
+        m_max: 10
+      monsters:
+      - <MonsterDef>k__BackingField: {fileID: 11400000, guid: e8cd268d0e2109240bce0902376ec7d6, type: 2}
+        <Density>k__BackingField: 0.4
+      - <MonsterDef>k__BackingField: {fileID: 11400000, guid: 937216b4efea2a8479fbedf9a9077f16, type: 2}
+        <Density>k__BackingField: 0.3
+      - <MonsterDef>k__BackingField: {fileID: 11400000, guid: 6dd260ba34231d1459591b118f7efb2b, type: 2}
+        <Density>k__BackingField: 0.2
+      - <MonsterDef>k__BackingField: {fileID: 11400000, guid: d245e7a13cf773f4d8309d22cae9e200, type: 2}
+        <Density>k__BackingField: 0.1
+      searchingFlavour:
+        flavorText: Searching for monsters.
 --- !u!114 &945643795 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7108896763118586010, guid: 8745bc6e15abee942a7c5c94aca18df4, type: 3}
@@ -3425,9 +3477,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_trainingState:
     m_behaviour:
-      flavours: []
-      stateString: Training.
-      sprite: {fileID: 21300000, guid: 41ef6c35f155bcb43952d5da316374fd, type: 3}
+      flavours:
+      - flavorText: Learning techniques from a retired soldier.
+      - flavorText: Practicing with the local guards.
+      - flavorText: Working on form.
+      - flavorText: Working on balance.
+      - flavorText: Working on conditioning.
+      - flavorText: Working on accuracy.
+      - flavorText: Practicing neat tricks.
+      stateString: Training {0}.
+      backgroundSprite: {fileID: 21300000, guid: 05a4e847a2522e749bcc1edc6530edaa, type: 3}
+      m_trainerLevel: 6
+      m_skillDef: {fileID: 11400000, guid: 9a6ef905a0005a442843e8c598590b86, type: 2}
 --- !u!114 &1009692406
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3571,6 +3632,45 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timeScale: 900
+--- !u!1 &1119288168 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8153231705256620972, guid: 8745bc6e15abee942a7c5c94aca18df4, type: 3}
+  m_PrefabInstance: {fileID: 409493989}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1119288170
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1119288168}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 18d8adc0063765e48a91ba2689a9318e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_monsterHunt:
+    m_behaviour:
+      foregroundSprite: {fileID: 21300000, guid: 64db4e4b293f90148b96ecfdf7fd9111, type: 3}
+      stateString: Hunting Monsters.
+      monsterLevelRange:
+        m_min: 1
+        m_max: 10
+      monsters:
+      - <MonsterDef>k__BackingField: {fileID: 11400000, guid: e8cd268d0e2109240bce0902376ec7d6, type: 2}
+        <Density>k__BackingField: 0.3
+      - <MonsterDef>k__BackingField: {fileID: 11400000, guid: dbc1fedcf95939043916af58759e0472, type: 2}
+        <Density>k__BackingField: 0.3
+      - <MonsterDef>k__BackingField: {fileID: 11400000, guid: dbc7780369251184997535ff1b40848a, type: 2}
+        <Density>k__BackingField: 0.2
+      - <MonsterDef>k__BackingField: {fileID: 11400000, guid: ae005161ec28e3c4086ed0df8d15c6c7, type: 2}
+        <Density>k__BackingField: 0.1
+      - <MonsterDef>k__BackingField: {fileID: 11400000, guid: dee65525f7cd9aa48a38eedae4051f53, type: 2}
+        <Density>k__BackingField: 0.06
+      - <MonsterDef>k__BackingField: {fileID: 11400000, guid: a3e897dec8719e84fabc67468c805585, type: 2}
+        <Density>k__BackingField: 0.04
+      searchingFlavour:
+        flavorText: Searching for monsters.
 --- !u!1001 &1182670005
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4984,9 +5084,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_trainingState:
     m_behaviour:
-      flavours: []
-      stateString: Training.
-      sprite: {fileID: 21300000, guid: 41ef6c35f155bcb43952d5da316374fd, type: 3}
+      flavours:
+      - flavorText: Learning techniques from a soldier.
+      - flavorText: Participating in squad drills.
+      - flavorText: Sparring with off duty soldiers.
+      - flavorText: Participating in mock combat.
+      - flavorText: Working on physical conditioning.
+      - flavorText: Studying a skilled master.
+      - flavorText: Building discipline.
+      stateString: Training {0}.
+      backgroundSprite: {fileID: 21300000, guid: 05a4e847a2522e749bcc1edc6530edaa, type: 3}
+      m_trainerLevel: 15
+      m_skillDef: {fileID: 11400000, guid: 9a6ef905a0005a442843e8c598590b86, type: 2}
 --- !u!114 &1481098519
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5757,9 +5866,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_trainingState:
     m_behaviour:
-      flavours: []
-      stateString: Training.
-      sprite: {fileID: 21300000, guid: 41ef6c35f155bcb43952d5da316374fd, type: 3}
+      flavours:
+      - flavorText: Learning techniques from a retired soldier.
+      - flavorText: Practicing with the local guards.
+      - flavorText: Working on form.
+      - flavorText: Working on balance.
+      - flavorText: Working on conditioning.
+      - flavorText: Working on accuracy.
+      - flavorText: Practicing neat tricks.
+      stateString: Training {0}.
+      backgroundSprite: {fileID: 21300000, guid: 05a4e847a2522e749bcc1edc6530edaa, type: 3}
+      m_trainerLevel: 7
+      m_skillDef: {fileID: 11400000, guid: 9a6ef905a0005a442843e8c598590b86, type: 2}
 --- !u!114 &1592000003
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6258,6 +6376,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 8153231705256620972, guid: 8745bc6e15abee942a7c5c94aca18df4, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1592465703}
+    - targetCorrespondingSourceObject: {fileID: 8153231705256620972, guid: 8745bc6e15abee942a7c5c94aca18df4, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1592465705}
   m_SourcePrefab: {fileID: 100100000, guid: 8745bc6e15abee942a7c5c94aca18df4, type: 3}
 --- !u!4 &1592465698 stripped
 Transform:
@@ -6311,6 +6432,30 @@ MonoBehaviour:
       treatmentQuality: 2
       flavours: []
       sprite: {fileID: 21300000, guid: e5f6bdbb53a6e1e47aa0b7153f16f5f6, type: 3}
+--- !u!114 &1592465705
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1200078537}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 18d8adc0063765e48a91ba2689a9318e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_monsterHunt:
+    m_behaviour:
+      foregroundSprite: {fileID: 21300000, guid: 64db4e4b293f90148b96ecfdf7fd9111, type: 3}
+      stateString: Hunting Rats.
+      monsterLevelRange:
+        m_min: 1
+        m_max: 4
+      monsters:
+      - <MonsterDef>k__BackingField: {fileID: 11400000, guid: e8cd268d0e2109240bce0902376ec7d6, type: 2}
+        <Density>k__BackingField: 1
+      searchingFlavour:
+        flavorText: Searching for rats.
 --- !u!1 &1624700078
 GameObject:
   m_ObjectHideFlags: 0

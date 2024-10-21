@@ -9,8 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 27ae748a7de1e404da937dbbd18b8b66, type: 3}
-  m_Name: Dummy Skill
+  m_Script: {fileID: 11500000, guid: 283ee5ac1f11c764c967ffdf6dfbeb5d, type: 3}
+  m_Name: Fist
   m_EditorClassIdentifier: 
-  <DisplayName>k__BackingField: Dummy Skill
-  <DisplaySprite>k__BackingField: {fileID: 21300000, guid: 64db4e4b293f90148b96ecfdf7fd9111, type: 3}
+  m_weapon:
+    <DisplayName>k__BackingField: Fist
+    <WeaponType>k__BackingField: {fileID: 11400000, guid: c8a024165552cfd4e96ec24c1723e6db, type: 2}
+    <RollBonus>k__BackingField: 0

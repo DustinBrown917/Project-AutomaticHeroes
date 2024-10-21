@@ -12,7 +12,7 @@ namespace Game
         /*vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv*/
 
         [System.Serializable]
-        protected class Flavour
+        public class Flavour
         {
             public string flavorText;
         }
@@ -63,9 +63,27 @@ namespace Game
         {
             public List<Flavour> flavours = new();
 
-            public string stateString = "Training.";
+            public string stateString = "Training {0}.";
 
-            public Sprite sprite;
+            public Sprite backgroundSprite;
+
+            public int TrainerLevel
+            {
+                get => m_trainerLevel;
+                set => m_trainerLevel = ValidateTrainerLevel(value);
+            }
+            [SerializeField] private int m_trainerLevel = 1;
+
+            public HeroSkillDef SkillDef
+            {
+                get => m_skillDef;
+                set {
+                    if (value == null)
+                        return;
+                    m_skillDef = value;
+                }
+            }
+            [SerializeField] private HeroSkillDef m_skillDef;
 
             private float m_trainingDuration = 4 * 3600;
             private float m_expPerSecond = WorldTime.PerHourToPerSecond(1.5f);
@@ -74,9 +92,11 @@ namespace Game
 
             protected override State CreateNewState(Hero hero)
             {
+                TrainerLevel = m_trainerLevel; // Forces validation of trainer level.
                 State state = new State(ParentBehaviour, WorldState.Instance, hero);
-                state.StateString = stateString;
-                state.Sprite = sprite;
+                state.StateString = string.Format(stateString, SkillDef.DisplayName);
+                state.BackgroundSprite = backgroundSprite;
+                state.ForegroundSprite = SkillDef.DisplaySprite;
                 return state;
             }
 
@@ -86,7 +106,7 @@ namespace Game
                 if (!bb.Hero.Stamina.TrySpendEnergy(deltaSeconds * HeroStamina.TRAINING_STAMINA_PER_SECOND)) {
                     bb.Succeed();
                 } else {
-                    bb.Hero.Level.GainExperience(deltaSeconds * m_expPerSecond);
+                    bb.Hero.Skills[SkillDef].GainExperience(deltaSeconds * m_expPerSecond);
 
                     if (bb.ElapsedTime >= bb.nextFlavourUpdate) {
                         bb.SetFlavour(GetNewFlavourState(bb));
@@ -106,6 +126,13 @@ namespace Game
                 else
                     return DefaultFlavour;
             }
+
+            private int ValidateTrainerLevel(int value)
+            {
+                if (value < 1)
+                    value = 1;
+                return value;
+            }
         }
 
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
@@ -115,8 +142,10 @@ namespace Game
         private static Flavour DefaultFlavour { get; } = new() { flavorText = string.Empty };
 
         [SerializeField] private Behaviour m_behaviour;
+        public List<Flavour> Flavours => m_behaviour.flavours;
         public string StateString { get => m_behaviour.stateString; set => m_behaviour.stateString = value; }
-        public Sprite Sprite { get => m_behaviour.sprite; set => m_behaviour.sprite = value; }
+        public Sprite BackgroundSprite { get => m_behaviour.backgroundSprite; set => m_behaviour.backgroundSprite = value; }
+        public HeroSkillDef SkillDef { get => m_behaviour.SkillDef; set => m_behaviour.SkillDef = value; }
 
         public Training()
         {
@@ -125,6 +154,10 @@ namespace Game
 
         protected override IHeroBehaviour.IBehaviour InitializeBehaviour()
         {
+            if(m_behaviour.SkillDef == null) {
+                m_behaviour.SkillDef = HeroSkillDef.All.Items[0];
+            }
+
             return m_behaviour;
         }
 

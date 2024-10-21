@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Game.UI
 {
-    public class VM_HeroColor : VM_Base<HeroColor>
+    public class VM_HeroColor : VM_Base<HeroCore>
     {
         public string Name
         {
@@ -48,7 +48,7 @@ namespace Game.UI
         }
         private Sprite m_bannerSprite;
 
-        protected override bool IsEqual(HeroColor a, HeroColor b) => a == b;
+        protected override bool IsEqual(HeroCore a, HeroCore b) => a == b;
 
         protected override void SetValuesToDefault()
         {

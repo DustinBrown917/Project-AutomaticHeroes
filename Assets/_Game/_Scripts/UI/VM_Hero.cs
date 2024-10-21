@@ -7,12 +7,12 @@ namespace Game.UI
 {
     public class VM_Hero : VM_Base<Hero>
     {
-        public HeroColor Color
+        public HeroCore Color
         {
             get => m_color;
             set => PropertySetter.Set(ref m_color, value, m_color == value, OnPropertyChanged);
         }
-        private HeroColor m_color;
+        private HeroCore m_color;
 
         public HeroLevel Level
         {
@@ -74,7 +74,7 @@ namespace Game.UI
             Level = Model.Level;
             Brain = Model.Brain;
             Movement = Model.Movement;
-            Color = Model.Color;
+            Color = Model.Core;
             Graphic = Model.Graphic;
             Stamina = Model.Stamina;
             Health = Model.Health;

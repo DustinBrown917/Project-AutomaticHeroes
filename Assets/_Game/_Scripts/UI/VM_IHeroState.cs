@@ -20,12 +20,19 @@ namespace Game.UI
         }
         private string m_flavourString;
 
-        public Sprite Sprite
+        public Sprite ForegroundSprite
         {
-            get => m_sprite;
-            private set => PropertySetter.Set(ref m_sprite, value, m_sprite == value, OnPropertyChanged);
+            get => m_foregroundSprite;
+            private set => PropertySetter.Set(ref m_foregroundSprite, value, m_foregroundSprite == value, OnPropertyChanged);
         }
-        private Sprite m_sprite;
+        private Sprite m_foregroundSprite;
+
+        public Sprite BackgroundSprite
+        {
+            get => m_backroundSprite;
+            private set => PropertySetter.Set(ref m_backroundSprite, value, m_backroundSprite == value, OnPropertyChanged);
+        }
+        private Sprite m_backroundSprite;
 
         protected override bool IsEqual(IHeroBehaviour.IState a, IHeroBehaviour.IState b) => a == b;
 
@@ -33,29 +40,31 @@ namespace Game.UI
         {
             StateString = string.Empty;
             FlavourString = string.Empty;
-            Sprite = null;
+            ForegroundSprite = null;
+            BackgroundSprite = null;
         }
 
         protected override void UpdateValues()
         {
             StateString = Model.StateString;
             FlavourString = Model.FlavourString;
-            Sprite = Model.Sprite;
+            ForegroundSprite = Model.ForegroundSprite;
+            BackgroundSprite = Model.BackgroundSprite;
         }
 
         protected override void OnModelChangedToNotNull()
         {
-            Model.spriteChanged += Model_SpriteChanged;
+            Model.foregroundSpriteChanged += Model_ForegroundSpriteChanged;
+            Model.backgroundSpriteChanged += Model_BackgroundSpriteChanged;
             Model.stateStringChanged += Model_StateStringChanged;
             Model.flavourStringChanged += Model_FlavourStringChanged;
             Model.disposed += Model_Disposed;
         }
 
-
-
         protected override void OnModelChangingFromNotNull()
         {
-            Model.spriteChanged -= Model_SpriteChanged;
+            Model.foregroundSpriteChanged -= Model_ForegroundSpriteChanged;
+            Model.backgroundSpriteChanged -= Model_BackgroundSpriteChanged;
             Model.stateStringChanged -= Model_StateStringChanged;
             Model.flavourStringChanged -= Model_FlavourStringChanged;
             Model.disposed -= Model_Disposed;
@@ -66,9 +75,13 @@ namespace Game.UI
             FlavourString = newValue;
         }
 
-        private void Model_SpriteChanged(IHeroBehaviour.IState source, Sprite oldValue, Sprite newValue)
+        private void Model_ForegroundSpriteChanged(IHeroBehaviour.IState source, Sprite oldValue, Sprite newValue)
         {
-            Sprite = newValue;
+            ForegroundSprite = newValue;
+        }
+        private void Model_BackgroundSpriteChanged(IHeroBehaviour.IState source, Sprite oldValue, Sprite newValue)
+        {
+            BackgroundSprite = newValue;
         }
 
         private void Model_StateStringChanged(IHeroBehaviour.IState source, string oldValue, string newValue)

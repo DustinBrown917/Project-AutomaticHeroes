@@ -21,8 +21,8 @@ namespace Game
                 return;
             }
 
-            for(int i = 0; i < All.Defs.Count; i++) {
-                All.Defs[i].RuntimeIndex = i;
+            for(int i = 0; i < All.Count; i++) {
+                All[i].RuntimeIndex = i;
             }
         }
 

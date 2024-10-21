@@ -1,12 +1,14 @@
+using System.Collections;
 using System.Collections.Generic;
 
 namespace Game
 {
-    public class HeroSkills : HeroComponent
+    public class HeroSkills : HeroComponent, IEnumerable<HeroSkill>
     {
-        public IReadOnlyList<HeroSkill> Skills => m_skills;
-        private HeroSkill[] m_skills;
+        public HeroSkill this[HeroSkillDef def] => this[def.RuntimeIndex];
+        public HeroSkill this[int index] => m_skills[index];
 
+        private HeroSkill[] m_skills;
         public int Count => m_skills.Length;
 
         public bool Initialized { get; private set; }
@@ -16,13 +18,23 @@ namespace Game
             if (Initialized)
                 return;
 
-            m_skills = new HeroSkill[HeroSkillDef.All.Defs.Count];
+            m_skills = new HeroSkill[HeroSkillDef.All.Count];
 
             for (int i = 0; i < m_skills.Length; i++) {
-                m_skills[i] = new HeroSkill(HeroSkillDef.All.Defs[i]);
+                m_skills[i] = new HeroSkill(HeroSkillDef.All[i]);
+                m_skills[i].levelChanged += OnSkillLevelChanged;
             }
 
             Initialized = true;
         }
+
+        private void OnSkillLevelChanged(HeroSkill source, int oldValue, int newValue)
+        {
+            ActionFeed.Post($"{Hero.Core.ColoredName} increased their {source.Def.DisplayName} to {newValue}!");
+            Hero.Level.GainExperience(1.0f);
+        }
+
+        public IEnumerator<HeroSkill> GetEnumerator() => ((IEnumerable<HeroSkill>)m_skills).GetEnumerator();
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
     }
 }

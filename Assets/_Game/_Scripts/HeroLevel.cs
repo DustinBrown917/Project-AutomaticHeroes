@@ -8,10 +8,7 @@ namespace Game
 
         private static int GetExperienceNeededToLevel(int level)
         {
-            if (level < 0)
-                level = 0;
-
-            return (level + 1) * 10;
+            return 4;
         }
 
         public int Level
@@ -65,7 +62,7 @@ namespace Game
                 newExperience -= ExperienceNeededToLevel;
                 Level++;
                 leveledUp?.Invoke(this);
-                ActionFeed.Post($"{Hero.Color.ColoredName} has reached level {Level}!");
+                ActionFeed.Post($"{Hero.Core.ColoredName} has reached level {Level}!");
             }
 
             Experience = newExperience;

@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13c543de5d2456242be5c68e8e65aea9, type: 3}
   m_Name: Hag
   m_EditorClassIdentifier: 
-  <ExpPerLevel>k__BackingField: 3
-  <AttackDamage>k__BackingField: 3
+  <Damage>k__BackingField: 6
+  <Wounds>k__BackingField: 1
