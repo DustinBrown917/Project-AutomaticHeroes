@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: All HeroSkillDefs
   m_EditorClassIdentifier: 
   m_items:
-  - {fileID: 11400000, guid: 8c5fb86cf4f9f6c48838482ff3f5a159, type: 2}
-  - {fileID: 11400000, guid: b05f8422ed57e6b4ca934bdb68468a67, type: 2}
-  - {fileID: 11400000, guid: 9a6ef905a0005a442843e8c598590b86, type: 2}
-  - {fileID: 11400000, guid: 59d7ace8967c0814abffd10b3c94f3d7, type: 2}
+  - {fileID: 11400000, guid: e05cfa575c9cda7418fa27739d61c575, type: 2}
+  - {fileID: 11400000, guid: f189a98a4004c044fa63681fa975b4e8, type: 2}
+  - {fileID: 11400000, guid: bc6d595399377c148a062aa83ab8fb15, type: 2}
+  - {fileID: 11400000, guid: f7751060aa0f75a42966b7838ffcdc8e, type: 2}

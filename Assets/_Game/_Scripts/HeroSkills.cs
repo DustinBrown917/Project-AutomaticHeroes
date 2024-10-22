@@ -30,7 +30,7 @@ namespace Game
 
         private void OnSkillLevelChanged(HeroSkill source, int oldValue, int newValue)
         {
-            ActionFeed.Post($"{Hero.Core.ColoredName} increased their {source.Def.DisplayName} to {newValue}!");
+            ActionFeed.Post($"{Hero.Core.ColoredName} increased their {source.Def.DisplayName} skill to {newValue}!");
             Hero.Level.GainExperience(1.0f);
         }
 

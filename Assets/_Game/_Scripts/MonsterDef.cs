@@ -84,7 +84,7 @@ namespace Game
 
             if (heroHasEnoughEnergy) {
                 int heroMaxRoll = hero.Skills[heroWeapon.WeaponType.Skill].Level * 2;
-                roll = Mathf.RoundToInt(worldState.Rng.Float01() * heroMaxRoll) + heroWeapon.RollBonus;
+                roll = Mathf.RoundToInt(worldState.Rng.Float01() * heroMaxRoll) + heroWeapon.UpgradeLevel;
             }
 
             if(roll >= monster.Level) {

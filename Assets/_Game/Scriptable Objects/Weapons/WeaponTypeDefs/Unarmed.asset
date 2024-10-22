@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <DisplayName>k__BackingField: Fists
   <DisplaySprite>k__BackingField: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
-  <Skill>k__BackingField: {fileID: 11400000, guid: 59d7ace8967c0814abffd10b3c94f3d7, type: 2}
+  <Skill>k__BackingField: {fileID: 11400000, guid: e05cfa575c9cda7418fa27739d61c575, type: 2}

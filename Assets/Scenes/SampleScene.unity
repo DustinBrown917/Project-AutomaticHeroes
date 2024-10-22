@@ -906,18 +906,27 @@ MonoBehaviour:
     m_behaviour:
       flavours:
       - flavorText: Learning techniques from a retired soldier.
+        mustBeWieldingWeaponType: []
       - flavorText: Practicing with the local guards.
+        mustBeWieldingWeaponType: []
       - flavorText: Working on form.
+        mustBeWieldingWeaponType: []
       - flavorText: Working on balance.
+        mustBeWieldingWeaponType: []
       - flavorText: Working on conditioning.
+        mustBeWieldingWeaponType: []
       - flavorText: Working on accuracy.
+        mustBeWieldingWeaponType: []
       - flavorText: Practicing neat tricks.
+        mustBeWieldingWeaponType: []
       - flavorText: Practicing forms from an old manual.
+        mustBeWieldingWeaponType: []
       - flavorText: Learning from a mentor.
+        mustBeWieldingWeaponType: []
       stateString: Training {0}.
       backgroundSprite: {fileID: 21300000, guid: 05a4e847a2522e749bcc1edc6530edaa, type: 3}
       m_trainerLevel: 10
-      m_skillDef: {fileID: 11400000, guid: 9a6ef905a0005a442843e8c598590b86, type: 2}
+      m_skillDef: {fileID: 11400000, guid: e05cfa575c9cda7418fa27739d61c575, type: 2}
 --- !u!114 &397797192
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3479,16 +3488,23 @@ MonoBehaviour:
     m_behaviour:
       flavours:
       - flavorText: Learning techniques from a retired soldier.
+        mustBeWieldingWeaponType: []
       - flavorText: Practicing with the local guards.
+        mustBeWieldingWeaponType: []
       - flavorText: Working on form.
+        mustBeWieldingWeaponType: []
       - flavorText: Working on balance.
+        mustBeWieldingWeaponType: []
       - flavorText: Working on conditioning.
+        mustBeWieldingWeaponType: []
       - flavorText: Working on accuracy.
+        mustBeWieldingWeaponType: []
       - flavorText: Practicing neat tricks.
+        mustBeWieldingWeaponType: []
       stateString: Training {0}.
       backgroundSprite: {fileID: 21300000, guid: 05a4e847a2522e749bcc1edc6530edaa, type: 3}
       m_trainerLevel: 6
-      m_skillDef: {fileID: 11400000, guid: 9a6ef905a0005a442843e8c598590b86, type: 2}
+      m_skillDef: {fileID: 11400000, guid: e05cfa575c9cda7418fa27739d61c575, type: 2}
 --- !u!114 &1009692406
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5086,16 +5102,32 @@ MonoBehaviour:
     m_behaviour:
       flavours:
       - flavorText: Learning techniques from a soldier.
+        mustBeWieldingWeaponType: []
       - flavorText: Participating in squad drills.
+        mustBeWieldingWeaponType: []
       - flavorText: Sparring with off duty soldiers.
+        mustBeWieldingWeaponType: []
       - flavorText: Participating in mock combat.
+        mustBeWieldingWeaponType: []
       - flavorText: Working on physical conditioning.
+        mustBeWieldingWeaponType: []
       - flavorText: Studying a skilled master.
+        mustBeWieldingWeaponType: []
       - flavorText: Building discipline.
+        mustBeWieldingWeaponType: []
+      - flavorText: Sparring with weighted swords.
+        mustBeWieldingWeaponType:
+        - {fileID: 11400000, guid: cc588bbb626c9644ebb853e567873f61, type: 2}
+      - flavorText: Practicing primary cuts.
+        mustBeWieldingWeaponType:
+        - {fileID: 11400000, guid: cc588bbb626c9644ebb853e567873f61, type: 2}
+      - flavorText: Dislodging sword from training dummy.
+        mustBeWieldingWeaponType:
+        - {fileID: 11400000, guid: cc588bbb626c9644ebb853e567873f61, type: 2}
       stateString: Training {0}.
       backgroundSprite: {fileID: 21300000, guid: 05a4e847a2522e749bcc1edc6530edaa, type: 3}
       m_trainerLevel: 15
-      m_skillDef: {fileID: 11400000, guid: 9a6ef905a0005a442843e8c598590b86, type: 2}
+      m_skillDef: {fileID: 11400000, guid: e05cfa575c9cda7418fa27739d61c575, type: 2}
 --- !u!114 &1481098519
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5868,16 +5900,23 @@ MonoBehaviour:
     m_behaviour:
       flavours:
       - flavorText: Learning techniques from a retired soldier.
+        mustBeWieldingWeaponType: []
       - flavorText: Practicing with the local guards.
+        mustBeWieldingWeaponType: []
       - flavorText: Working on form.
+        mustBeWieldingWeaponType: []
       - flavorText: Working on balance.
+        mustBeWieldingWeaponType: []
       - flavorText: Working on conditioning.
+        mustBeWieldingWeaponType: []
       - flavorText: Working on accuracy.
+        mustBeWieldingWeaponType: []
       - flavorText: Practicing neat tricks.
+        mustBeWieldingWeaponType: []
       stateString: Training {0}.
       backgroundSprite: {fileID: 21300000, guid: 05a4e847a2522e749bcc1edc6530edaa, type: 3}
       m_trainerLevel: 7
-      m_skillDef: {fileID: 11400000, guid: 9a6ef905a0005a442843e8c598590b86, type: 2}
+      m_skillDef: {fileID: 11400000, guid: e05cfa575c9cda7418fa27739d61c575, type: 2}
 --- !u!114 &1592000003
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7548,6 +7587,63 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 749276323757739308, guid: 35f9f532907d43c4e809fa34bfe81dd1, type: 3}
   m_PrefabInstance: {fileID: 108854620321530353}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &1361255856625324364
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 3375279789859244914, guid: 5bef41970d85ea244b6eae1b9bb0b5e4, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -14.598037
+      objectReference: {fileID: 0}
+    - target: {fileID: 3375279789859244914, guid: 5bef41970d85ea244b6eae1b9bb0b5e4, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 5.1455827
+      objectReference: {fileID: 0}
+    - target: {fileID: 3375279789859244914, guid: 5bef41970d85ea244b6eae1b9bb0b5e4, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 1.9664742
+      objectReference: {fileID: 0}
+    - target: {fileID: 3375279789859244914, guid: 5bef41970d85ea244b6eae1b9bb0b5e4, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3375279789859244914, guid: 5bef41970d85ea244b6eae1b9bb0b5e4, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3375279789859244914, guid: 5bef41970d85ea244b6eae1b9bb0b5e4, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3375279789859244914, guid: 5bef41970d85ea244b6eae1b9bb0b5e4, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3375279789859244914, guid: 5bef41970d85ea244b6eae1b9bb0b5e4, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3375279789859244914, guid: 5bef41970d85ea244b6eae1b9bb0b5e4, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3375279789859244914, guid: 5bef41970d85ea244b6eae1b9bb0b5e4, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4370646391928088976, guid: 5bef41970d85ea244b6eae1b9bb0b5e4, type: 3}
+      propertyPath: m_Name
+      value: Explore Tree
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 5bef41970d85ea244b6eae1b9bb0b5e4, type: 3}
 --- !u!1001 &6816830611837111076
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8133,3 +8229,4 @@ SceneRoots:
   - {fileID: 1397051486}
   - {fileID: 580834467}
   - {fileID: 11041142}
+  - {fileID: 1361255856625324364}

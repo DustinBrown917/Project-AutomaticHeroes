@@ -2,6 +2,7 @@ using UnityEngine;
 using NaughtyAttributes;
 using Unity.VisualScripting;
 using System;
+using System.Collections.Generic;
 
 namespace Game
 {
@@ -29,8 +30,20 @@ namespace Game
         [field: SerializeField] public Texture2D m_primaryDecal;
         [field: SerializeField] public Texture2D m_secondaryDecal;
 
-        public IWeapon UnnarmedWeapon => m_unnarmedWeapon;
-        [SerializeField] private ScriptableWeapon m_unnarmedWeapon;
+        public IWeapon StartingWeapon
+        {
+            get {
+                if (m_startingWeaponInstance == null)
+                    m_startingWeaponInstance = m_startingWeapon.GetCopy();
+
+                return m_startingWeaponInstance;
+            }
+        }
+        [SerializeField] private ScriptableWeapon m_startingWeapon;
+        private IWeapon m_startingWeaponInstance;
+
+        public IReadOnlyList<WeaponTypeDef> StartingWeaponProficiencies => m_startingWeaponProficiencies;
+        [SerializeField] private WeaponTypeDef[] m_startingWeaponProficiencies;
 
         public Sprite BannerSprite
         {

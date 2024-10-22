@@ -15,6 +15,21 @@ namespace Game
         public class Flavour
         {
             public string flavorText;
+
+            public WeaponTypeDef[] mustBeWieldingWeaponType;
+
+            public bool WeaponSuitsFlavour(IWeapon weapon)
+            {
+                if (mustBeWieldingWeaponType == null || mustBeWieldingWeaponType.Length == 0)
+                    return true;
+
+                for(int i = 0; i < mustBeWieldingWeaponType.Length; i++) {
+                    if (mustBeWieldingWeaponType[i] == weapon.WeaponType)
+                        return true;
+                }
+
+                return false;
+            }
         }
 
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
@@ -121,10 +136,21 @@ namespace Game
 
             private Flavour GetNewFlavourState(State bb)
             {
-                if (flavours.Count > 0)
-                    return bb.WorldState.Rng.GetRandom(flavours);
+                List<Flavour> validFlavours = UnityEngine.Pool.ListPool<Flavour>.Get();
+                Flavour chosenFlavour;
+
+                foreach(Flavour flavour in flavours) {
+                    if (flavour.WeaponSuitsFlavour(bb.Hero.Equipment.MainWeapon))
+                        validFlavours.Add(flavour);
+                }
+
+                if (validFlavours.Count > 0)
+                    chosenFlavour = bb.WorldState.Rng.GetRandom(validFlavours);
                 else
-                    return DefaultFlavour;
+                    chosenFlavour = DefaultFlavour;
+
+                UnityEngine.Pool.ListPool<Flavour>.Release(validFlavours);
+                return chosenFlavour;
             }
 
             private int ValidateTrainerLevel(int value)

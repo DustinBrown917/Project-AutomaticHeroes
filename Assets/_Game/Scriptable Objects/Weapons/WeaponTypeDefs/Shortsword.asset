@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <DisplayName>k__BackingField: Shortsword
   <DisplaySprite>k__BackingField: {fileID: 21300000, guid: 3d728020e65a50e4996edf9560ef92d6, type: 3}
-  <Skill>k__BackingField: {fileID: 11400000, guid: 9a6ef905a0005a442843e8c598590b86, type: 2}
+  <Skill>k__BackingField: {fileID: 11400000, guid: e05cfa575c9cda7418fa27739d61c575, type: 2}
