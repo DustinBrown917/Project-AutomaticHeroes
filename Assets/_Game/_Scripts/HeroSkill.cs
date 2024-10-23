@@ -1,8 +1,9 @@
 using SegoLib;
+using System;
 
 namespace Game
 {
-    public class HeroSkill
+    public class HeroSkill : SegoLib.IDisposable
     {
         public static int GetExperienceNeededToLevel(int currentLevel)
         {
@@ -40,8 +41,15 @@ namespace Game
             get => m_experienceGainMultiplier;
             set => SetExperienceGainMultiplier(value);
         }
+
+
         private float m_experienceGainMultiplier = 1.0f;
         public event ValueChangedWithSourceEvent<HeroSkill, float> experienceGainMultiplierChanged;
+
+
+
+        public bool IsDisposed { get; private set; }
+        public event Action<SegoLib.IDisposable> disposed;
 
         public HeroSkill(HeroSkillDef def)
         {
@@ -115,6 +123,21 @@ namespace Game
             m_experienceGainMultiplier = newValue;
 
             experienceGainMultiplierChanged?.Invoke(this, oldValue, newValue);
+        }
+
+        public void Dispose()
+        {
+            if (IsDisposed)
+                return;
+
+            levelChanged = null;
+            experienceChanged = null;
+            experienceGainMultiplierChanged = null;
+            experienceNeededToLevelChanged = null;
+
+            disposed?.Invoke(this);
+            IsDisposed = true;
+            disposed = null;
         }
     }
 }

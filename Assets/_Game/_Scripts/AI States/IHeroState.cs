@@ -141,8 +141,8 @@ namespace Game
             public Sprite BackgroundSprite { get; }
             public event ValueChangedWithSourceEvent<IState, Sprite> backgroundSpriteChanged;
 
-            public string FlavourString { get; }
-            public event ValueChangedWithSourceEvent<IState, string> flavourStringChanged;
+            public string FlavourText { get; }
+            public event ValueChangedWithSourceEvent<IState, string> flavourTextChanged;
             public string StateString { get; }
             public event ValueChangedWithSourceEvent<IState, string> stateStringChanged;
 
@@ -210,13 +210,13 @@ namespace Game
             private string m_stateString;
             public event ValueChangedWithSourceEvent<IState, string> stateStringChanged;
 
-            public string FlavourString
+            public string FlavourText
             {
                 get => m_flavourString;
                 protected set => SetFlavourString(value);
             }
             private string m_flavourString;
-            public event ValueChangedWithSourceEvent<IState, string> flavourStringChanged;
+            public event ValueChangedWithSourceEvent<IState, string> flavourTextChanged;
 
             public float ElapsedTime { get; private set; }
 
@@ -263,7 +263,7 @@ namespace Game
                 string oldValue = m_flavourString;
                 m_flavourString = newValue;
 
-                flavourStringChanged?.Invoke(this, oldValue, newValue);
+                flavourTextChanged?.Invoke(this, oldValue, newValue);
             } 
 
             protected void SetStateString(string newValue)
@@ -331,7 +331,7 @@ namespace Game
                 m_flavourString = null;
 
                 foregroundSpriteChanged = null;
-                flavourStringChanged = null;
+                flavourTextChanged = null;
                 stateStringChanged = null;
 
                 disposed?.Invoke(this);

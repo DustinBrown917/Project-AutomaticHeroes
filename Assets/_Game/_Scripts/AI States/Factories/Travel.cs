@@ -47,7 +47,7 @@ namespace Game
                     return;
 
                 m_flavour = flavour;
-                FlavourString = m_flavour.text;
+                FlavourText = m_flavour.text;
             }
 
             public void OnRouteCompleted(HeroMovement heroMovement, IRouteTraversal route)

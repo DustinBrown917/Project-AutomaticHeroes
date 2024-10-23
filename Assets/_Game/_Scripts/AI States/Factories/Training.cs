@@ -59,7 +59,7 @@ namespace Game
                     return;
 
                 m_flavour = flavourState;
-                FlavourString = m_flavour.flavorText;
+                FlavourText = m_flavour.flavorText;
             }
         }
 

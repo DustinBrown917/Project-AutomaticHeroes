@@ -47,7 +47,7 @@ namespace Game.UI
         protected override void UpdateValues()
         {
             StateString = Model.StateString;
-            FlavourString = Model.FlavourString;
+            FlavourString = Model.FlavourText;
             ForegroundSprite = Model.ForegroundSprite;
             BackgroundSprite = Model.BackgroundSprite;
         }
@@ -57,7 +57,7 @@ namespace Game.UI
             Model.foregroundSpriteChanged += Model_ForegroundSpriteChanged;
             Model.backgroundSpriteChanged += Model_BackgroundSpriteChanged;
             Model.stateStringChanged += Model_StateStringChanged;
-            Model.flavourStringChanged += Model_FlavourStringChanged;
+            Model.flavourTextChanged += Model_FlavourStringChanged;
             Model.disposed += Model_Disposed;
         }
 
@@ -66,7 +66,7 @@ namespace Game.UI
             Model.foregroundSpriteChanged -= Model_ForegroundSpriteChanged;
             Model.backgroundSpriteChanged -= Model_BackgroundSpriteChanged;
             Model.stateStringChanged -= Model_StateStringChanged;
-            Model.flavourStringChanged -= Model_FlavourStringChanged;
+            Model.flavourTextChanged -= Model_FlavourStringChanged;
             Model.disposed -= Model_Disposed;
         }
 

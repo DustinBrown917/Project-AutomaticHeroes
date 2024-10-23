@@ -28,10 +28,25 @@ namespace Game
             Initialized = true;
         }
 
+        protected override void OnDestroy()
+        {
+            base.OnDestroy();
+            foreach(HeroSkill skill in m_skills) {
+                skill.Dispose();
+            }
+
+            m_skills = System.Array.Empty<HeroSkill>();
+        }
+
         private void OnSkillLevelChanged(HeroSkill source, int oldValue, int newValue)
         {
             ActionFeed.Post($"{Hero.Core.ColoredName} increased their {source.Def.DisplayName} skill to {newValue}!");
             Hero.Level.GainExperience(1.0f);
+        }
+
+        public int Roll(HeroSkillDef skill, WorldState worldState)
+        {
+            return worldState.Rng.Range(0, this[skill].Level * 2 + 1);
         }
 
         public IEnumerator<HeroSkill> GetEnumerator() => ((IEnumerable<HeroSkill>)m_skills).GetEnumerator();
