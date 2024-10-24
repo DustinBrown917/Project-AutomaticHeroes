@@ -13,7 +13,7 @@ namespace Game
 
         public bool IsDisposed { get; private set; }
 
-        public event Action<SegoLib.IDisposable> disposed;
+        public event Action<SegoLib.IPrivatelyDisposable> disposed;
 
         private bool m_locationGraphNeedsRebuild = true;
 

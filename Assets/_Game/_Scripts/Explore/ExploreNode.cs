@@ -1,69 +1,74 @@
 using NaughtyAttributes;
 using System.Collections.Generic;
 using UnityEngine;
+using XNode;
 
-namespace Game
+namespace Game.Exploration
 {
-    public abstract class ExploreNode : MonoBehaviour, IExploreNode
+
+    public abstract class ExploreNode : Node
     {
-        public ExploreRoot Root { get; private set; }
+        new public ExploreGraph graph { get; private set; }
 
-        public IReadOnlyList<IConnectionToNeighbour> Connections => m_connections;
-        private List<IConnectionToNeighbour> m_connections = new();
+        [field: SerializeField] public bool IsEntryNode { get; private set; }
 
-        [field: SerializeField] public bool IsEntranceNode { get; private set; }
-
-        public bool Initialized { get; private set; }
-
-        public void Initialize(ExploreRoot root)
+        protected override void Init()
         {
-            if(Initialized) return;
+            base.Init();
 
-            Root = root;
-
-            RefreshConnections(root);
-
-            Initialized = true;
+            graph = (ExploreGraph)base.graph;
         }
 
-        public void RefreshConnections(ExploreRoot root)
+        public ExplorePort GetPort(NodePort port)
         {
-            m_connections.Clear();
-
-            foreach(ExploreConnection connection in root.Connections) {
-                if(!connection.IsValid()) {
-                    continue;
-                }
-
-                if (connection.NodeA == this)
-                    m_connections.Add(new ConnectionToNeighbourB(connection));
-                else if(connection.NodeB == this)
-                    m_connections.Add(new ConnectionToNeighbourA(connection));
-            }
+            return (ExplorePort)GetValue(port);
         }
 
-        public void Enter(IExploreState state)
-        {
-            OnEnter(state);
-        }
-
-        public void OnWorldTimeUpdate(IExploreState state, float deltaSeconds)
-        {
-            OnUpdate(state, deltaSeconds);
-        }
-
-        protected abstract void OnEnter(IExploreState state);
-        protected abstract void OnUpdate(IExploreState state, float deltaSeconds);
+        public abstract IExploreNodeState Enter(IExploreState bb);
+        public abstract void OnWorldTimeUpdate(IExploreState bb, float deltaSeconds);
     }
 
-    public interface IExploreNode
+    public readonly struct NodeResolution
     {
-        public ExploreRoot Root { get; }
-        public IReadOnlyList<IConnectionToNeighbour> Connections { get; }
-        public bool IsEntranceNode { get; }
-        public bool Initialized { get; }
-        public void Initialize(ExploreRoot root);
-        public abstract void Enter(IExploreState state);
-        public abstract void OnWorldTimeUpdate(IExploreState state, float deltaSeconds);
+        public readonly HeroSkillDef skillUsed;
+        public readonly bool wasSuccessful;
+
+        public NodeResolution(HeroSkillDef skillUsed, bool wasSuccessful)
+        {
+            this.skillUsed = skillUsed;
+            this.wasSuccessful = wasSuccessful;
+        }
+    }
+
+
+
+    [System.Serializable]
+    public class ExplorePort
+    {
+        public enum EResolutionRequirement : byte
+        {
+            Any,
+            Failure,
+            Success
+        }
+
+        [SerializeField] private string m_name;
+        [field: SerializeField] public EResolutionRequirement ResolutionRequirement { get; private set; }
+        [field: SerializeField] public HeroSkillDef SkillUsed { get; private set; }
+        [field: SerializeField] public float Weight { get; private set; }
+
+        public bool IsValidForResolution(in NodeResolution resolution)
+        {
+            if (ResolutionRequirement == EResolutionRequirement.Failure && resolution.wasSuccessful)
+                return false;
+
+            if (ResolutionRequirement == EResolutionRequirement.Success && !resolution.wasSuccessful)
+                return false;
+
+            if (SkillUsed != null && resolution.skillUsed != SkillUsed)
+                return false;
+
+            return true;
+        }
     }
 }

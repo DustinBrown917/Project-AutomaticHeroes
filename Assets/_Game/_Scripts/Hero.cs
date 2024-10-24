@@ -11,8 +11,10 @@ namespace Game
     [RequireComponent(typeof(HeroHealth))]
     [RequireComponent(typeof(HeroSkills))]
     [RequireComponent(typeof(HeroEquipment))]
-    public class Hero : MonoBehaviour, WorldTime.IListener
+    public class Hero : MonoBehaviour, WorldTime.IListener, IIdentifiable<int>
     {
+        public int Id { get; private set; }
+
         public HeroCore Core { get; private set; }
         public HeroGraphic Graphic { get; private set; }
         public HeroLevel Level { get; private set; }
@@ -24,6 +26,7 @@ namespace Game
         public HeroEquipment Equipment { get; private set; }
 
         public bool Initialized { get; private set; }
+
 
         private void Awake()
         {
@@ -65,7 +68,7 @@ namespace Game
         /// </summary>
         /// <param name="location">Where the hero starts. Cannot be null.</param>
         /// <exception cref="System.ArgumentNullException"></exception>
-        public void Initialize(HeroCore core, ILocation location)
+        public void Initialize(int id, HeroCore core, ILocation location)
         {
             if (Initialized)
                 return;
@@ -73,6 +76,8 @@ namespace Game
             if(location == null) {
                 throw new System.ArgumentNullException(nameof(location));
             }
+
+            Id = id;
 
             Core = core;
 

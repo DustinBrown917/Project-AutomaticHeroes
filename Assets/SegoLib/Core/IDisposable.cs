@@ -1,6 +1,9 @@
 namespace SegoLib
 {
-    public interface IDisposable : System.IDisposable
+    /// <summary>
+    /// Objects implementing this can be disposed, but not by consumers of this interface. Data is exposed to notify if the object becomes disposed.
+    /// </summary>
+    public interface IPrivatelyDisposable
     {
         /// <summary>
         /// Is this object disposed?
@@ -9,6 +12,11 @@ namespace SegoLib
         /// <summary>
         /// Raised when this object gets disposed.
         /// </summary>
-        public event System.Action<IDisposable> disposed;
+        public event System.Action<IPrivatelyDisposable> disposed;
+    }
+
+    public interface IDisposable : IPrivatelyDisposable, System.IDisposable
+    {
+
     } 
 }

@@ -1,6 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Game.Exploration;
+using XNode;
+using SegoLib.Random;
 
 namespace Game
 {
@@ -20,15 +23,12 @@ namespace Game
             }
 
             public float ElapsedTimeInCurrentNode { get; set; } = 0;
-            public bool CurrentNodeIsDone { get; set; }
 
-            public ExploreNode currentNode;
+            public IExploreNodeState CurrentExploreNodeState { get; set; }
 
             public State(IHeroBehaviour behaviour, WorldState worldState, Hero hero) : base(behaviour, worldState, hero)
             {
             }
-
-
         }
 
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
@@ -42,7 +42,6 @@ namespace Game
 
         protected class Behaviour : IHeroBehaviour.Behaviour<State>
         {
-            private ExploreRoot m_exploreRoot;
 
             public bool Initialized { get; private set; }
 
@@ -50,25 +49,31 @@ namespace Game
             {
             }
 
-            public void Initialize(ExploreRoot exploreRoot)
+            public void Initialize()
             {
-                m_exploreRoot = exploreRoot;
-                exploreRoot.Initialize();
+
             }
 
             protected override void OnBegin(State bb)
             {
-                EnterNode(bb, bb.WorldState.Rng.GetRandom(m_exploreRoot.EntranceNodes));
+
             }
 
             protected override void OnWorldTimeUpdate(State bb, float deltaSeconds)
             {
-                if (bb.CurrentNodeIsDone) {
-                    // Get next node from connections.
+                if(bb.CurrentExploreNodeState.IsResolved) {
+                    ExploreNode nextNode = FindNextNode(bb);
+
+                    if (nextNode == null) {
+                        bb.Succeed();
+                        return;
+                    }
+
+                    bb.CurrentExploreNodeState = null;
+                    bb.CurrentExploreNodeState = nextNode.Enter(bb);
                 }
 
-                bb.ElapsedTimeInCurrentNode += deltaSeconds;
-                bb.currentNode.OnWorldTimeUpdate(bb, deltaSeconds);
+                bb.CurrentExploreNodeState.Node.OnWorldTimeUpdate(bb, deltaSeconds);
             }
 
             protected override State CreateNewState(Hero hero)
@@ -77,13 +82,44 @@ namespace Game
                 return newState;
             }
 
-            private void EnterNode(State bb, ExploreNode node)
+            private ExploreNode FindNextNode(State bb)
             {
-                if (bb.currentNode == node)
-                    return;
+                List<ExplorePort> validExplorePorts = UnityEngine.Pool.ListPool<ExplorePort>.Get();
+                List<NodePort> validNodePorts = UnityEngine.Pool.ListPool<NodePort>.Get();
 
-                bb.ElapsedTimeInCurrentNode = 0;
-                bb.currentNode = node;
+                ExploreNode returnNode = null;
+
+                NodeResolution resolution = bb.CurrentExploreNodeState.Resolution;
+
+                foreach(NodePort nodePort in bb.CurrentExploreNodeState.Node.Outputs) {
+                    ExplorePort explorePort = bb.CurrentExploreNodeState.Node.GetPort(nodePort);
+
+                    if (explorePort.IsValidForResolution(resolution)) {
+                        validExplorePorts.Add(explorePort);
+                        validNodePorts.Add(nodePort);
+                    }
+                }
+
+                if(validExplorePorts.Count > 0) {
+                    float sumOfWeights = 0;
+                    for(int i = 0; i < validExplorePorts.Count; i++) {
+                        sumOfWeights += validExplorePorts[i].Weight;
+                    }
+
+                    int index = 0;
+                    if(sumOfWeights == 0) {
+                        index = bb.WorldState.Rng.Range(0, validNodePorts.Count);
+                    } else {
+                        index = WeightedRandom.Naive(validExplorePorts, sumOfWeights, bb.WorldState.Rng, x => x.Weight);
+                    }
+
+                    returnNode = validNodePorts[index].node as ExploreNode;
+                }
+
+                UnityEngine.Pool.ListPool<NodePort>.Release(validNodePorts);
+                UnityEngine.Pool.ListPool<ExplorePort>.Release(validExplorePorts);
+
+                return returnNode;
             }
         }
 
@@ -92,7 +128,7 @@ namespace Game
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
 
         [SerializeField] private Behaviour m_behaviour;
-        [SerializeField] private ExploreRoot m_exploreRootPrefab;
+        [SerializeField] private ExploreGraph m_exploreGraph;
 
         public Explore()
         {
@@ -111,8 +147,7 @@ namespace Game
 
         protected override IHeroBehaviour.IBehaviour InitializeBehaviour()
         {
-            ExploreRoot exploreRoot = Object.Instantiate(m_exploreRootPrefab.gameObject).GetComponent<ExploreRoot>();
-            m_behaviour.Initialize(exploreRoot);
+            m_behaviour.Initialize();
 
             return m_behaviour;
         }

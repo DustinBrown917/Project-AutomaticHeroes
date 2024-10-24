@@ -77,7 +77,7 @@ namespace Game
             stateChanged?.Invoke(this, oldState, m_currentState);
         }
 
-        private void CurrentStateDisposed(IDisposable obj)
+        private void CurrentStateDisposed(IPrivatelyDisposable obj)
         {
             Debug.LogError($"CurrentState was disposed before it was removed from HeroBrain. This shouldn't happen.");
             SetBehaviour(GetRandomState());

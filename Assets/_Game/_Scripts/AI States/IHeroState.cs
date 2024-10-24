@@ -122,7 +122,7 @@ namespace Game
     public partial interface IHeroBehaviour
     {
 
-        public interface IState
+        public interface IState : IPrivatelyDisposable
         {
             public IHeroBehaviour Behaviour { get; }
 
@@ -145,9 +145,6 @@ namespace Game
             public event ValueChangedWithSourceEvent<IState, string> flavourTextChanged;
             public string StateString { get; }
             public event ValueChangedWithSourceEvent<IState, string> stateStringChanged;
-
-            public bool IsDisposed { get; }
-            public event Action<SegoLib.IDisposable> disposed;
 
             public void Cancel();
         }
@@ -221,7 +218,7 @@ namespace Game
             public float ElapsedTime { get; private set; }
 
             public bool IsDisposed { get; private set; }
-            public event Action<SegoLib.IDisposable> disposed;
+            public event Action<SegoLib.IPrivatelyDisposable> disposed;
 
             public State(IHeroBehaviour behaviour, WorldState worldState, Hero hero)
             {

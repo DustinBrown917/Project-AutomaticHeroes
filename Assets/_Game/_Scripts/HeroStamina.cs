@@ -1,5 +1,4 @@
 using SegoLib;
-using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Game
@@ -122,12 +121,16 @@ namespace Game
             return true;
         }
 
-        public void SpendEnergy(float amount)
+        public bool SpendEnergy(float amount)
         {
+            bool depleted = amount > Energy;
+
             amount = Mathf.Min(amount, Energy);
             Energy -= amount;
 
             Exhaustion += amount * 0.1f;
+
+            return !depleted;
         }
 
         public void RecoverEnergy(float deltaSeconds)

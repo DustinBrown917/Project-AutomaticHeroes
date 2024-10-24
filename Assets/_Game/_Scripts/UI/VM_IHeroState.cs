@@ -89,7 +89,7 @@ namespace Game.UI
             StateString = newValue;
         }
 
-        private void Model_Disposed(IDisposable obj)
+        private void Model_Disposed(IPrivatelyDisposable obj)
         {
             if (obj == Model)
                 SetModel(null);
