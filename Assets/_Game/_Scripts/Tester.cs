@@ -24,7 +24,7 @@ public class Tester : MonoBehaviour
     {
         List<Location> locations = new List<Location>(m_locations);
 
-        for(int i = 0; i < 1 && locations.Count > 0; i++) {
+        for(int i = 0; i < 4 && locations.Count > 0; i++) {
             int index = rng.Range(0, locations.Count);
 
             Location location = locations[index];

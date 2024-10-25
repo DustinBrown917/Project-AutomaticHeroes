@@ -8,7 +8,7 @@ namespace Game
         public HeroSkill this[HeroSkillDef def] => this[def.RuntimeIndex];
         public HeroSkill this[int index] => m_skills[index];
 
-        private HeroSkill[] m_skills;
+        private HeroSkill[] m_skills = System.Array.Empty<HeroSkill>();
         public int Count => m_skills.Length;
 
         public bool Initialized { get; private set; }

@@ -8,9 +8,20 @@ namespace Game.Exploration
 
     public abstract class ExploreNode : Node
     {
-        new public ExploreGraph graph { get; private set; }
+        [System.Flags]
+        public enum EEntryExitType : byte
+        {
+            None = 0,
+            Entry = 1,
+            Exit = 2,
+            Both = Entry | Exit
+        }
 
-        [field: SerializeField] public bool IsEntryNode { get; private set; }
+        new public ExploreGraph graph { get; private set; }
+        [field:SerializeField] public string Name { get; private set; }
+        public bool IsEntryNode => NodeType.HasFlag(EEntryExitType.Entry);
+        public bool IsExitNode => NodeType.HasFlag(EEntryExitType.Exit);
+        [field: SerializeField] public EEntryExitType NodeType { get; private set; }
 
         protected override void Init()
         {

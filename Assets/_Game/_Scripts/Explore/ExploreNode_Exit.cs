@@ -1,21 +1,37 @@
-﻿using System.Collections;
+﻿using SegoLib;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using XNode;
 
 namespace Game.Exploration
 {
+    [NodeWidth(300)]
 	public class ExploreNode_Exit : ExploreNode
 	{
-        protected class State : IExploreNodeState
-        {
-            public bool IsResolved { get; set; }
 
-            public ExploreNode Node { get; set; }
+		/*vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv*/
+		#region ========================================== Subclasses ==================================================
+		/*vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv*/
 
-            public NodeResolution Resolution { get; set; }
+
+		protected class State : ExploreNodeState
+		{
+            public float targetTimeInState;
+            public float elapsedTimeInState;
+
+            public State(ExploreNode node) : base(node) { }
         }
 
+
+		/*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
+		#endregion ===================================== End Subclasses ================================================
+		/*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
+
+		[Input] public ExplorePort entry;
+
+        [SerializeField] private FloatRange m_timeToSpendInNode = new FloatRange(900, 4500);
+        [SerializeField] private string[] m_flavours;
 
         // Use this for initialization
         protected override void Init()
@@ -32,12 +48,27 @@ namespace Game.Exploration
 
         public override IExploreNodeState Enter(IExploreState bb)
         {
-            return new State();
+            State state = new State(this);
+            state.targetTimeInState = bb.WorldState.Rng.Range(m_timeToSpendInNode);
+            bb.FlavourText = bb.WorldState.Rng.GetRandom(m_flavours);
+            return state;
         }
 
         public override void OnWorldTimeUpdate(IExploreState bb, float deltaSeconds)
         {
-            throw new System.NotImplementedException();
+            if (bb.CurrentExploreNodeState is not State state) {
+                return;
+            }
+
+            state.elapsedTimeInState += deltaSeconds;
+
+            bool hasStamina = bb.Hero.Stamina.SpendEnergy(HeroStamina.DEFAULT_STAMINA_PER_SECOND * deltaSeconds);
+
+            if (!hasStamina || state.elapsedTimeInState >= state.targetTimeInState) {
+                state.Resolve(new NodeResolution(null, hasStamina));
+            }
         }
+
+
     } 
 }

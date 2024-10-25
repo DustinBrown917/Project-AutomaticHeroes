@@ -1422,6 +1422,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 8153231705256620972, guid: 8745bc6e15abee942a7c5c94aca18df4, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1119288170}
+    - targetCorrespondingSourceObject: {fileID: 8153231705256620972, guid: 8745bc6e15abee942a7c5c94aca18df4, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1119288171}
   m_SourcePrefab: {fileID: 100100000, guid: 8745bc6e15abee942a7c5c94aca18df4, type: 3}
 --- !u!4 &409493990 stripped
 Transform:
@@ -3687,6 +3690,21 @@ MonoBehaviour:
         <Density>k__BackingField: 0.04
       searchingFlavour:
         flavorText: Searching for monsters.
+--- !u!114 &1119288171
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1119288168}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3803bb5b1a201844ca498b8c3d1a607a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_explore:
+    m_behaviour:
+      exploreGraph: {fileID: 11400000, guid: acd3bbfcd3de26c4083104f935a56057, type: 2}
 --- !u!1001 &1182670005
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6415,9 +6433,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 8153231705256620972, guid: 8745bc6e15abee942a7c5c94aca18df4, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1592465703}
-    - targetCorrespondingSourceObject: {fileID: 8153231705256620972, guid: 8745bc6e15abee942a7c5c94aca18df4, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1592465705}
   m_SourcePrefab: {fileID: 100100000, guid: 8745bc6e15abee942a7c5c94aca18df4, type: 3}
 --- !u!4 &1592465698 stripped
 Transform:
@@ -6471,30 +6486,6 @@ MonoBehaviour:
       treatmentQuality: 2
       flavours: []
       sprite: {fileID: 21300000, guid: e5f6bdbb53a6e1e47aa0b7153f16f5f6, type: 3}
---- !u!114 &1592465705
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1200078537}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 18d8adc0063765e48a91ba2689a9318e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_monsterHunt:
-    m_behaviour:
-      foregroundSprite: {fileID: 21300000, guid: 64db4e4b293f90148b96ecfdf7fd9111, type: 3}
-      stateString: Hunting Rats.
-      monsterLevelRange:
-        m_min: 1
-        m_max: 4
-      monsters:
-      - <MonsterDef>k__BackingField: {fileID: 11400000, guid: e8cd268d0e2109240bce0902376ec7d6, type: 2}
-        <Density>k__BackingField: 1
-      searchingFlavour:
-        flavorText: Searching for rats.
 --- !u!1 &1624700078
 GameObject:
   m_ObjectHideFlags: 0
@@ -6525,10 +6516,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_heroPrefab: {fileID: 9136296130780974435, guid: 46241965c46fb38439284ee8d6c2fe8e, type: 3}
-  m_heroColors:
+  m_heroCores:
   - {fileID: 11400000, guid: 13f6b65f2c137794caf3a02ad72171e3, type: 2}
-  - {fileID: 11400000, guid: 6cb979b9729ceaf489fe48bbd4fc40f7, type: 2}
   - {fileID: 11400000, guid: 2a15cfb3ed282f244915b57ce62c92d2, type: 2}
+  - {fileID: 11400000, guid: 6cb979b9729ceaf489fe48bbd4fc40f7, type: 2}
   - {fileID: 11400000, guid: bae072bd1a7e8f6428060a1ef6f5c493, type: 2}
 --- !u!4 &1624700080
 Transform:
