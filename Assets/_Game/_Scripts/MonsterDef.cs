@@ -1,3 +1,6 @@
+using SegoLib;
+using System;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Game
@@ -5,37 +8,31 @@ namespace Game
     [CreateAssetMenu(fileName = "New Monster Def", menuName = "Game/MonsterDef")]
     public class MonsterDef : ScriptableObject
     {
-        private const float EXP_PER_DAMAGE = 0.2f;
-        private const float EXP_PER_WOUND = 0.5f;
-
-        [field: SerializeField] public float Damage { get; private set; }
-        [field: SerializeField] public int Wounds { get; private set; }
-
-        public float GetBonusExp()
-        {
-            return (Damage * EXP_PER_DAMAGE) + (Wounds * EXP_PER_WOUND);
-        }
+        [field: SerializeField] public float DamagePerHourPerLevel { get; private set; }
+        [field: SerializeField] public float MaxHealth { get; private set; }
     } 
 
     public class Monster
     {
         public MonsterDef Def { get; }
         public int Level { get; }
-        public int ExpReward { get; }
-        public float CurrentWoundsRemaining { get; set; }
+        public float ExpReward { get; }
+        public float CurrentHealth { get; set; }
+        public float DamagePerHour { get; }
 
         public Monster(MonsterDef def, int level)
         {
             Def = def;
             Level = level;
-            ExpReward = Mathf.RoundToInt(Level + def.GetBonusExp());
 
-            CurrentWoundsRemaining = def.Wounds;
+            CurrentHealth = def.MaxHealth;
+            DamagePerHour = def.DamagePerHourPerLevel * level;
         }
 
-        public float GetStaminaCostPerCombatRound(Hero hero)
+        public float CalculateExperienceReward(Hero hero)
         {
-            return Level + ((((float)Level / hero.Skills[hero.Equipment.MainWeapon.WeaponType.Skill].Level) - 1) * Level);
+            float heroSkillLevel = hero.Skills[hero.Equipment.MainWeapon.WeaponType.Skill].Level;
+            return (Level * Def.DamagePerHourPerLevel * (Def.MaxHealth * 0.01f)) * (Level/heroSkillLevel);
         }
 
         public override string ToString()
@@ -44,65 +41,113 @@ namespace Game
         }
     }
 
-    public static class Combat
+    public class MonsterCombat : SegoLib.IDisposable
     {
-        public readonly struct MonsterCombatResult
+        public readonly struct StepResult
         {
-            public readonly int heroRoll;
-            public readonly bool heroHadEnoughEnergy;
-            public readonly float damageTaken;
-            public readonly int woundsDealt;
+            public readonly float damageToHero;
+            public readonly float damageToMonster;
+            public readonly float energySpent;
 
-            public MonsterCombatResult(int heroRoll, bool heroHadEnoughEnergy, float damageTaken, int woundsDealt)
+            public StepResult(float damageToHero, float damageToMonster, float energySpent)
             {
-                this.heroRoll = heroRoll;
-                this.heroHadEnoughEnergy = heroHadEnoughEnergy;
-                this.damageTaken = damageTaken;
-                this.woundsDealt = woundsDealt;
+                this.damageToHero = damageToHero;
+                this.damageToMonster = damageToMonster;
+                this.energySpent = energySpent;
             }
         }
 
-        /// <summary>
-        /// Do combat between a hero and a monster.<br/>
-        /// Combat works like so:<br/>
-        /// A roll is made to see who is the victor of this combat round. Roll = Rand(heroLevel [to] heroLevel + heroWeaponProficiency). <br/>
-        /// If the roll meets or exceeds the monster's level, the hero deals a wound to the monster. <br/>
-        /// If the roll is less than the monster's level, the monster deals damage to the hero. <br/>
-        /// If the hero does not have sufficient energy to attack the monster (Monster.GetStaminaCostPerCombatRound), then they automatically roll 0.
-        /// </summary>
-        /// <param name="hero"></param>
-        /// <param name="monster"></param>
-        /// <param name="worldState"></param>
-        /// <returns></returns>
-        public static MonsterCombatResult DoCombat(Hero hero, Monster monster, WorldState worldState)
+        public WorldState WorldState { get; private set; }
+        public Hero Hero { get; private set; }
+        public Monster Monster { get; private set; }
+
+        public bool IsDisposed { get; private set; }
+        public event Action<IPrivatelyDisposable> disposed;
+
+        public MonsterCombat(WorldState worldState, Hero hero, Monster monster)
         {
-            int roll = 0;
-            float damageTaken = 0;
-            bool heroHasEnoughEnergy = hero.Stamina.TrySpendEnergy(monster.GetStaminaCostPerCombatRound(hero));
-            int woundsDealt = 0;
-            IWeapon heroWeapon = hero.Equipment.MainWeapon;
+            WorldState = worldState;
+            Hero = hero;
+            Monster = monster;
+        }
 
-            if (heroHasEnoughEnergy) {
-                int heroMaxRoll = hero.Skills[heroWeapon.WeaponType.Skill].Level * 2;
-                roll = Mathf.RoundToInt(worldState.Rng.Float01() * heroMaxRoll) + heroWeapon.UpgradeLevel;
+
+        public void ApplyStepResult(in StepResult result)
+        {
+            Monster.CurrentHealth -= result.damageToMonster;
+            Hero.Health.Damage(result.damageToHero);
+            Hero.Stamina.SpendEnergy(result.energySpent);
+        }
+
+        public StepResult SimulateStep(float deltaSeconds)
+        {
+            float damageToMonster = WorldTime.PerHourToPerSecond(GetHeroDamagePerHour()) * deltaSeconds;
+            float damageToHero = 0;
+
+            if (damageToMonster < Monster.CurrentHealth) {
+                damageToHero = WorldTime.PerHourToPerSecond(GetMonsterDamagePerHour()) * deltaSeconds;
             }
 
-            if(roll >= monster.Level) {
-                monster.CurrentWoundsRemaining--;
-                woundsDealt = 1;
-                hero.Skills[heroWeapon.WeaponType.Skill].GainExperience(2);
+            float energySpent = HeroStamina.COMBAT_STAMINA_PER_SECOND * deltaSeconds;
 
-                if(monster.CurrentWoundsRemaining <= 0) {
-                    hero.Skills[heroWeapon.WeaponType.Skill].GainExperience(monster.ExpReward);
-                }
+            return new StepResult(damageToHero, damageToMonster, energySpent);
+        }
 
-            } else {
-                damageTaken = worldState.Rng.Float01() * monster.Def.Damage;
-                hero.Health.Current -= damageTaken;
-                hero.Skills[heroWeapon.WeaponType.Skill].GainExperience(1);
-            }
+        public void SimulateStepAndApply(float deltaSeconds)
+        {
+            ApplyStepResult(SimulateStep(deltaSeconds));
+        }
 
-            return new MonsterCombatResult(roll, heroHasEnoughEnergy, damageTaken, woundsDealt);
+        public float GetHeroDamagePerHour()
+        {
+            IWeapon heroWeapon = Hero.Equipment.MainWeapon;
+            float damagePerHour = Hero.Skills[heroWeapon.WeaponType.Skill].Level; // Base skill level.
+            damagePerHour += damagePerHour - Monster.Level; // Add level advantage/disadvantage
+            damagePerHour += heroWeapon.UpgradeLevel; // Add weapon upgrade level
+            damagePerHour *= 1.0f - Hero.Stamina.ExhaustionPercent; // Modify by exhaustion per cent.
+
+            if (damagePerHour < 1.0f)
+                damagePerHour = 1.0f;
+
+            return damagePerHour;
+        }
+
+        public float GetMonsterDamagePerHour()
+        {
+            IWeapon heroWeapon = Hero.Equipment.MainWeapon;
+
+            float damagePerHour = Monster.DamagePerHour;
+            damagePerHour += Monster.Level - Hero.Skills[heroWeapon.WeaponType.Skill].Level;
+
+            if (damagePerHour < Monster.Def.DamagePerHourPerLevel)
+                damagePerHour = Monster.Def.DamagePerHourPerLevel;
+
+            return damagePerHour;
+        }
+
+        public float GetTimeToHeroVictoryInSeconds()
+        {
+            float heroDamagePerHour = GetHeroDamagePerHour();
+            return (Monster.CurrentHealth / heroDamagePerHour) * 3600f;
+        }
+
+        public float GetTimeToMonsterVictoryInSeconds()
+        {
+            float monsterDamagePerHour = GetMonsterDamagePerHour();
+            return (Hero.Health.Current / monsterDamagePerHour) * 3600f;
+        }
+
+        public void Dispose()
+        {
+            if(IsDisposed) return;
+            IsDisposed = true;
+
+            WorldState = null;
+            Hero = null;
+            Monster = null;
+
+            disposed?.Invoke(this);
+            disposed = null;
         }
     }
 }

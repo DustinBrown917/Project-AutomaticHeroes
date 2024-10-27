@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 13c543de5d2456242be5c68e8e65aea9, type: 3}
-  m_Name: Prairie Snoblins
+  m_Name: Prairie Snoblin
   m_EditorClassIdentifier: 
-  <Damage>k__BackingField: 2
-  <Wounds>k__BackingField: 1
+  <DamagePerHourPerLevel>k__BackingField: 0.4
+  <MaxHealth>k__BackingField: 15

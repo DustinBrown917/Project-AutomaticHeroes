@@ -60,5 +60,10 @@ namespace Game
         }
 
         public bool IsProficientWithWeaponType(IWeaponTypeDef weaponType) => m_weaponProficiencies.Contains(weaponType);
+
+        public HeroSkill GetMainWeaponSkill()
+        {
+            return Hero.Skills[MainWeapon.WeaponType.Skill];
+        }
     } 
 }

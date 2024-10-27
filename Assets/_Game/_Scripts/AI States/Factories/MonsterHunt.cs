@@ -37,16 +37,17 @@ namespace Game
 
         protected class State : IHeroBehaviour.State
         {
-            public float nextCombatStep;
             public float nextFightTime;
 
-            public Monster monster;
+            public MonsterCombat combat;
 
             public Flavour CurrentFlavour
             {
                 get => m_flavour;
             }
             private Flavour m_flavour = DefaultFlavour;
+
+            public bool isFleeing;
 
             public State(IHeroBehaviour behaviour, WorldState worldState, Hero hero) : base(behaviour, worldState, hero) { }
 
@@ -98,26 +99,50 @@ namespace Game
 
             protected override void OnWorldTimeUpdate(State bb, float deltaSeconds)
             {
-                if(bb.monster == null && bb.ElapsedTime > bb.nextFightTime) {
-                    bb.monster = GetNewMonster(bb);
-                    bb.nextCombatStep = bb.ElapsedTime + COMBAT_STEP_TIME;
-                    bb.SetFlavour(new Flavour() { flavorText = $"Fighting {bb.monster}." });
-                }
-
-                while(bb.monster != null && bb.ElapsedTime > bb.nextCombatStep && !ShouldQuit(bb)) {
-                    Combat.DoCombat(bb.Hero, bb.monster, bb.WorldState);
-                    bb.nextCombatStep += COMBAT_STEP_TIME;
-
-                    if(bb.monster.CurrentWoundsRemaining <= 0) {
-                        bb.monster = null;
-                        bb.nextFightTime = bb.ElapsedTime + NEXT_FIGHT_STEP;
-                        bb.SetFlavour(searchingFlavour);
+                // If we're not fighting and it's time to start another fight
+                if(bb.combat == null && bb.ElapsedTime > bb.nextFightTime) {
+                    if (bb.isFleeing) { // If we're fleeing, stop fleeing and start searching.
+                        SearchForMonsters(bb);
+                        bb.isFleeing = false;
+                    } else { // Otherwise, get a new monster and start fighting it.
+                        Monster monster = GetNewMonster(bb);
+                        bb.combat = new MonsterCombat(WorldState.Instance, bb.Hero, monster);
+                        bb.SetFlavour(new Flavour() { flavorText = $"Fighting {monster}." });
                     }
                 }
 
-                if (ShouldQuit(bb)) {
-                    bb.Succeed();
+                if (bb.combat != null) { // If we have an active combat, then play it out.
+
+                    bb.combat?.SimulateStepAndApply(deltaSeconds);
+
+                    if (bb.combat.Monster.CurrentHealth <= 0) { // If we killed the monster, gain exp, dispose the combat, and start search for a new one.
+                        float exp = bb.combat.Monster.CalculateExperienceReward(bb.Hero);
+                        bb.Hero.Equipment.GetMainWeaponSkill().GainExperience(exp);
+                        SearchForMonsters(bb);
+                        bb.combat.Dispose();
+                        bb.combat = null;
+                    } else if (bb.WorldState.Rng.Bool(GetFleeChance(bb) * deltaSeconds)) { // Otherwise, if we decide we can't win this combat, flee.
+                        bb.nextFightTime = bb.ElapsedTime + NEXT_FIGHT_STEP;
+                        bb.isFleeing = true;
+                        bb.SetFlavour(new Flavour() { flavorText = $"Fleeing from {bb.combat.Monster}" });
+                        bb.combat.Dispose();
+                        bb.combat = null;
+                    }
                 }
+
+                if(bb.combat == null && !bb.isFleeing) { // If we're not fighting and we're not fleeing, then check if we should 
+                    float quitChance = GetQuitChance(bb) * deltaSeconds;
+
+                    if (bb.WorldState.Rng.Bool(quitChance)) {
+                        bb.Succeed();
+                    }
+                }
+            }
+
+            private void SearchForMonsters(State bb)
+            {
+                bb.nextFightTime = bb.ElapsedTime + NEXT_FIGHT_STEP;
+                bb.SetFlavour(searchingFlavour);
             }
 
             private Monster GetNewMonster(State bb)
@@ -133,10 +158,24 @@ namespace Game
                 return new Monster(monsters[index].MonsterDef, bb.WorldState.Rng.Range(monsterLevelRange));
             }
 
-            private bool ShouldQuit(State bb)
+            private float GetQuitChance(State bb)
             {
-                return bb.Hero.Health.Percent < 0.2f ||
-                    bb.Hero.Stamina.ExhaustionPercent > 0.5f;
+                return Mathf.Max(1.0f - bb.Hero.Health.Percent, bb.Hero.Stamina.ExhaustionPercent) / 1800f;
+            }
+
+            private float GetFleeChance(State bb)
+            {
+                float timeToHeroVictory = bb.combat.GetTimeToHeroVictoryInSeconds();
+                float timeToHeroDefeat = bb.combat.GetTimeToMonsterVictoryInSeconds();
+
+                if (Mathf.Abs(timeToHeroVictory - timeToHeroDefeat) < 120f)
+                    return 0.1f / 3600f;
+
+                float fleeChancePerHour = timeToHeroVictory < timeToHeroDefeat ?
+                    0f :
+                    Mathf.Max(1.0f - bb.Hero.Health.Percent, bb.Hero.Stamina.ExhaustionPercent);
+
+                return fleeChancePerHour / 1800f;
             }
         }
 

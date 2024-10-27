@@ -1,5 +1,6 @@
 ﻿using SegoLib;
 using System;
+using System.Collections;
 using UnityEngine;
 using XNode;
 
@@ -34,15 +35,15 @@ namespace Game.Exploration
 
         [Output(dynamicPortList = true)] public ExplorePort[] exits;
 
-        // Use this for initialization
-        protected override void Init()
-		{
-			base.Init();
-		}
 
-		// Return the correct value of an output port when requested
-		public override object GetValue(NodePort port)
+		protected override ExplorePort GetExplorePort(NodePort port)
 		{
+            if (port.fieldName == nameof(entry))
+                return entry;
+
+            if (port.fieldName == nameof(exits))
+                return null;
+
             if (exits.Length == 1)
                 return exits[0];
 

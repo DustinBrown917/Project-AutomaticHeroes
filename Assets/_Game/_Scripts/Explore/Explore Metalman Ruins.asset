@@ -226,7 +226,6 @@ MonoBehaviour:
     - entry
     - exits
     - exits 0
-    - exits 1
     values:
     - _fieldName: entry
       _node: {fileID: 5764001023741063530}
@@ -258,15 +257,6 @@ MonoBehaviour:
       _connectionType: 0
       _typeConstraint: 0
       _dynamic: 1
-    - _fieldName: exits 1
-      _node: {fileID: 5764001023741063530}
-      _typeQualifiedName: Game.Exploration.ExplorePort, Assembly-CSharp, Version=0.0.0.0,
-        Culture=neutral, PublicKeyToken=null
-      connections: []
-      _direction: 1
-      _connectionType: 0
-      _typeConstraint: 0
-      _dynamic: 1
   <Name>k__BackingField: Entry
   <NodeType>k__BackingField: 1
   entry:
@@ -286,7 +276,3 @@ MonoBehaviour:
     <ResolutionRequirement>k__BackingField: 0
     <SkillUsed>k__BackingField: {fileID: 0}
     <Weight>k__BackingField: 0
-  - m_name: Exit Node 1
-    <ResolutionRequirement>k__BackingField: 1
-    <SkillUsed>k__BackingField: {fileID: 11400000, guid: f189a98a4004c044fa63681fa975b4e8, type: 2}
-    <Weight>k__BackingField: 6

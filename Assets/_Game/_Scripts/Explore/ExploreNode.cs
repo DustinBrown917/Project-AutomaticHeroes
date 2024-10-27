@@ -23,20 +23,45 @@ namespace Game.Exploration
         public bool IsExitNode => NodeType.HasFlag(EEntryExitType.Exit);
         [field: SerializeField] public EEntryExitType NodeType { get; private set; }
 
+
+        public IReadOnlyList<ExplorePort> ConnectedOutputs => m_connectedOutputs;
+        [System.NonSerialized] private readonly List<ExplorePort> m_connectedOutputs = new();
+
+
         protected override void Init()
         {
             base.Init();
 
             graph = (ExploreGraph)base.graph;
+
+            foreach(NodePort port in Outputs) {
+                if (port.ConnectionCount == 0)
+                    continue;
+
+                ExplorePort explorePort = GetExplorePort(port);
+
+                if (explorePort == null)
+                    return;
+
+                if(port.Connection.node is ExploreNode otherNode) {
+                    explorePort.SetConnectedNode(otherNode);
+                } else {
+                    return;
+                }
+
+                m_connectedOutputs.Add(explorePort);
+            }
         }
 
-        public ExplorePort GetPort(NodePort port)
+        public override object GetValue(NodePort port)
         {
-            return (ExplorePort)GetValue(port);
+            return GetExplorePort(port);
         }
 
         public abstract IExploreNodeState Enter(IExploreState bb);
         public abstract void OnWorldTimeUpdate(IExploreState bb, float deltaSeconds);
+
+        protected abstract ExplorePort GetExplorePort(NodePort nodePort);
     }
 
     public readonly struct NodeResolution
@@ -67,6 +92,12 @@ namespace Game.Exploration
         [field: SerializeField] public EResolutionRequirement ResolutionRequirement { get; private set; }
         [field: SerializeField] public HeroSkillDef SkillUsed { get; private set; }
         [field: SerializeField] public float Weight { get; private set; }
+        [field: System.NonSerialized] public ExploreNode ConnectedNode { get; private set; }
+
+        public void SetConnectedNode(ExploreNode node)
+        {
+            ConnectedNode = node;
+        }
 
         public bool IsValidForResolution(in NodeResolution resolution)
         {

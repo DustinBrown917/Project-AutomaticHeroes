@@ -13,11 +13,17 @@ namespace Game
         public const float TRAINING_STAMINA_PER_HOUR = 16f;
         public const float TRAINING_STAMINA_PER_SECOND = TRAINING_STAMINA_PER_HOUR / 3600f;
 
-        public const float CULL_STAMINA_PER_HOUR = MOVEMENT_STAMINA_PER_HOUR;
-        public const float CULL_STAMINA_PER_SECOND = CULL_STAMINA_PER_HOUR / 3600f;
+        public const float COMBAT_STAMINA_PER_HOUR = MOVEMENT_STAMINA_PER_HOUR;
+        public const float COMBAT_STAMINA_PER_SECOND = COMBAT_STAMINA_PER_HOUR / 3600f;
 
         public const float ENERGY_PERCENT_RECOVERED_PER_HOUR = 0.15f;
         public const float ENERGY_PERCENT_RECOVERED_PER_SECOND = ENERGY_PERCENT_RECOVERED_PER_HOUR / 3600;
+
+        public static float GetExhaustionCombatModifier(float exhaustionPercent)
+        {
+            float t = Mathf.InverseLerp(0, 0.5f, exhaustionPercent);
+            return Mathf.Lerp(0.1f, 1.0f, t);
+        }
 
         public float TotalStaminaPool
         {

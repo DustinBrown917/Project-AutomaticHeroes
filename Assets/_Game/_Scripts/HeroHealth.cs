@@ -50,6 +50,14 @@ namespace Game
             Initialized = true;
         }
 
+        public void Damage(float damage)
+        {
+            if (damage <= 0)
+                return;
+
+            Current -= damage;
+        }
+
         public void Recover(float deltaSeconds)
         {
             if (Current >= Max) return;

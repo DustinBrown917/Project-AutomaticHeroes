@@ -115,21 +115,12 @@ namespace Game
             private ExploreNode FindNextNode(State bb)
             {
                 List<ExplorePort> validExplorePorts = UnityEngine.Pool.ListPool<ExplorePort>.Get();
-                List<NodePort> validNodePorts = UnityEngine.Pool.ListPool<NodePort>.Get();
-
                 ExploreNode returnNode = null;
-
                 NodeResolution resolution = bb.CurrentExploreNodeState.Resolution;
 
-                foreach(NodePort nodePort in bb.CurrentExploreNodeState.Node.Outputs) {
-                    if (!nodePort.IsConnected)
-                        continue;
-
-                    ExplorePort explorePort = bb.CurrentExploreNodeState.Node.GetPort(nodePort);
-
-                    if (explorePort.IsValidForResolution(resolution)) {
-                        validExplorePorts.Add(explorePort);
-                        validNodePorts.Add(nodePort);
+                foreach(ExplorePort nodePort in bb.CurrentExploreNodeState.Node.ConnectedOutputs) {
+                    if (nodePort.IsValidForResolution(resolution)) {
+                        validExplorePorts.Add(nodePort);
                     }
                 }
 
@@ -141,15 +132,14 @@ namespace Game
 
                     int index = 0;
                     if(sumOfWeights == 0) {
-                        index = bb.WorldState.Rng.Range(0, validNodePorts.Count);
+                        index = bb.WorldState.Rng.Range(0, validExplorePorts.Count);
                     } else {
                         index = WeightedRandom.Naive(validExplorePorts, sumOfWeights, bb.WorldState.Rng, x => x.Weight);
                     }
 
-                    returnNode = validNodePorts[index].Connection.node as ExploreNode;
+                    returnNode = validExplorePorts[index].ConnectedNode;
                 }
 
-                UnityEngine.Pool.ListPool<NodePort>.Release(validNodePorts);
                 UnityEngine.Pool.ListPool<ExplorePort>.Release(validExplorePorts);
 
                 return returnNode;

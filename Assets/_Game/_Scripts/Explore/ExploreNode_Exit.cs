@@ -1,6 +1,4 @@
 ﻿using SegoLib;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using XNode;
 
@@ -33,17 +31,14 @@ namespace Game.Exploration
         [SerializeField] private FloatRange m_timeToSpendInNode = new FloatRange(900, 4500);
         [SerializeField] private string[] m_flavours;
 
-        // Use this for initialization
-        protected override void Init()
-		{
-			base.Init();
 
-		}
-
-		// Return the correct value of an output port when requested
-		public override object GetValue(NodePort port)
+		protected override ExplorePort GetExplorePort(NodePort port)
 		{
-			return null; // Replace this
+			if(port.fieldName == nameof(entry)) {
+                return entry;
+            }
+
+            return null;
 		}
 
         public override IExploreNodeState Enter(IExploreState bb)
