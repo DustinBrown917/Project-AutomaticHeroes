@@ -18,7 +18,7 @@ namespace Game
         {
             string IExploreState.FlavourText {
                 get => FlavourText;
-                set => FlavourText = value;
+                set => SetFlavourText(value);
             }
 
             public IExploreNodeState CurrentExploreNodeState { get; set; }
@@ -31,6 +31,11 @@ namespace Game
             {
                 CurrentExploreNodeState.Dispose();
                 CurrentExploreNodeState = null;
+            }
+
+            public void SetFlavourText(string text)
+            {
+                FlavourText = text;
             }
         }
 
@@ -47,7 +52,10 @@ namespace Game
         protected class Behaviour : IHeroBehaviour.Behaviour<State>
         {
             public ExploreGraph exploreGraph;
+            public Sprite sprite;
+            public string stateString = "Exploring.";
             public bool Initialized { get; private set; }
+
 
             public Behaviour(IHeroBehaviour parentBehaviour) : base(parentBehaviour)
             {
@@ -93,6 +101,8 @@ namespace Game
             protected override State CreateNewState(Hero hero)
             {
                 State newState = new(ParentBehaviour, WorldState.Instance, hero);
+                newState.StateString = stateString;
+                newState.ForegroundSprite = sprite;
                 return newState;
             }
 

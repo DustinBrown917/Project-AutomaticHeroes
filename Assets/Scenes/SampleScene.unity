@@ -3190,6 +3190,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_monsterHunt:
     m_behaviour:
+      graph: {fileID: 11400000, guid: 041ad374d06978441b7115f854c16294, type: 2}
       foregroundSprite: {fileID: 21300000, guid: 64db4e4b293f90148b96ecfdf7fd9111, type: 3}
       stateString: Hunting Monsters.
       monsterLevelRange:
@@ -3204,8 +3205,7 @@ MonoBehaviour:
         <Density>k__BackingField: 0.2
       - <MonsterDef>k__BackingField: {fileID: 11400000, guid: d245e7a13cf773f4d8309d22cae9e200, type: 2}
         <Density>k__BackingField: 0.1
-      searchingFlavour:
-        flavorText: Searching for monsters.
+      searchingFlavour: 
 --- !u!114 &945643795 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7108896763118586010, guid: 8745bc6e15abee942a7c5c94aca18df4, type: 3}
@@ -3670,6 +3670,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_monsterHunt:
     m_behaviour:
+      graph: {fileID: 11400000, guid: 041ad374d06978441b7115f854c16294, type: 2}
       foregroundSprite: {fileID: 21300000, guid: 64db4e4b293f90148b96ecfdf7fd9111, type: 3}
       stateString: Hunting Monsters.
       monsterLevelRange:
@@ -3688,8 +3689,7 @@ MonoBehaviour:
         <Density>k__BackingField: 0.06
       - <MonsterDef>k__BackingField: {fileID: 11400000, guid: a3e897dec8719e84fabc67468c805585, type: 2}
         <Density>k__BackingField: 0.04
-      searchingFlavour:
-        flavorText: Searching for monsters.
+      searchingFlavour: 
 --- !u!114 &1119288171
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3705,6 +3705,8 @@ MonoBehaviour:
   m_explore:
     m_behaviour:
       exploreGraph: {fileID: 11400000, guid: acd3bbfcd3de26c4083104f935a56057, type: 2}
+      sprite: {fileID: 0}
+      stateString: 
 --- !u!1001 &1182670005
 PrefabInstance:
   m_ObjectHideFlags: 0

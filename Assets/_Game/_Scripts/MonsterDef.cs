@@ -8,7 +8,7 @@ namespace Game
     [CreateAssetMenu(fileName = "New Monster Def", menuName = "Game/MonsterDef")]
     public class MonsterDef : ScriptableObject
     {
-        [field: SerializeField] public float DamagePerHourPerLevel { get; private set; }
+        [field: SerializeField] public float DamagePerHour { get; private set; }
         [field: SerializeField] public float MaxHealth { get; private set; }
     } 
 
@@ -18,7 +18,7 @@ namespace Game
         public int Level { get; }
         public float ExpReward { get; }
         public float CurrentHealth { get; set; }
-        public float DamagePerHour { get; }
+        public float DamagePerHour => Def.DamagePerHour;
 
         public Monster(MonsterDef def, int level)
         {
@@ -26,19 +26,29 @@ namespace Game
             Level = level;
 
             CurrentHealth = def.MaxHealth;
-            DamagePerHour = def.DamagePerHourPerLevel * level;
         }
 
         public float CalculateExperienceReward(Hero hero)
         {
             float heroSkillLevel = hero.Skills[hero.Equipment.MainWeapon.WeaponType.Skill].Level;
-            return (Level * Def.DamagePerHourPerLevel * (Def.MaxHealth * 0.01f)) * (Level/heroSkillLevel);
+            float exp = (Level + (Level - heroSkillLevel)) * Combat.EXP_PER_MONSTER_LEVEL;
+            exp *= (Def.DamagePerHour * 0.01f) * (Def.MaxHealth * 0.01f);
+            if (exp < 1)
+                exp = 1;
+            return exp;
         }
 
         public override string ToString()
         {
             return $"Lv. {Level} {Def.name}";
         }
+    }
+
+    public static class Combat
+    {
+        public const float EXP_PER_MONSTER_LEVEL = 3f;
+        public const float HERO_DAMAGE_PER_HOUR_AT_EQUAL_LEVEL = 100f;
+        public const float LEVEL_DIFFERENCE_DAMAGE_INFLUENCE = 1.0f;
     }
 
     public class MonsterCombat : SegoLib.IDisposable
@@ -61,6 +71,8 @@ namespace Game
         public Hero Hero { get; private set; }
         public Monster Monster { get; private set; }
 
+        public float accumulatedHeroDamage;
+
         public bool IsDisposed { get; private set; }
         public event Action<IPrivatelyDisposable> disposed;
 
@@ -75,7 +87,7 @@ namespace Game
         public void ApplyStepResult(in StepResult result)
         {
             Monster.CurrentHealth -= result.damageToMonster;
-            Hero.Health.Damage(result.damageToHero);
+            accumulatedHeroDamage += result.damageToHero;
             Hero.Stamina.SpendEnergy(result.energySpent);
         }
 
@@ -101,9 +113,11 @@ namespace Game
         public float GetHeroDamagePerHour()
         {
             IWeapon heroWeapon = Hero.Equipment.MainWeapon;
-            float damagePerHour = Hero.Skills[heroWeapon.WeaponType.Skill].Level; // Base skill level.
-            damagePerHour += damagePerHour - Monster.Level; // Add level advantage/disadvantage
+            float damagePerHour = Combat.HERO_DAMAGE_PER_HOUR_AT_EQUAL_LEVEL; // Base damage per hour
             damagePerHour += heroWeapon.UpgradeLevel; // Add weapon upgrade level
+            int levelDifference = Hero.Skills[heroWeapon.WeaponType.Skill].Level - Monster.Level;
+            damagePerHour += levelDifference * Combat.LEVEL_DIFFERENCE_DAMAGE_INFLUENCE; // Add level difference influence
+            
             damagePerHour *= 1.0f - Hero.Stamina.ExhaustionPercent; // Modify by exhaustion per cent.
 
             if (damagePerHour < 1.0f)
@@ -117,10 +131,10 @@ namespace Game
             IWeapon heroWeapon = Hero.Equipment.MainWeapon;
 
             float damagePerHour = Monster.DamagePerHour;
-            damagePerHour += Monster.Level - Hero.Skills[heroWeapon.WeaponType.Skill].Level;
+            damagePerHour += (Monster.Level - Hero.Skills[heroWeapon.WeaponType.Skill].Level) * Combat.LEVEL_DIFFERENCE_DAMAGE_INFLUENCE;
 
-            if (damagePerHour < Monster.Def.DamagePerHourPerLevel)
-                damagePerHour = Monster.Def.DamagePerHourPerLevel;
+            if (damagePerHour < 0)
+                damagePerHour = 0;
 
             return damagePerHour;
         }
@@ -134,7 +148,7 @@ namespace Game
         public float GetTimeToMonsterVictoryInSeconds()
         {
             float monsterDamagePerHour = GetMonsterDamagePerHour();
-            return (Hero.Health.Current / monsterDamagePerHour) * 3600f;
+            return ((Hero.Health.Current - accumulatedHeroDamage) / monsterDamagePerHour) * 3600f;
         }
 
         public void Dispose()

@@ -1,11 +1,9 @@
-using NaughtyAttributes;
 using System.Collections.Generic;
 using UnityEngine;
 using XNode;
 
 namespace Game.Exploration
 {
-
     public abstract class ExploreNode : Node
     {
         [System.Flags]
@@ -22,7 +20,6 @@ namespace Game.Exploration
         public bool IsEntryNode => NodeType.HasFlag(EEntryExitType.Entry);
         public bool IsExitNode => NodeType.HasFlag(EEntryExitType.Exit);
         [field: SerializeField] public EEntryExitType NodeType { get; private set; }
-
 
         public IReadOnlyList<ExplorePort> ConnectedOutputs => m_connectedOutputs;
         [System.NonSerialized] private readonly List<ExplorePort> m_connectedOutputs = new();
@@ -60,57 +57,6 @@ namespace Game.Exploration
 
         public abstract IExploreNodeState Enter(IExploreState bb);
         public abstract void OnWorldTimeUpdate(IExploreState bb, float deltaSeconds);
-
         protected abstract ExplorePort GetExplorePort(NodePort nodePort);
-    }
-
-    public readonly struct NodeResolution
-    {
-        public readonly HeroSkillDef skillUsed;
-        public readonly bool wasSuccessful;
-
-        public NodeResolution(HeroSkillDef skillUsed, bool wasSuccessful)
-        {
-            this.skillUsed = skillUsed;
-            this.wasSuccessful = wasSuccessful;
-        }
-    }
-
-
-
-    [System.Serializable]
-    public class ExplorePort
-    {
-        public enum EResolutionRequirement : byte
-        {
-            Any,
-            Failure,
-            Success
-        }
-
-        [SerializeField] private string m_name;
-        [field: SerializeField] public EResolutionRequirement ResolutionRequirement { get; private set; }
-        [field: SerializeField] public HeroSkillDef SkillUsed { get; private set; }
-        [field: SerializeField] public float Weight { get; private set; }
-        [field: System.NonSerialized] public ExploreNode ConnectedNode { get; private set; }
-
-        public void SetConnectedNode(ExploreNode node)
-        {
-            ConnectedNode = node;
-        }
-
-        public bool IsValidForResolution(in NodeResolution resolution)
-        {
-            if (ResolutionRequirement == EResolutionRequirement.Failure && resolution.wasSuccessful)
-                return false;
-
-            if (ResolutionRequirement == EResolutionRequirement.Success && !resolution.wasSuccessful)
-                return false;
-
-            if (SkillUsed != null && resolution.skillUsed != SkillUsed)
-                return false;
-
-            return true;
-        }
     }
 }

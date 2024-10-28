@@ -14,12 +14,6 @@ namespace Game
         /*vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv*/
 
         [System.Serializable]
-        public class Flavour
-        {
-            public string flavorText;
-        }
-
-        [System.Serializable]
         public class MonsterPopulation
         {
             [field: SerializeField] public MonsterDef MonsterDef { get; private set; }
@@ -39,25 +33,43 @@ namespace Game
         {
             public float nextFightTime;
 
-            public MonsterCombat combat;
-
-            public Flavour CurrentFlavour
+            public Monsters.Combat.IState CombatState
             {
-                get => m_flavour;
+                get => m_combatState;
+                set => SetCombatState(value);
             }
-            private Flavour m_flavour = DefaultFlavour;
-
-            public bool isFleeing;
+            private Monsters.Combat.IState m_combatState;
 
             public State(IHeroBehaviour behaviour, WorldState worldState, Hero hero) : base(behaviour, worldState, hero) { }
 
-            public void SetFlavour(Flavour flavourState)
+            public void SetCombatState(Monsters.Combat.IState newState)
             {
-                if (flavourState == null)
-                    return;
+                if(m_combatState != null) {
+                    m_combatState.flavourTextUpdated -= CombatState_FlavourTextUpdated;
+                    m_combatState.Dispose();
+                }
 
-                m_flavour = flavourState;
-                FlavourText = m_flavour.flavorText;
+                m_combatState = newState;
+
+                if(m_combatState != null) {
+                    m_combatState.flavourTextUpdated += CombatState_FlavourTextUpdated;
+                }
+            }
+
+            public void SetFlavourText(string flavourText)
+            {
+                FlavourText = flavourText;
+            }
+
+            private void CombatState_FlavourTextUpdated(Monsters.Combat.IState source, string newValue)
+            {
+                SetFlavourText(newValue);
+            }
+
+            protected override void OnDisposed()
+            {
+                CombatState?.Dispose();
+                CombatState = null;
             }
         }
 
@@ -74,25 +86,28 @@ namespace Game
         [System.Serializable]
         protected class Behaviour : IHeroBehaviour.Behaviour<State>
         {
-            private const float COMBAT_STEP_TIME = 900;
             private const float NEXT_FIGHT_STEP = 2400;
+
+            public Game.Monsters.Combat.Graph graph;
 
             public Sprite foregroundSprite;
             public string stateString = "Hunting Monsters.";
             public IntRange monsterLevelRange = new IntRange(1, 10);
             public List<MonsterPopulation> monsters = new();
 
-            public Flavour searchingFlavour = new Flavour() { flavorText = "Searching for monsters." };
+            public string searchingFlavour = "Searching for monsters.";
 
             public Behaviour(IHeroBehaviour parentBehaviour) : base(parentBehaviour) { }
 
             protected override State CreateNewState(Hero hero)
             {
+                if (!graph.Initialized)
+                    graph.Initialize();
+
                 State state = new State(ParentBehaviour, WorldState.Instance, hero);
                 state.StateString = stateString;
                 state.ForegroundSprite = foregroundSprite;
-                state.nextFightTime = NEXT_FIGHT_STEP;
-                state.SetFlavour(searchingFlavour);
+                SearchForMonsters(state);
                 return state;
             }
 
@@ -100,41 +115,23 @@ namespace Game
             protected override void OnWorldTimeUpdate(State bb, float deltaSeconds)
             {
                 // If we're not fighting and it's time to start another fight
-                if(bb.combat == null && bb.ElapsedTime > bb.nextFightTime) {
-                    if (bb.isFleeing) { // If we're fleeing, stop fleeing and start searching.
-                        SearchForMonsters(bb);
-                        bb.isFleeing = false;
-                    } else { // Otherwise, get a new monster and start fighting it.
-                        Monster monster = GetNewMonster(bb);
-                        bb.combat = new MonsterCombat(WorldState.Instance, bb.Hero, monster);
-                        bb.SetFlavour(new Flavour() { flavorText = $"Fighting {monster}." });
-                    }
+                if(bb.CombatState == null && bb.ElapsedTime > bb.nextFightTime) {
+                    Monster monster = GetNewMonster(bb);
+                    bb.CombatState = graph.Enter(bb.WorldState, bb.Hero, monster);
                 }
 
-                if (bb.combat != null) { // If we have an active combat, then play it out.
+                if (bb.CombatState != null) { // If we have an active combat, then play it out.
 
-                    bb.combat?.SimulateStepAndApply(deltaSeconds);
+                    bb.CombatState.OnWorldTimeUpdate(deltaSeconds);
 
-                    if (bb.combat.Monster.CurrentHealth <= 0) { // If we killed the monster, gain exp, dispose the combat, and start search for a new one.
-                        float exp = bb.combat.Monster.CalculateExperienceReward(bb.Hero);
-                        bb.Hero.Equipment.GetMainWeaponSkill().GainExperience(exp);
-                        SearchForMonsters(bb);
-                        bb.combat.Dispose();
-                        bb.combat = null;
-                    } else if (bb.WorldState.Rng.Bool(GetFleeChance(bb) * deltaSeconds)) { // Otherwise, if we decide we can't win this combat, flee.
-                        bb.nextFightTime = bb.ElapsedTime + NEXT_FIGHT_STEP;
-                        bb.isFleeing = true;
-                        bb.SetFlavour(new Flavour() { flavorText = $"Fleeing from {bb.combat.Monster}" });
-                        bb.combat.Dispose();
-                        bb.combat = null;
-                    }
-                }
+                    if (bb.CombatState.CombatIsConcluded) {
+                        bb.CombatState = null;
 
-                if(bb.combat == null && !bb.isFleeing) { // If we're not fighting and we're not fleeing, then check if we should 
-                    float quitChance = GetQuitChance(bb) * deltaSeconds;
-
-                    if (bb.WorldState.Rng.Bool(quitChance)) {
-                        bb.Succeed();
+                        if (bb.WorldState.Rng.Bool(GetQuitChance(bb))) {
+                            bb.Succeed();
+                        } else {
+                            SearchForMonsters(bb);
+                        }
                     }
                 }
             }
@@ -142,7 +139,7 @@ namespace Game
             private void SearchForMonsters(State bb)
             {
                 bb.nextFightTime = bb.ElapsedTime + NEXT_FIGHT_STEP;
-                bb.SetFlavour(searchingFlavour);
+                bb.SetFlavourText(searchingFlavour);
             }
 
             private Monster GetNewMonster(State bb)
@@ -160,30 +157,13 @@ namespace Game
 
             private float GetQuitChance(State bb)
             {
-                return Mathf.Max(1.0f - bb.Hero.Health.Percent, bb.Hero.Stamina.ExhaustionPercent) / 1800f;
-            }
-
-            private float GetFleeChance(State bb)
-            {
-                float timeToHeroVictory = bb.combat.GetTimeToHeroVictoryInSeconds();
-                float timeToHeroDefeat = bb.combat.GetTimeToMonsterVictoryInSeconds();
-
-                if (Mathf.Abs(timeToHeroVictory - timeToHeroDefeat) < 120f)
-                    return 0.1f / 3600f;
-
-                float fleeChancePerHour = timeToHeroVictory < timeToHeroDefeat ?
-                    0f :
-                    Mathf.Max(1.0f - bb.Hero.Health.Percent, bb.Hero.Stamina.ExhaustionPercent);
-
-                return fleeChancePerHour / 1800f;
+                return Mathf.Max(1.0f - bb.Hero.Health.Percent, bb.Hero.Stamina.ExhaustionPercent);
             }
         }
 
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
         #endregion ===================================== End Behaviour ================================================
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
-
-        private static Flavour DefaultFlavour { get; } = new() { flavorText = string.Empty };
 
         [SerializeField] private Behaviour m_behaviour;
         public string StateString { get => m_behaviour.stateString; set => m_behaviour.stateString = value; }

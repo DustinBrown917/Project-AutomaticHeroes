@@ -1,0 +1,305 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-7593569342286891460
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 445a18448142c984e809883c42cb7e00, type: 3}
+  m_Name: Node_Defeat
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 568, y: 168}
+  ports:
+    keys:
+    - entry
+    - exit
+    values:
+    - _fieldName: entry
+      _node: {fileID: -7593569342286891460}
+      _typeQualifiedName: Game.Monsters.Combat.PortData, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: defeat
+        node: {fileID: 9214190834351600074}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: exit
+      _node: {fileID: -7593569342286891460}
+      _typeQualifiedName: Game.Monsters.Combat.PortData, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: entry
+        node: {fileID: 64557210411472544}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  m_flavourTexts:
+  - Unconscious after being defeated by {1}.
+  - Begging {1} for mercy.
+  - Crawling away from {1} meakly.
+  - Playing dead after being defeated by {1}.
+--- !u!114 &-1666890589709955549
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d7c0d4df41f52b947a5860f4fb999499, type: 3}
+  m_Name: Node_Victory
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 568, y: -152}
+  ports:
+    keys:
+    - entry
+    - exit
+    values:
+    - _fieldName: entry
+      _node: {fileID: -1666890589709955549}
+      _typeQualifiedName: Game.Monsters.Combat.PortData, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: victory
+        node: {fileID: 9214190834351600074}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: exit
+      _node: {fileID: -1666890589709955549}
+      _typeQualifiedName: Game.Monsters.Combat.PortData, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: entry
+        node: {fileID: 64557210411472544}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 951b4fbb405a3784fb6e32010aa6fd12, type: 3}
+  m_Name: New Monster Combat Graph
+  m_EditorClassIdentifier: 
+  nodes:
+  - {fileID: 8584814122858146658}
+  - {fileID: 9214190834351600074}
+  - {fileID: -1666890589709955549}
+  - {fileID: 5422672918292171554}
+  - {fileID: -7593569342286891460}
+  - {fileID: 64557210411472544}
+--- !u!114 &64557210411472544
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d277ce69042f2dd49a679d996154a356, type: 3}
+  m_Name: Node_Exit
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 1160, y: -8}
+  ports:
+    keys:
+    - entry
+    values:
+    - _fieldName: entry
+      _node: {fileID: 64557210411472544}
+      _typeQualifiedName: Game.Monsters.Combat.PortData, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: exit
+        node: {fileID: -1666890589709955549}
+        reroutePoints: []
+      - fieldName: exit
+        node: {fileID: 5422672918292171554}
+        reroutePoints: []
+      - fieldName: exit
+        node: {fileID: -7593569342286891460}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+--- !u!114 &5422672918292171554
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 48f3b55fe330cb94b89478ead9697a01, type: 3}
+  m_Name: Node_Flee
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 568, y: -24}
+  ports:
+    keys:
+    - entry
+    - exit
+    values:
+    - _fieldName: entry
+      _node: {fileID: 5422672918292171554}
+      _typeQualifiedName: Game.Monsters.Combat.PortData, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: flee
+        node: {fileID: 9214190834351600074}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: exit
+      _node: {fileID: 5422672918292171554}
+      _typeQualifiedName: Game.Monsters.Combat.PortData, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: entry
+        node: {fileID: 64557210411472544}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  m_stage1Flavour:
+  - Trying to break contact with {1}.
+  - Scrambling to get away from {1}.
+  - Creating an opportunity to escape {1}.
+  - Making a last ditch effort to escape {1}.
+  m_stage2Flavour:
+  - Sprinting away from {1}.
+  - Dashing away from {1}.
+  - Running away from {1}.
+  m_stage3Flavour:
+  - Hiding from {1}.
+  - Ensuring {1} is no longer following.
+  - Obscuring tracks so {1} cannot follow.
+  - Watching for any sign of {1}.
+  - Slowing down to catch breath.
+--- !u!114 &8584814122858146658
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 758b1b5c5b49b0f4a86c8e63074e4e44, type: 3}
+  m_Name: Node_Enter
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: -328, y: -56}
+  ports:
+    keys:
+    - exit
+    values:
+    - _fieldName: exit
+      _node: {fileID: 8584814122858146658}
+      _typeQualifiedName: Game.Monsters.Combat.PortData, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: entry
+        node: {fileID: 9214190834351600074}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+--- !u!114 &9214190834351600074
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b3250d06b64dc554b8381540c5e548ec, type: 3}
+  m_Name: Node_Combat
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 88, y: -56}
+  ports:
+    keys:
+    - entry
+    - victory
+    - flee
+    - defeat
+    values:
+    - _fieldName: entry
+      _node: {fileID: 9214190834351600074}
+      _typeQualifiedName: Game.Monsters.Combat.PortData, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: exit
+        node: {fileID: 8584814122858146658}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: victory
+      _node: {fileID: 9214190834351600074}
+      _typeQualifiedName: Game.Monsters.Combat.PortData, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: entry
+        node: {fileID: -1666890589709955549}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: flee
+      _node: {fileID: 9214190834351600074}
+      _typeQualifiedName: Game.Monsters.Combat.PortData, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: entry
+        node: {fileID: 5422672918292171554}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: defeat
+      _node: {fileID: 9214190834351600074}
+      _typeQualifiedName: Game.Monsters.Combat.PortData, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: entry
+        node: {fileID: -7593569342286891460}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0

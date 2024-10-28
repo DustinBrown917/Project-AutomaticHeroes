@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13c543de5d2456242be5c68e8e65aea9, type: 3}
   m_Name: Giant Rat
   m_EditorClassIdentifier: 
-  <DamagePerHourPerLevel>k__BackingField: 1
-  <MaxHealth>k__BackingField: 10
+  <DamagePerHour>k__BackingField: 20
+  <MaxHealth>k__BackingField: 20
