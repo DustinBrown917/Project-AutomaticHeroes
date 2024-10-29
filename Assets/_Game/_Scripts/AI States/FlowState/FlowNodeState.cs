@@ -1,32 +1,32 @@
 using SegoLib;
 using System;
 
-namespace Game.Monsters.Combat
+namespace Game.Flow
 {
-    public interface INodeState : SegoLib.IDisposable
+    public interface IFlowNodeState : SegoLib.IDisposable
     {
-        public Node Node { get; }
+        public FlowNode Node { get; }
         public bool IsConcluded { get; }
-        public Node NextNode { get; }
+        public FlowNode NextNode { get; }
     }
 
-    public class NodeState : INodeState
+    public class FlowNodeState : IFlowNodeState
     {
-        public Node Node { get; private set; }
+        public FlowNode Node { get; private set; }
 
         public bool IsConcluded { get; private set; }
 
-        public Node NextNode { get; private set; }
+        public FlowNode NextNode { get; private set; }
 
         public bool IsDisposed { get; private set; }
         public event Action<IPrivatelyDisposable> disposed;
 
-        public NodeState(Node node)
+        public FlowNodeState(FlowNode node)
         {
             this.Node = node;
         }
 
-        public void Conclude(Node nextNode)
+        public void Conclude(FlowNode nextNode)
         {
             NextNode = nextNode;
             IsConcluded = true;

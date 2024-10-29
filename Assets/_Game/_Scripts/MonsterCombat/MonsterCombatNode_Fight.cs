@@ -1,19 +1,18 @@
 using SegoLib.Random;
-using System.Collections;
-using System.Collections.Generic;
+using Game.Flow;
 using UnityEngine;
 
 namespace Game.Monsters.Combat
 {
-    public class Node_Combat : Node
+    public class MonsterCombatNode_Combat : MonsterCombatNode
     {
-        private class State : NodeState
+        private class State : FlowNodeState
         {
             public MonsterCombat Combat { get; private set; }
 
             public float nextHeroDamageTime;
 
-            public State(Node node, IState bb) : base(node)
+            public State(MonsterCombatNode node, IMonsterCombatState bb) : base(node)
             {
                 Combat = new MonsterCombat(bb.WorldState, bb.Hero, bb.Monster);
             }
@@ -25,18 +24,21 @@ namespace Game.Monsters.Combat
             }
         }
 
-        [Input] public PortData entry;
-        [Output] public PortData victory;
-        [Output] public PortData flee;
-        [Output] public PortData defeat;
+        [Input] public FlowPort entry;
+        [Output] public FlowPort victory;
+        [Output] public FlowPort flee;
+        [Output] public FlowPort defeat;
 
-        public override INodeState Enter(IState bb)
+        public override IFlowNodeState Enter(IFlowState bb)
         {
-            bb.FlavourText = $"Fighting {bb.Monster}.";
-            return new State(this, bb);
+            if (bb is not IMonsterCombatState state)
+                throw new System.ArgumentException($"Must be of type {nameof(IMonsterCombatState)}.", nameof(bb));
+
+            bb.FlavourText = $"Fighting {state.Monster}.";
+            return new State(this, state);
         }
 
-        public override void OnWorldTimeUpdate(IState bb, float deltaSeconds)
+        public override void OnWorldTimeUpdate(IFlowState bb, float deltaSeconds)
         {
             if (bb.NodeState is not State state)
                 return;
@@ -54,15 +56,15 @@ namespace Game.Monsters.Combat
             }
 
             if (monsterDefeated) {
-                state.Conclude(victory.ConnectedPort.Node);
+                state.Conclude(victory.ConnectedPortData.Node);
             } else if (heroDefeated) {
-                state.Conclude(defeat.ConnectedPort.Node);
+                state.Conclude(defeat.ConnectedPortData.Node);
             } else if(ShouldFlee(state, bb.WorldState.Rng)) {
-                state.Conclude(flee.ConnectedPort.Node);
+                state.Conclude(flee.ConnectedPortData.Node);
             }
         }
 
-        protected override PortData GetPortData(XNode.NodePort port)
+        public override FlowPort GetPortData(XNode.NodePort port)
         {
             switch (port.fieldName) {
                 case nameof(entry): return entry;

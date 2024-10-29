@@ -1,7 +1,7 @@
 using SegoLib;
 using SegoLib.Random;
 using System.Collections.Generic;
-using System.Runtime.InteropServices.WindowsRuntime;
+using Game.Flow;
 using UnityEngine;
 
 namespace Game
@@ -33,16 +33,16 @@ namespace Game
         {
             public float nextFightTime;
 
-            public Monsters.Combat.IState CombatState
+            public Monsters.Combat.IMonsterCombatState CombatState
             {
                 get => m_combatState;
                 set => SetCombatState(value);
             }
-            private Monsters.Combat.IState m_combatState;
+            private Monsters.Combat.IMonsterCombatState m_combatState;
 
             public State(IHeroBehaviour behaviour, WorldState worldState, Hero hero) : base(behaviour, worldState, hero) { }
 
-            public void SetCombatState(Monsters.Combat.IState newState)
+            public void SetCombatState(Monsters.Combat.IMonsterCombatState newState)
             {
                 if(m_combatState != null) {
                     m_combatState.flavourTextUpdated -= CombatState_FlavourTextUpdated;
@@ -61,7 +61,7 @@ namespace Game
                 FlavourText = flavourText;
             }
 
-            private void CombatState_FlavourTextUpdated(Monsters.Combat.IState source, string newValue)
+            private void CombatState_FlavourTextUpdated(IFlowState source, string newValue)
             {
                 SetFlavourText(newValue);
             }
@@ -88,7 +88,7 @@ namespace Game
         {
             private const float NEXT_FIGHT_STEP = 2400;
 
-            public Game.Monsters.Combat.Graph graph;
+            public Game.Monsters.Combat.MonsterCombatGraph graph;
 
             public Sprite foregroundSprite;
             public string stateString = "Hunting Monsters.";
@@ -124,7 +124,7 @@ namespace Game
 
                     bb.CombatState.OnWorldTimeUpdate(deltaSeconds);
 
-                    if (bb.CombatState.CombatIsConcluded) {
+                    if (bb.CombatState.Status == IFlowState.EStatus.Concluded) {
                         bb.CombatState = null;
 
                         if (bb.WorldState.Rng.Bool(GetQuitChance(bb))) {

@@ -1,43 +1,47 @@
+using Game.Flow;
 using UnityEngine;
 
 namespace Game.Monsters.Combat
 {
-    public class Node_Victory : Node
+    public class MonsterCombatNode_Victory : MonsterCombatNode
     {
-        private class State : NodeState
+        private class State : FlowNodeState
         {
             public float timeToExitNode;
 
-            public State(Node node) : base(node)
+            public State(MonsterCombatNode node) : base(node)
             {
             }
         }
 
-        [Input] public PortData entry;
-        [Output] public PortData exit;
+        [Input] public FlowPort entry;
+        [Output] public FlowPort exit;
 
-        public override INodeState Enter(IState bb)
+        public override IFlowNodeState Enter(IFlowState bb)
         {
+            if (bb is not IMonsterCombatState state)
+                throw new System.ArgumentException($"Must be of type {nameof(IMonsterCombatState)}", nameof(bb));
+
             State newState = new State(this);
-            bb.Result = IState.ECombatResult.Victorious;
+            state.Result = IMonsterCombatState.ECombatResult.Victorious;
             newState.timeToExitNode = bb.ElapsedTime + bb.WorldState.Rng.Range(600, 1800);
-            bb.FlavourText = GetFlavourText(bb);
-            bb.Hero.Equipment.GetMainWeaponSkill().GainExperience(bb.Monster.CalculateExperienceReward(bb.Hero));
+            bb.FlavourText = GetFlavourText(state);
+            bb.Hero.Equipment.GetMainWeaponSkill().GainExperience(state.Monster.CalculateExperienceReward(bb.Hero));
 
             return newState;
         }
 
-        public override void OnWorldTimeUpdate(IState bb, float deltaSeconds)
+        public override void OnWorldTimeUpdate(IFlowState bb, float deltaSeconds)
         {
             if (bb.NodeState is not State state)
                 return;
 
             if(bb.ElapsedTime >= state.timeToExitNode) {
-                state.Conclude(exit.ConnectedPort?.Node);
+                state.Conclude(exit.ConnectedPortData?.Node);
             }
         }
 
-        protected override PortData GetPortData(XNode.NodePort port)
+        public override FlowPort GetPortData(XNode.NodePort port)
         {
             switch (port.fieldName) {
                 case nameof(entry): return entry;
@@ -46,7 +50,7 @@ namespace Game.Monsters.Combat
             }
         }
 
-        private string GetFlavourText(IState bb)
+        private string GetFlavourText(IMonsterCombatState bb)
         {
             if(bb.Hero.Health.Percent < 0.2f && bb.Hero.Stamina.ExhaustionPercent > 0.7f) {
                 return "Collapsed on the ground, wincing victoriously.";
