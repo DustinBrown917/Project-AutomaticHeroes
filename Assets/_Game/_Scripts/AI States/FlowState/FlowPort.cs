@@ -39,7 +39,7 @@ namespace Game.Flow
                 if (connectedPort.node is not FlowNode connectedNode)
                     continue;
 
-                FlowPort connection = connectedNode.GetPortData(connectedPort);
+                FlowPort connection = connectedNode.GetFlowPort(connectedPort);
 
                 if (connection != null)
                     connections.Add(connection);

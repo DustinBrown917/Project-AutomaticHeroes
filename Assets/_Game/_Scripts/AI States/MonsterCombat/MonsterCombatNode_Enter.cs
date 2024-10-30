@@ -28,7 +28,7 @@ namespace Game.Monsters.Combat
                 return;
         }
 
-        public override FlowPort GetPortData(XNode.NodePort port)
+        public override FlowPort GetFlowPort(XNode.NodePort port)
         {
             switch (port.fieldName) {
                 case nameof(exit): return exit;

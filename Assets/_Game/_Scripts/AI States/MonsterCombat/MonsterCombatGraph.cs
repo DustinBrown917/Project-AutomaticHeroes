@@ -7,7 +7,7 @@ using Game.Flow;
 namespace Game.Monsters.Combat
 {
     [CreateAssetMenu(fileName = "New Monster Combat Graph", menuName = "Game/Graphs/Monster Combat")]
-    public class MonsterCombatGraph : NodeGraph
+    public class MonsterCombatGraph : FlowGraph
     {
         /*vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv*/
         #region ========================================== Subclasses ==================================================
@@ -37,19 +37,11 @@ namespace Game.Monsters.Combat
 
         private MonsterCombatNode_Enter m_entryNode;
 
-        [field: NonSerialized] public bool Initialized { get; private set; }
-
-
-        public void Initialize()
+        protected override void OnInitialize()
         {
-            if (Initialized)
-                return;
-
             if(m_entryNode == null) {
                 m_entryNode = FindEntryNode();
             }
-
-            Initialized = true;
         }
 
         public IMonsterCombatState Enter(WorldState worldState, Hero hero, Monster monster)

@@ -3704,7 +3704,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_explore:
     m_behaviour:
-      exploreGraph: {fileID: 11400000, guid: acd3bbfcd3de26c4083104f935a56057, type: 2}
+      graph: {fileID: 11400000, guid: acd3bbfcd3de26c4083104f935a56057, type: 2}
       sprite: {fileID: 21300000, guid: b44ff8993deb1c74dbc7ee05afc68d99, type: 3}
       stateString: Exploring ruins.
 --- !u!1001 &1182670005

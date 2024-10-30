@@ -1,0 +1,571 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-8707791718957034761
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a0f69d844d97164f9e468af1da41db8, type: 3}
+  m_Name: Explore Node_Flavour
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: -24, y: 8}
+  ports:
+    keys:
+    - entry
+    - exit
+    values:
+    - _fieldName: entry
+      _node: {fileID: -8707791718957034761}
+      _typeQualifiedName: Game.Flow.FlowPort, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: exits 2
+        node: {fileID: -2594577176400879684}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: exit
+      _node: {fileID: -8707791718957034761}
+      _typeQualifiedName: Game.Flow.FlowPort, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: entry
+        node: {fileID: 6223320900873134711}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  m_timeToSpendInNode:
+    m_min: 3000
+    m_max: 4200
+  m_flavours:
+  - Breaking down a damaged gate.
+  - Forcing the rusted gears of a blast door open.
+  - Throwing their weight against an iron gate.
+--- !u!114 &-3443678134477950975
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a0f69d844d97164f9e468af1da41db8, type: 3}
+  m_Name: Explore Node_Flavour
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: -24, y: -440}
+  ports:
+    keys:
+    - entry
+    - exit
+    values:
+    - _fieldName: entry
+      _node: {fileID: -3443678134477950975}
+      _typeQualifiedName: Game.Flow.FlowPort, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: exits 0
+        node: {fileID: -2594577176400879684}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: exit
+      _node: {fileID: -3443678134477950975}
+      _typeQualifiedName: Game.Flow.FlowPort, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: entry
+        node: {fileID: 6223320900873134711}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  m_timeToSpendInNode:
+    m_min: 3000
+    m_max: 4200
+  m_flavours:
+  - Squeezing through a crack in the wall.
+  - Crawling through a ventilation shaft.
+  - Inching under a half destroyed gate.
+--- !u!114 &-2594577176400879684
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8c9e8e732f16070448dd6d375cd6d91f, type: 3}
+  m_Name: Flow Node_Random Branch
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: -440, y: -312}
+  ports:
+    keys:
+    - entry
+    - exits
+    - exits 0
+    - exits 1
+    - exits 2
+    values:
+    - _fieldName: entry
+      _node: {fileID: -2594577176400879684}
+      _typeQualifiedName: Game.Flow.FlowPort, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: exit
+        node: {fileID: 5764001023741063530}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: exits
+      _node: {fileID: -2594577176400879684}
+      _typeQualifiedName: Game.Flow.FlowNode_RandomBranch+WeightedFlowPort[], Assembly-CSharp,
+        Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      connections: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: exits 0
+      _node: {fileID: -2594577176400879684}
+      _typeQualifiedName: Game.Flow.FlowNode_RandomBranch+WeightedFlowPort, Assembly-CSharp,
+        Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: entry
+        node: {fileID: -3443678134477950975}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 1
+    - _fieldName: exits 1
+      _node: {fileID: -2594577176400879684}
+      _typeQualifiedName: Game.Flow.FlowNode_RandomBranch+WeightedFlowPort, Assembly-CSharp,
+        Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: entry
+        node: {fileID: -2281877012214841807}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 1
+    - _fieldName: exits 2
+      _node: {fileID: -2594577176400879684}
+      _typeQualifiedName: Game.Flow.FlowNode_RandomBranch+WeightedFlowPort, Assembly-CSharp,
+        Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: entry
+        node: {fileID: -8707791718957034761}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 1
+  exits:
+  - weight: 0
+  - weight: 0
+  - weight: 0
+--- !u!114 &-2281877012214841807
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a0f69d844d97164f9e468af1da41db8, type: 3}
+  m_Name: Explore Node_Flavour
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: -24, y: -216}
+  ports:
+    keys:
+    - entry
+    - exit
+    values:
+    - _fieldName: entry
+      _node: {fileID: -2281877012214841807}
+      _typeQualifiedName: Game.Flow.FlowPort, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: exits 1
+        node: {fileID: -2594577176400879684}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: exit
+      _node: {fileID: -2281877012214841807}
+      _typeQualifiedName: Game.Flow.FlowPort, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: entry
+        node: {fileID: 6223320900873134711}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  m_timeToSpendInNode:
+    m_min: 900
+    m_max: 4500
+  m_flavours:
+  - Scaling a deeply pocked wall.
+  - Climbing the defensive superstructure.
+  - Climbing the remnants of a badly corroded ladder.
+--- !u!114 &-1104127759089322616
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f1eb8973a6bd94a4f8ece4c17f720ddf, type: 3}
+  m_Name: Explore Node_Monster Combat
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 904, y: -184}
+  ports:
+    keys:
+    - entry
+    - exit_victory
+    - exit_flee
+    - exit_defeat
+    values:
+    - _fieldName: entry
+      _node: {fileID: -1104127759089322616}
+      _typeQualifiedName: Game.Flow.FlowPort, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: exit
+        node: {fileID: 6223320900873134711}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: exit_victory
+      _node: {fileID: -1104127759089322616}
+      _typeQualifiedName: Game.Flow.FlowPort, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: entry
+        node: {fileID: 3357356924434193481}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: exit_flee
+      _node: {fileID: -1104127759089322616}
+      _typeQualifiedName: Game.Flow.FlowPort, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: entry
+        node: {fileID: 3899776036226062061}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: exit_defeat
+      _node: {fileID: -1104127759089322616}
+      _typeQualifiedName: Game.Flow.FlowPort, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: entry
+        node: {fileID: 790574266372633063}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  m_monsters:
+  - <MonsterDef>k__BackingField: {fileID: 11400000, guid: ae2033fc907b99e49b9c14c9673aaf8f, type: 2}
+    <Density>k__BackingField: 1
+  m_combatGraph: {fileID: 11400000, guid: 041ad374d06978441b7115f854c16294, type: 2}
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68cc2f569ed4db749aa4b06b245aad97, type: 3}
+  m_Name: Explore Metalman Ruins
+  m_EditorClassIdentifier: 
+  nodes:
+  - {fileID: -2281877012214841807}
+  - {fileID: 3357356924434193481}
+  - {fileID: 5764001023741063530}
+  - {fileID: 8104634307937012797}
+  - {fileID: -1104127759089322616}
+  - {fileID: -2594577176400879684}
+  - {fileID: -8707791718957034761}
+  - {fileID: -3443678134477950975}
+  - {fileID: 6223320900873134711}
+  - {fileID: 3899776036226062061}
+  - {fileID: 790574266372633063}
+--- !u!114 &790574266372633063
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c9f87d98816f68746b8465a1f5d682af, type: 3}
+  m_Name: Explore Node_Exit
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 1448, y: 40}
+  ports:
+    keys:
+    - entry
+    values:
+    - _fieldName: entry
+      _node: {fileID: 790574266372633063}
+      _typeQualifiedName: Game.Flow.FlowPort, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: exit_defeat
+        node: {fileID: -1104127759089322616}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  m_timeToSpendInNode:
+    m_min: 3000
+    m_max: 4200
+  m_flavours:
+  - Limping out of the ruins, badly beaten.
+--- !u!114 &3357356924434193481
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c9f87d98816f68746b8465a1f5d682af, type: 3}
+  m_Name: Explore Node_Exit
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 1448, y: -312}
+  ports:
+    keys:
+    - entry
+    values:
+    - _fieldName: entry
+      _node: {fileID: 3357356924434193481}
+      _typeQualifiedName: Game.Flow.FlowPort, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: exit_victory
+        node: {fileID: -1104127759089322616}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  m_timeToSpendInNode:
+    m_min: 3000
+    m_max: 4200
+  m_flavours:
+  - Leaving the ruin, prize in hand.
+--- !u!114 &3899776036226062061
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c9f87d98816f68746b8465a1f5d682af, type: 3}
+  m_Name: Explore Node_Exit
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 1448, y: -136}
+  ports:
+    keys:
+    - entry
+    values:
+    - _fieldName: entry
+      _node: {fileID: 3899776036226062061}
+      _typeQualifiedName: Game.Flow.FlowPort, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: exit_flee
+        node: {fileID: -1104127759089322616}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  m_timeToSpendInNode:
+    m_min: 3000
+    m_max: 4200
+  m_flavours:
+  - Scrambling to escape the way they came in.
+--- !u!114 &5764001023741063530
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a0f69d844d97164f9e468af1da41db8, type: 3}
+  m_Name: Explore Node_Flavour
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: -824, y: -344}
+  ports:
+    keys:
+    - entry
+    - exit
+    values:
+    - _fieldName: entry
+      _node: {fileID: 5764001023741063530}
+      _typeQualifiedName: Game.Flow.FlowPort, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: exit
+        node: {fileID: 8104634307937012797}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: exit
+      _node: {fileID: 5764001023741063530}
+      _typeQualifiedName: Game.Flow.FlowPort, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: entry
+        node: {fileID: -2594577176400879684}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  m_timeToSpendInNode:
+    m_min: 3000
+    m_max: 4200
+  m_flavours:
+  - Searching for a way in.
+--- !u!114 &6223320900873134711
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a0f69d844d97164f9e468af1da41db8, type: 3}
+  m_Name: Explore Node_Flavour
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 424, y: -184}
+  ports:
+    keys:
+    - entry
+    - exit
+    values:
+    - _fieldName: entry
+      _node: {fileID: 6223320900873134711}
+      _typeQualifiedName: Game.Flow.FlowPort, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: exit
+        node: {fileID: -3443678134477950975}
+        reroutePoints: []
+      - fieldName: exit
+        node: {fileID: -2281877012214841807}
+        reroutePoints: []
+      - fieldName: exit
+        node: {fileID: -8707791718957034761}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: exit
+      _node: {fileID: 6223320900873134711}
+      _typeQualifiedName: Game.Flow.FlowPort, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: entry
+        node: {fileID: -1104127759089322616}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  m_timeToSpendInNode:
+    m_min: 2200
+    m_max: 3600
+  m_flavours:
+  - Face to face with an old titan of war.
+  - Trying not to wake a sleeping giant.
+  - Preparing for a difficult fight.
+--- !u!114 &8104634307937012797
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d62b511553c4e24588ff10a563e3318, type: 3}
+  m_Name: Explore Node_Enter
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: -1240, y: -344}
+  ports:
+    keys:
+    - exit
+    values:
+    - _fieldName: exit
+      _node: {fileID: 8104634307937012797}
+      _typeQualifiedName: Game.Flow.FlowPort, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: entry
+        node: {fileID: 5764001023741063530}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0

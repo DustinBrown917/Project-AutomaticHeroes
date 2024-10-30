@@ -4,6 +4,7 @@ using UnityEngine;
 using Game.Exploration;
 using XNode;
 using SegoLib.Random;
+using Game.Flow;
 
 namespace Game
 {
@@ -14,28 +15,48 @@ namespace Game
         #region ========================================== State ==================================================
         /*vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv*/
 
-        protected class State : IHeroBehaviour.State, IExploreState
+        protected class State : IHeroBehaviour.State
         {
-            string IExploreState.FlavourText {
-                get => FlavourText;
-                set => SetFlavourText(value);
+            public IExploreState ExploreState
+            {
+                get => m_exploreState;
+                set => SetExploreState(value);
             }
-
-            public IExploreNodeState CurrentExploreNodeState { get; set; }
+            private IExploreState m_exploreState;
 
             public State(IHeroBehaviour behaviour, WorldState worldState, Hero hero) : base(behaviour, worldState, hero)
             {
             }
 
-            protected override void OnDisposed()
+
+            public void SetExploreState(IExploreState newState)
             {
-                CurrentExploreNodeState.Dispose();
-                CurrentExploreNodeState = null;
+                if (m_exploreState != null) {
+                    m_exploreState.flavourTextUpdated -= CombatState_FlavourTextUpdated;
+                    m_exploreState.Dispose();
+                }
+
+                m_exploreState = newState;
+
+                if (m_exploreState != null) {
+                    m_exploreState.flavourTextUpdated += CombatState_FlavourTextUpdated;
+                }
             }
 
-            public void SetFlavourText(string text)
+            public void SetFlavourText(string flavourText)
             {
-                FlavourText = text;
+                FlavourText = flavourText;
+            }
+
+            private void CombatState_FlavourTextUpdated(IFlowState source, string newValue)
+            {
+                SetFlavourText(newValue);
+            }
+
+            protected override void OnDisposed()
+            {
+                m_exploreState?.Dispose();
+                m_exploreState = null;
             }
         }
 
@@ -51,9 +72,12 @@ namespace Game
         [System.Serializable]
         protected class Behaviour : IHeroBehaviour.Behaviour<State>
         {
-            public ExploreGraph exploreGraph;
+
+            public ExploreGraph graph;
             public Sprite sprite;
             public string stateString = "Exploring.";
+
+
             public bool Initialized { get; private set; }
 
 
@@ -61,98 +85,34 @@ namespace Game
             {
             }
 
-            public void Initialize()
-            {
-                exploreGraph.Initialize();
-            }
-
-            protected override void OnBegin(State bb)
-            {
-                ExploreNode entryNode = FindEntryNode(bb);
-                EnterNode(bb, entryNode);
-            }
-
-            protected override void OnWorldTimeUpdate(State bb, float deltaSeconds)
-            {
-                bb.CurrentExploreNodeState.Node.OnWorldTimeUpdate(bb, deltaSeconds);
-
-                if (bb.CurrentExploreNodeState.IsResolved) {
-                    if (bb.CurrentExploreNodeState.Node.IsExitNode) {
-                        bb.Succeed();
-                        return;
-                    }
-
-                    ExploreNode nextNode;
-
-                    if (!ShouldLeaveExploration(bb)) {
-                        nextNode = FindNextNode(bb);
-                    } else {
-                        nextNode = exploreGraph.DeadEndExitNode;
-                    }
-
-                    if (nextNode == null) {
-                        nextNode = exploreGraph.DeadEndExitNode;
-                    }
-
-                    EnterNode(bb, nextNode);
-                }
-            }
-
             protected override State CreateNewState(Hero hero)
             {
+                if (!graph.Initialized)
+                    graph.Initialize();
+
                 State newState = new(ParentBehaviour, WorldState.Instance, hero);
                 newState.StateString = stateString;
                 newState.ForegroundSprite = sprite;
+
+                newState.ExploreState = graph.Enter(newState.WorldState, newState.Hero);
+
                 return newState;
             }
 
-            private ExploreNode FindEntryNode(State bb)
+            public void Initialize()
             {
-                if(exploreGraph.EntryNodes.Count > 0) {
-                    return bb.WorldState.Rng.GetRandom(exploreGraph.EntryNodes);
-                } else {
-                    return exploreGraph.ExploreNodes[0];
-                }
+                graph.Initialize();
             }
 
-            private void EnterNode(State bb, ExploreNode node)
+
+            protected override void OnWorldTimeUpdate(State bb, float deltaSeconds)
             {
-                IExploreNodeState oldNodeState = bb.CurrentExploreNodeState;
-                bb.CurrentExploreNodeState = node.Enter(bb);
-                oldNodeState?.Dispose();
-            }
+                bb.ExploreState.OnWorldTimeUpdate(deltaSeconds);
 
-            private ExploreNode FindNextNode(State bb)
-            {
-                List<ExplorePort> validExplorePorts = UnityEngine.Pool.ListPool<ExplorePort>.Get();
-                ExploreNode returnNode = null;
-                NodeResolution resolution = bb.CurrentExploreNodeState.Resolution;
-
-                foreach(ExplorePort nodePort in bb.CurrentExploreNodeState.Node.ConnectedOutputs) {
-                    if (nodePort.IsValidForResolution(resolution)) {
-                        validExplorePorts.Add(nodePort);
-                    }
+                if(bb.ExploreState.Status == IFlowState.EStatus.Concluded) {
+                    bb.ExploreState = null;
+                    bb.Succeed();
                 }
-
-                if(validExplorePorts.Count > 0) {
-                    float sumOfWeights = 0;
-                    for(int i = 0; i < validExplorePorts.Count; i++) {
-                        sumOfWeights += validExplorePorts[i].Weight;
-                    }
-
-                    int index = 0;
-                    if(sumOfWeights == 0) {
-                        index = bb.WorldState.Rng.Range(0, validExplorePorts.Count);
-                    } else {
-                        index = WeightedRandom.Naive(validExplorePorts, sumOfWeights, bb.WorldState.Rng, x => x.Weight);
-                    }
-
-                    returnNode = validExplorePorts[index].ConnectedNode;
-                }
-
-                UnityEngine.Pool.ListPool<ExplorePort>.Release(validExplorePorts);
-
-                return returnNode;
             }
 
             private bool ShouldLeaveExploration(State bb)

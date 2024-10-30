@@ -1,4 +1,5 @@
-﻿using SegoLib;
+﻿using Game.Flow;
+using SegoLib;
 using UnityEngine;
 using XNode;
 
@@ -13,10 +14,9 @@ namespace Game.Exploration
 		/*vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv*/
 
 
-		protected class State : ExploreNodeState
+		protected class State : FlowNodeState
 		{
-            public float targetTimeInState;
-            public float elapsedTimeInState;
+            public float exitTime;
 
             public State(ExploreNode node) : base(node) { }
         }
@@ -26,41 +26,35 @@ namespace Game.Exploration
 		#endregion ===================================== End Subclasses ================================================
 		/*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
 
-		[Input] public ExplorePort entry;
+		[Input] public FlowPort entry;
 
-        [SerializeField] private FloatRange m_timeToSpendInNode = new FloatRange(900, 4500);
+        [SerializeField] private FloatRange m_timeToSpendInNode = new FloatRange(3000, 4200);
         [SerializeField] private string[] m_flavours;
 
 
-		protected override ExplorePort GetExplorePort(NodePort port)
+		public override FlowPort GetFlowPort(NodePort port)
 		{
-			if(port.fieldName == nameof(entry)) {
-                return entry;
+            switch (port.fieldName) {
+                case nameof(entry): return entry;
+                default: return null;
             }
+        }
 
-            return null;
-		}
-
-        public override IExploreNodeState Enter(IExploreState bb)
+        public override IFlowNodeState Enter(IFlowState bb)
         {
             State state = new State(this);
-            state.targetTimeInState = bb.WorldState.Rng.Range(m_timeToSpendInNode);
+            state.exitTime = bb.ElapsedTime + bb.WorldState.Rng.Range(m_timeToSpendInNode);
             bb.FlavourText = bb.WorldState.Rng.GetRandom(m_flavours);
             return state;
         }
 
-        public override void OnWorldTimeUpdate(IExploreState bb, float deltaSeconds)
+        public override void OnWorldTimeUpdate(IFlowState bb, float deltaSeconds)
         {
-            if (bb.CurrentExploreNodeState is not State state) {
+            if (bb.NodeState is not State state)
                 return;
-            }
 
-            state.elapsedTimeInState += deltaSeconds;
-
-            bool hasStamina = bb.Hero.Stamina.SpendEnergy(HeroStamina.DEFAULT_STAMINA_PER_SECOND * deltaSeconds);
-
-            if (!hasStamina || state.elapsedTimeInState >= state.targetTimeInState) {
-                state.Resolve(new NodeResolution(null, hasStamina));
+            if(bb.ElapsedTime >= state.exitTime) {
+                state.Conclude(null);
             }
         }
 

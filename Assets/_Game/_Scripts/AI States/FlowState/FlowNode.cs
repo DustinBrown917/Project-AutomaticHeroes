@@ -25,7 +25,7 @@ namespace Game.Flow
 
             foreach (NodePort nodePort in Ports) {
 
-                FlowPort portData = GetPortData(nodePort);
+                FlowPort portData = GetFlowPort(nodePort);
                 if (portData == null)
                     continue;
 
@@ -47,10 +47,10 @@ namespace Game.Flow
 
         public override object GetValue(NodePort port)
         {
-            return GetPortData(port);
+            return GetFlowPort(port);
         }
 
-        public abstract FlowPort GetPortData(NodePort port);
+        public abstract FlowPort GetFlowPort(NodePort port);
         public abstract IFlowNodeState Enter(IFlowState bb);
         public abstract void OnWorldTimeUpdate(IFlowState bb, float deltaSeconds);
     }
