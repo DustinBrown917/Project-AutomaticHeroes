@@ -52,5 +52,5 @@ namespace Game
         {
             property = Mathf.Clamp01(newValue);
         }
-    } 
+    }
 }

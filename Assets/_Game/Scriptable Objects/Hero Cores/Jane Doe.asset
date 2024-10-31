@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Jane Doe
   m_EditorClassIdentifier: 
   <CharacterSprite>k__BackingField: {fileID: 21300000, guid: 9ceb2e9cf4d68cd4aadf61c513f7e892, type: 3}
+  <Gender>k__BackingField: {fileID: 11400000, guid: 5b83ae953d4bfa84f9f6da9879ae51de, type: 2}
   <Base>k__BackingField: {r: 0.13033998, g: 0.24164476, b: 0.2735849, a: 1}
   <Primary>k__BackingField: {r: 0.63857144, g: 0.7503214, b: 0.894, a: 1}
   <Secondary>k__BackingField: {r: 0.6603774, g: 0.6603774, b: 0.6603774, a: 1}

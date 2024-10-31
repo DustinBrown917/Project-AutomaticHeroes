@@ -49,7 +49,7 @@ MonoBehaviour:
   m_flavours:
   - Breaking down a damaged gate.
   - Forcing the rusted gears of a blast door open.
-  - Throwing their weight against an iron gate.
+  - Throwing {0:his} weight against an iron gate.
 --- !u!114 &-3443678134477950975
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -183,6 +183,89 @@ MonoBehaviour:
   - weight: 0
   - weight: 0
   - weight: 0
+--- !u!114 &-2377001535829136357
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e6b1d952fe765fd4a87ac00e729c57a9, type: 3}
+  m_Name: Flow Node_Skill Branch
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 824, y: -216}
+  ports:
+    keys:
+    - entry
+    - exits
+    - exits 0
+    - exits 1
+    - exits 2
+    values:
+    - _fieldName: entry
+      _node: {fileID: -2377001535829136357}
+      _typeQualifiedName: Game.Flow.FlowPort, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: exit
+        node: {fileID: 6223320900873134711}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: exits
+      _node: {fileID: -2377001535829136357}
+      _typeQualifiedName: Game.Flow.FlowNode_SkillBranch+SkillPort[], Assembly-CSharp,
+        Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      connections: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: exits 0
+      _node: {fileID: -2377001535829136357}
+      _typeQualifiedName: Game.Flow.FlowNode_SkillBranch+SkillPort, Assembly-CSharp,
+        Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: entry
+        node: {fileID: 2767050345756518423}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 1
+    - _fieldName: exits 1
+      _node: {fileID: -2377001535829136357}
+      _typeQualifiedName: Game.Flow.FlowNode_SkillBranch+SkillPort, Assembly-CSharp,
+        Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: entry
+        node: {fileID: -1104127759089322616}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 1
+    - _fieldName: exits 2
+      _node: {fileID: -2377001535829136357}
+      _typeQualifiedName: Game.Flow.FlowNode_SkillBranch+SkillPort, Assembly-CSharp,
+        Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: entry
+        node: {fileID: 5719941896489820723}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 1
+  exits:
+  - <Skill>k__BackingField: {fileID: 11400000, guid: f189a98a4004c044fa63681fa975b4e8, type: 2}
+  - <Skill>k__BackingField: {fileID: 11400000, guid: e05cfa575c9cda7418fa27739d61c575, type: 2}
+  - <Skill>k__BackingField: {fileID: 11400000, guid: bc6d595399377c148a062aa83ab8fb15, type: 2}
 --- !u!114 &-2281877012214841807
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -246,7 +329,7 @@ MonoBehaviour:
   m_Name: Explore Node_Monster Combat
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 904, y: -184}
+  position: {x: 1752, y: -184}
   ports:
     keys:
     - entry
@@ -259,8 +342,14 @@ MonoBehaviour:
       _typeQualifiedName: Game.Flow.FlowPort, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
         PublicKeyToken=null
       connections:
-      - fieldName: exit
-        node: {fileID: 6223320900873134711}
+      - fieldName: exits 1
+        node: {fileID: -2377001535829136357}
+        reroutePoints: []
+      - fieldName: failure
+        node: {fileID: 5719941896489820723}
+        reroutePoints: []
+      - fieldName: failure
+        node: {fileID: 2767050345756518423}
         reroutePoints: []
       _direction: 0
       _connectionType: 0
@@ -330,6 +419,9 @@ MonoBehaviour:
   - {fileID: 6223320900873134711}
   - {fileID: 3899776036226062061}
   - {fileID: 790574266372633063}
+  - {fileID: -2377001535829136357}
+  - {fileID: 2767050345756518423}
+  - {fileID: 5719941896489820723}
 --- !u!114 &790574266372633063
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -343,7 +435,7 @@ MonoBehaviour:
   m_Name: Explore Node_Exit
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 1448, y: 40}
+  position: {x: 2632, y: 40}
   ports:
     keys:
     - entry
@@ -365,6 +457,70 @@ MonoBehaviour:
     m_max: 4200
   m_flavours:
   - Limping out of the ruins, badly beaten.
+--- !u!114 &2767050345756518423
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ecdeb0e3a21072499216f2a50c62341, type: 3}
+  m_Name: Flow Node_Skill Test
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 1384, y: -488}
+  ports:
+    keys:
+    - entry
+    - success
+    - failure
+    values:
+    - _fieldName: entry
+      _node: {fileID: 2767050345756518423}
+      _typeQualifiedName: Game.Flow.FlowPort, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: exits 0
+        node: {fileID: -2377001535829136357}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: success
+      _node: {fileID: 2767050345756518423}
+      _typeQualifiedName: Game.Flow.FlowPort, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: entry
+        node: {fileID: 3357356924434193481}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: failure
+      _node: {fileID: 2767050345756518423}
+      _typeQualifiedName: Game.Flow.FlowPort, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: entry
+        node: {fileID: -1104127759089322616}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  <Skill>k__BackingField: {fileID: 11400000, guid: f189a98a4004c044fa63681fa975b4e8, type: 2}
+  <Level>k__BackingField: 6
+  <TimeToSpendInNode>k__BackingField:
+    m_min: 3000
+    m_max: 4200
+  <Flavour>k__BackingField:
+  - Subverting an iron titan's security systems.
+  - Exploiting the weakness of a thinking weapon.
 --- !u!114 &3357356924434193481
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -378,7 +534,7 @@ MonoBehaviour:
   m_Name: Explore Node_Exit
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 1448, y: -312}
+  position: {x: 2632, y: -312}
   ports:
     keys:
     - entry
@@ -390,6 +546,12 @@ MonoBehaviour:
       connections:
       - fieldName: exit_victory
         node: {fileID: -1104127759089322616}
+        reroutePoints: []
+      - fieldName: success
+        node: {fileID: 5719941896489820723}
+        reroutePoints: []
+      - fieldName: success
+        node: {fileID: 2767050345756518423}
         reroutePoints: []
       _direction: 0
       _connectionType: 0
@@ -413,7 +575,7 @@ MonoBehaviour:
   m_Name: Explore Node_Exit
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 1448, y: -136}
+  position: {x: 2632, y: -136}
   ports:
     keys:
     - entry
@@ -435,6 +597,70 @@ MonoBehaviour:
     m_max: 4200
   m_flavours:
   - Scrambling to escape the way they came in.
+--- !u!114 &5719941896489820723
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ecdeb0e3a21072499216f2a50c62341, type: 3}
+  m_Name: Flow Node_Skill Test
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 1384, y: 104}
+  ports:
+    keys:
+    - entry
+    - success
+    - failure
+    values:
+    - _fieldName: entry
+      _node: {fileID: 5719941896489820723}
+      _typeQualifiedName: Game.Flow.FlowPort, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: exits 2
+        node: {fileID: -2377001535829136357}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: success
+      _node: {fileID: 5719941896489820723}
+      _typeQualifiedName: Game.Flow.FlowPort, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: entry
+        node: {fileID: 3357356924434193481}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: failure
+      _node: {fileID: 5719941896489820723}
+      _typeQualifiedName: Game.Flow.FlowPort, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: entry
+        node: {fileID: -1104127759089322616}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  <Skill>k__BackingField: {fileID: 11400000, guid: bc6d595399377c148a062aa83ab8fb15, type: 2}
+  <Level>k__BackingField: 6
+  <TimeToSpendInNode>k__BackingField:
+    m_min: 3000
+    m_max: 4200
+  <Flavour>k__BackingField:
+  - Sneaking past the killing machine.
+  - Hiding from the metal beast in shadows.
 --- !u!114 &5764001023741063530
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -496,7 +722,7 @@ MonoBehaviour:
   m_Name: Explore Node_Flavour
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 424, y: -184}
+  position: {x: 392, y: -200}
   ports:
     keys:
     - entry
@@ -526,7 +752,7 @@ MonoBehaviour:
         PublicKeyToken=null
       connections:
       - fieldName: entry
-        node: {fileID: -1104127759089322616}
+        node: {fileID: -2377001535829136357}
         reroutePoints: []
       _direction: 1
       _connectionType: 0
@@ -536,9 +762,9 @@ MonoBehaviour:
     m_min: 2200
     m_max: 3600
   m_flavours:
-  - Face to face with an old titan of war.
-  - Trying not to wake a sleeping giant.
-  - Preparing for a difficult fight.
+  - Face to face with a sleeping titan of an old war.
+  - Discovered an ancient weapon that refuses to die.
+  - Staring wide eyed at a fabled automotan.
 --- !u!114 &8104634307937012797
 MonoBehaviour:
   m_ObjectHideFlags: 0

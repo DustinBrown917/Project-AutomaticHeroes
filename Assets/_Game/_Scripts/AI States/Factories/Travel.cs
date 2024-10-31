@@ -138,16 +138,16 @@ namespace Game
             Flavours.Add(new Flavour() { text = "Marching steadily onward." });
             Flavours.Add(new Flavour() { text = "Moving at decent pace.", speedImpact = 1.05f, energyCostImpact = 1.05f });
             Flavours.Add(new Flavour() { text = "Moving hurriedly.", speedImpact = 1.1f, energyCostImpact = 1.1f});
-            Flavours.Add(new Flavour() { text = "Taking their time.", speedImpact = 0.95f, energyCostImpact = 0.95f});
+            Flavours.Add(new Flavour() { text = "Taking {0:his} time.", speedImpact = 0.95f, energyCostImpact = 0.95f});
             Flavours.Add(new Flavour() { text = "Singing an old marching tune." });
-            Flavours.Add(new Flavour() { text = "Whistling a song from their home." });
-            Flavours.Add(new Flavour() { text = "Thinking intently as they walk." });
+            Flavours.Add(new Flavour() { text = "Whistling a song from {0:his} home." });
+            Flavours.Add(new Flavour() { text = "Thinking intently as {0:he} walks." });
             Flavours.Add(new Flavour() { text = "Daydreaming absently." });
-            Flavours.Add(new Flavour() { text = "Having a conversation with themelf." });
+            Flavours.Add(new Flavour() { text = "Having a conversation with {0:himself}." });
             Flavours.Add(new Flavour() { text = "Reflecting on past challenges." });
             Flavours.Add(new Flavour() { text = "Looking forward to taking a rest." });
-            Flavours.Add(new Flavour() { text = "Anticipating their destination." });
-            Flavours.Add(new Flavour() { text = "Trying to ignore their aching feet." });
+            Flavours.Add(new Flavour() { text = "Anticipating {0:his} destination." });
+            Flavours.Add(new Flavour() { text = "Trying to ignore {0:his} aching feet." });
             Flavours.Add(new Flavour() { text = "Thinking about what to eat." });
         }
 

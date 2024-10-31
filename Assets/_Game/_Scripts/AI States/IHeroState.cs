@@ -254,6 +254,8 @@ namespace Game
                 if (newValue == null)
                     newValue = string.Empty;
 
+                newValue = string.Format(WorldState.HeroFormatProvider, newValue, Hero);
+
                 if (newValue == m_flavourString)
                     return;
 

@@ -31,6 +31,7 @@ namespace Game.Monsters.Combat
             state.Result = IMonsterCombatState.ECombatResult.Fled;
             newState.nextStageTime = GetNextStageTime(state);
             UpdateFlavourForStage(state, newState.currentStage);
+            bb.Hero.Equipment.GetMainWeaponSkill().GainExperience(state.Monster.CalculateExperienceReward(bb.Hero) * 0.5f);
             return newState;
         }
 
@@ -67,7 +68,7 @@ namespace Game.Monsters.Combat
         private void UpdateFlavourForStage(IMonsterCombatState bb, int stage)
         {
             string[] flavours = GetFlavoursForStage(stage);
-            bb.FlavourText = string.Format(bb.WorldState.Rng.GetRandom(flavours), bb.Hero, bb.Monster);
+            bb.FlavourText = string.Format(bb.WorldState.HeroFormatProvider, bb.WorldState.Rng.GetRandom(flavours), bb.Hero, bb.Monster);
         }
 
         private string[] GetFlavoursForStage(int stage)

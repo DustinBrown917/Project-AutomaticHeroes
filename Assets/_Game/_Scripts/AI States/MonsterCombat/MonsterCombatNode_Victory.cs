@@ -55,15 +55,15 @@ namespace Game.Monsters.Combat
             if(bb.Hero.Health.Percent < 0.2f && bb.Hero.Stamina.ExhaustionPercent > 0.7f) {
                 return "Collapsed on the ground, wincing victoriously.";
             } else if (bb.Hero.Health.Percent < 0.2f) {
-                return "Assessing the severity of their wounds.";
+                return "Assessing the severity of {0:his} wounds.";
             } else if (bb.Hero.Stamina.ExhaustionPercent > 0.7f) {
                 return "Lying on the ground, heaving heavily.";
             } else if(bb.Hero.Health.Percent < 0.5f) {
                 return "Taking a moment to examine wounds.";
             } else if (bb.Hero.Stamina.ExhaustionPercent > 0.5f) {
-                return "Taking a moment to catch their breath.";
+                return "Taking a moment to catch {0:his} breath.";
             } else {
-                return "Dusting self off.";
+                return "Dusting {0:himself} off.";
             }
         }
     } 

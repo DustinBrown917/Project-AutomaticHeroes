@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Node_Defeat
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 568, y: 168}
+  position: {x: 568, y: 232}
   ports:
     keys:
     - entry
@@ -21,8 +21,8 @@ MonoBehaviour:
     values:
     - _fieldName: entry
       _node: {fileID: -7593569342286891460}
-      _typeQualifiedName: Game.Monsters.Combat.PortData, Assembly-CSharp, Version=0.0.0.0,
-        Culture=neutral, PublicKeyToken=null
+      _typeQualifiedName: Game.Flow.FlowPort, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
       connections:
       - fieldName: defeat
         node: {fileID: 9214190834351600074}
@@ -33,8 +33,8 @@ MonoBehaviour:
       _dynamic: 0
     - _fieldName: exit
       _node: {fileID: -7593569342286891460}
-      _typeQualifiedName: Game.Monsters.Combat.PortData, Assembly-CSharp, Version=0.0.0.0,
-        Culture=neutral, PublicKeyToken=null
+      _typeQualifiedName: Game.Flow.FlowPort, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
       connections:
       - fieldName: entry
         node: {fileID: 64557210411472544}
@@ -69,8 +69,8 @@ MonoBehaviour:
     values:
     - _fieldName: entry
       _node: {fileID: -1666890589709955549}
-      _typeQualifiedName: Game.Monsters.Combat.PortData, Assembly-CSharp, Version=0.0.0.0,
-        Culture=neutral, PublicKeyToken=null
+      _typeQualifiedName: Game.Flow.FlowPort, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
       connections:
       - fieldName: victory
         node: {fileID: 9214190834351600074}
@@ -81,8 +81,8 @@ MonoBehaviour:
       _dynamic: 0
     - _fieldName: exit
       _node: {fileID: -1666890589709955549}
-      _typeQualifiedName: Game.Monsters.Combat.PortData, Assembly-CSharp, Version=0.0.0.0,
-        Culture=neutral, PublicKeyToken=null
+      _typeQualifiedName: Game.Flow.FlowPort, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
       connections:
       - fieldName: entry
         node: {fileID: 64557210411472544}
@@ -130,8 +130,8 @@ MonoBehaviour:
     values:
     - _fieldName: entry
       _node: {fileID: 64557210411472544}
-      _typeQualifiedName: Game.Monsters.Combat.PortData, Assembly-CSharp, Version=0.0.0.0,
-        Culture=neutral, PublicKeyToken=null
+      _typeQualifiedName: Game.Flow.FlowPort, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
       connections:
       - fieldName: exit
         node: {fileID: -1666890589709955549}
@@ -159,7 +159,7 @@ MonoBehaviour:
   m_Name: Node_Flee
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 568, y: -24}
+  position: {x: 568, y: -56}
   ports:
     keys:
     - entry
@@ -167,8 +167,8 @@ MonoBehaviour:
     values:
     - _fieldName: entry
       _node: {fileID: 5422672918292171554}
-      _typeQualifiedName: Game.Monsters.Combat.PortData, Assembly-CSharp, Version=0.0.0.0,
-        Culture=neutral, PublicKeyToken=null
+      _typeQualifiedName: Game.Flow.FlowPort, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
       connections:
       - fieldName: flee
         node: {fileID: 9214190834351600074}
@@ -179,8 +179,8 @@ MonoBehaviour:
       _dynamic: 0
     - _fieldName: exit
       _node: {fileID: 5422672918292171554}
-      _typeQualifiedName: Game.Monsters.Combat.PortData, Assembly-CSharp, Version=0.0.0.0,
-        Culture=neutral, PublicKeyToken=null
+      _typeQualifiedName: Game.Flow.FlowPort, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
       connections:
       - fieldName: entry
         node: {fileID: 64557210411472544}
@@ -224,8 +224,8 @@ MonoBehaviour:
     values:
     - _fieldName: exit
       _node: {fileID: 8584814122858146658}
-      _typeQualifiedName: Game.Monsters.Combat.PortData, Assembly-CSharp, Version=0.0.0.0,
-        Culture=neutral, PublicKeyToken=null
+      _typeQualifiedName: Game.Flow.FlowPort, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
       connections:
       - fieldName: entry
         node: {fileID: 9214190834351600074}
@@ -257,8 +257,8 @@ MonoBehaviour:
     values:
     - _fieldName: entry
       _node: {fileID: 9214190834351600074}
-      _typeQualifiedName: Game.Monsters.Combat.PortData, Assembly-CSharp, Version=0.0.0.0,
-        Culture=neutral, PublicKeyToken=null
+      _typeQualifiedName: Game.Flow.FlowPort, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
       connections:
       - fieldName: exit
         node: {fileID: 8584814122858146658}
@@ -269,8 +269,8 @@ MonoBehaviour:
       _dynamic: 0
     - _fieldName: victory
       _node: {fileID: 9214190834351600074}
-      _typeQualifiedName: Game.Monsters.Combat.PortData, Assembly-CSharp, Version=0.0.0.0,
-        Culture=neutral, PublicKeyToken=null
+      _typeQualifiedName: Game.Flow.FlowPort, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
       connections:
       - fieldName: entry
         node: {fileID: -1666890589709955549}
@@ -281,8 +281,8 @@ MonoBehaviour:
       _dynamic: 0
     - _fieldName: flee
       _node: {fileID: 9214190834351600074}
-      _typeQualifiedName: Game.Monsters.Combat.PortData, Assembly-CSharp, Version=0.0.0.0,
-        Culture=neutral, PublicKeyToken=null
+      _typeQualifiedName: Game.Flow.FlowPort, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
       connections:
       - fieldName: entry
         node: {fileID: 5422672918292171554}
@@ -293,8 +293,8 @@ MonoBehaviour:
       _dynamic: 0
     - _fieldName: defeat
       _node: {fileID: 9214190834351600074}
-      _typeQualifiedName: Game.Monsters.Combat.PortData, Assembly-CSharp, Version=0.0.0.0,
-        Culture=neutral, PublicKeyToken=null
+      _typeQualifiedName: Game.Flow.FlowPort, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
       connections:
       - fieldName: entry
         node: {fileID: -7593569342286891460}

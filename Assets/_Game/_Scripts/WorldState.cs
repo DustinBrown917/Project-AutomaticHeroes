@@ -16,6 +16,8 @@ namespace Game
         public WorldTime Time { get; private set; }
         public WorldDate Date { get; private set; }
 
+        public HeroFormatProvider HeroFormatProvider { get; private set; } = new HeroFormatProvider();
+
         private void Awake()
         {
             if (Instance != null) {

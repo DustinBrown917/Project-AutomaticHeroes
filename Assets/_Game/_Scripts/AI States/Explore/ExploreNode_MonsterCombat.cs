@@ -109,5 +109,10 @@ namespace Game.Exploration
                     return null;
             }
         }
+
+        private void ApplyExperience()
+        {
+
+        }
     } 
 }

@@ -1,10 +1,15 @@
 using System.Collections.Generic;
+using UnityEditor.Experimental.GraphView;
 using XNode;
 
 namespace Game.Flow
 {
     public abstract class FlowNode : XNode.Node
     {
+        public static int GetIndexFromFieldName(string root, string fieldName)
+        {
+            return int.Parse(fieldName.Substring(root.Length));
+        }
 
         public IReadOnlyList<FlowPort> InputData => m_inputs;
         private FlowPort[] m_inputs;
