@@ -9,8 +9,7 @@ namespace Game.Monsters.Combat
         private class State : FlowNodeState
         {
             public MonsterCombat Combat { get; private set; }
-
-            public float nextHeroDamageTime;
+            public float timeInCombat;
 
             public State(MonsterCombatNode node, IMonsterCombatState bb) : base(node)
             {
@@ -43,17 +42,11 @@ namespace Game.Monsters.Combat
             if (bb.NodeState is not State state)
                 return;
 
-            state.Combat.SimulateStepAndApply(deltaSeconds);
+            state.timeInCombat += deltaSeconds;
+            state.Combat.Simulate(deltaSeconds);
 
             bool monsterDefeated = state.Combat.Monster.CurrentHealth <= 0;
-            bool heroDefeated = state.Combat.Hero.Health.Current - state.Combat.accumulatedHeroDamage <= 0;
-
-            // Do damage update for the hero's UI
-            if (bb.ElapsedTime >= state.nextHeroDamageTime || heroDefeated || monsterDefeated) {
-                state.Combat.Hero.Health.Damage(state.Combat.accumulatedHeroDamage);
-                state.Combat.accumulatedHeroDamage = 0;
-                state.nextHeroDamageTime = bb.ElapsedTime + GetNextHeroDamageTime(bb.WorldState.Rng);
-            }
+            bool heroDefeated = state.Combat.Hero.Health.Current<= 0;
 
             if (monsterDefeated) {
                 state.Conclude(victory.ConnectedPortData.Node);
@@ -82,13 +75,12 @@ namespace Game.Monsters.Combat
 
         private bool ShouldFlee(State state, IRandomNumberGenerator rng)
         {
-            float timeToHeroVictory = state.Combat.GetTimeToHeroVictoryInSeconds();
-            float timeToHeroDefeat = state.Combat.GetTimeToMonsterVictoryInSeconds();
+            float balanceOfPower = state.Combat.GetBalanceOfPower();
 
-            if (timeToHeroVictory < timeToHeroDefeat)
+            if (balanceOfPower > 0)
                 return false;
-
-            return rng.Bool(1.0f - (timeToHeroVictory / timeToHeroDefeat));
+            else
+                return true;
         }
     }
 }

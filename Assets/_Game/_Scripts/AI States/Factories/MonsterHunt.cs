@@ -152,7 +152,7 @@ namespace Game
 
                 int index = WeightedRandom.Naive(monsters, sumOfDensities, bb.WorldState.Rng, x => x.Density);
 
-                return new Monster(monsters[index].MonsterDef, bb.WorldState.Rng.Range(monsterLevelRange));
+                return new Monster(monsters[index].MonsterDef);
             }
 
             private float GetQuitChance(State bb)

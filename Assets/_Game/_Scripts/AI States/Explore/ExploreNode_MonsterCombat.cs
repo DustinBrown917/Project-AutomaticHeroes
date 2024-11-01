@@ -93,7 +93,7 @@ namespace Game.Exploration
         private Monster GetMonster(IFlowState bb)
         {
             int index = WeightedRandom.Naive(m_monsters, m_sumOfMonsterPopulation, bb.WorldState.Rng, x => x.Density);
-            return new Monster(m_monsters[index].MonsterDef, bb.WorldState.Rng.Range(5, 10));
+            return new Monster(m_monsters[index].MonsterDef);
         }
 
         private FlowNode GetNextNode(State state)

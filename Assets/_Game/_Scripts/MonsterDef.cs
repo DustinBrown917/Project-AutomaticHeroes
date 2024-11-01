@@ -8,31 +8,30 @@ namespace Game
     [CreateAssetMenu(fileName = "New Monster Def", menuName = "Game/MonsterDef")]
     public class MonsterDef : ScriptableObject
     {
-        [field: SerializeField] public float DamagePerHour { get; private set; }
+        [field: SerializeField] public int CombatLevel { get; private set; }
+        [field: SerializeField] public float DamagePerAttack { get; private set; }
+        [field: SerializeField] public float AttackCooldown { get; private set; }
         [field: SerializeField] public float MaxHealth { get; private set; }
     } 
 
     public class Monster
     {
         public MonsterDef Def { get; }
-        public int Level { get; }
+        public int CombatLevel => Def.CombatLevel;
         public float ExpReward { get; }
         public float CurrentHealth { get; set; }
-        public float DamagePerHour => Def.DamagePerHour;
 
-        public Monster(MonsterDef def, int level)
+        public Monster(MonsterDef def)
         {
             Def = def;
-            Level = level;
-
             CurrentHealth = def.MaxHealth;
         }
 
         public float CalculateExperienceReward(Hero hero)
         {
             float heroSkillLevel = hero.Skills[hero.Equipment.MainWeapon.WeaponType.Skill].Level;
-            float exp = (Level + (Level - heroSkillLevel)) * Combat.EXP_PER_MONSTER_LEVEL;
-            exp *= (Def.DamagePerHour * 0.01f) * (Def.MaxHealth * 0.01f);
+            float exp = (CombatLevel + (CombatLevel - heroSkillLevel)) * Combat.EXP_PER_MONSTER_LEVEL;
+            exp *= (Def.DamagePerAttack * 0.01f) * (Def.MaxHealth * 0.01f);
             if (exp < 1)
                 exp = 1;
             return exp;
@@ -40,7 +39,7 @@ namespace Game
 
         public override string ToString()
         {
-            return $"Lv. {Level} {Def.name}";
+            return $"{Def.name}";
         }
     }
 
@@ -53,6 +52,9 @@ namespace Game
 
     public class MonsterCombat : SegoLib.IDisposable
     {
+        public const float HERO_SECONDS_PER_ATTACK = 60f;
+        public const float HERO_DAMAGE_PER_ATTACK = 2.0f;
+
         public readonly struct StepResult
         {
             public readonly float damageToHero;
@@ -71,7 +73,12 @@ namespace Game
         public Hero Hero { get; private set; }
         public Monster Monster { get; private set; }
 
-        public float accumulatedHeroDamage;
+        private float m_accumulatedHeroDamage;
+        private float m_accumulatedMonsterDamage;
+
+        public float ElapsedTime { get; private set; }
+        public float NextHeroAttackTime { get; private set; }
+        public float NextMonsterAttackTime { get; private set; }
 
         public bool IsDisposed { get; private set; }
         public event Action<IPrivatelyDisposable> disposed;
@@ -81,74 +88,152 @@ namespace Game
             WorldState = worldState;
             Hero = hero;
             Monster = monster;
+
+            UpdateNextHeroAttackTime();
+            UpdateNextMonsterAttackTime();
+        }
+
+        private int GetHeroEffectiveCombatLevel()
+        {
+            return Hero.Equipment.GetMainWeaponSkill().Level + Hero.Equipment.MainWeapon.UpgradeLevel;
+        }
+
+        private int GetMonsterEffectiveCombatLevel()
+        {
+            return Monster.CombatLevel;
+        }
+
+        /// <summary>
+        /// Get a value between -1 and 1 indicating the balance of power in this fight, where -1 is overwhelmingly in favour of the monster, 1 is overwhelmingly in favour of the hero, and 0 is approximately equal.
+        /// </summary>
+        /// <returns></returns>
+        public float GetBalanceOfPower()
+        {
+            int heroLevel = GetHeroEffectiveCombatLevel();
+            int monsterLevel = GetMonsterEffectiveCombatLevel();
+
+            float heroHitRate = GetWinPercentForA(heroLevel, monsterLevel);
+            float monsterHitRate = GetWinPercentForA(monsterLevel, heroLevel);
+
+            float monsterDps = (Monster.Def.DamagePerAttack / Monster.Def.AttackCooldown) * monsterHitRate;
+            float heroDps = (HERO_DAMAGE_PER_ATTACK / HERO_SECONDS_PER_ATTACK) * heroHitRate;
+
+            float timeToKillMonster = Monster.CurrentHealth / heroDps;
+            float timeToKillHero = Hero.Health.Current / monsterDps;
+            
+            // TODO: Consider hero exhaustion in this calculation.
+
+            float sum = timeToKillMonster + timeToKillHero;
+
+            float balance = ((timeToKillHero / sum) * 2) - 1;
+
+            return balance;
+        }
+
+        /// <summary>
+        /// Given uniformly distributed rolls, gets the chance tha a roll on a <paramref name="maxA"/> sided dice 
+        /// would be greater than or equal to a roll on a <paramref name="maxB"/> sided dice. <br/>
+        /// IMPORTANT: This assumes that a draw is a win for <paramref name="maxA"/>.
+        /// </summary>
+        /// <param name="maxA"></param>
+        /// <param name="maxB"></param>
+        /// <returns></returns>
+        public float GetWinPercentForA(int maxA, int maxB)
+        {
+            // Increment both to account for 0 being a valid roll value.
+            maxA++;
+            maxB++;
+
+            // Get total possible outcomes.
+            int totalOutcomes = maxA * maxB;
+
+            // Get the lower of the two maxes.
+            int lowerMax = Mathf.Min(maxA, maxB);
+
+            // If maxA == maxB, win rate would be calculated as (n(n + 1))/2 (see nth triangle number. Look it up, nerd.)
+            int wins = (lowerMax * (lowerMax + 1)) / 2;
+
+            // If maxA > maxB, then for every digit extra maxA has over maxB, add maxB to favourable outcomes.
+            // This is because if maxA rolls one of these numbers, no matter what maxB rolls, maxA will win.
+            if (maxA > maxB)
+                wins += (maxA - maxB) * maxB;
+
+            // Get proportion of total outcomes that are wins for maxA.
+            return (float)wins / totalOutcomes;
         }
 
 
-        public void ApplyStepResult(in StepResult result)
+        public void Simulate(float deltaSeconds)
         {
-            Monster.CurrentHealth -= result.damageToMonster;
-            accumulatedHeroDamage += result.damageToHero;
-            Hero.Stamina.SpendEnergy(result.energySpent);
-        }
+            ElapsedTime += deltaSeconds;
 
-        public StepResult SimulateStep(float deltaSeconds)
-        {
-            float damageToMonster = WorldTime.PerHourToPerSecond(GetHeroDamagePerHour()) * deltaSeconds;
-            float damageToHero = 0;
+            Hero.Stamina.SpendEnergy(HeroStamina.COMBAT_STAMINA_PER_SECOND * deltaSeconds);
 
-            if (damageToMonster < Monster.CurrentHealth) {
-                damageToHero = WorldTime.PerHourToPerSecond(GetMonsterDamagePerHour()) * deltaSeconds;
+            while (TryGetAttackAtCurrentTime(out Action attackAction)) {
+                attackAction.Invoke();
             }
 
-            float energySpent = HeroStamina.COMBAT_STAMINA_PER_SECOND * deltaSeconds;
-
-            return new StepResult(damageToHero, damageToMonster, energySpent);
+            ApplyAccumulatedDamage();
         }
 
-        public void SimulateStepAndApply(float deltaSeconds)
+        private bool TryGetAttackAtCurrentTime(out Action attackAction)
         {
-            ApplyStepResult(SimulateStep(deltaSeconds));
+            if(ElapsedTime >= NextHeroAttackTime) {
+                attackAction = DoHeroAttack;
+            } else if(ElapsedTime >= NextMonsterAttackTime) {
+                attackAction = DoMonsterAttack;
+            } else {
+                attackAction = null;
+            }
+
+            return attackAction != null;
         }
 
-        public float GetHeroDamagePerHour()
+        private void DoHeroAttack()
         {
-            IWeapon heroWeapon = Hero.Equipment.MainWeapon;
-            float damagePerHour = Combat.HERO_DAMAGE_PER_HOUR_AT_EQUAL_LEVEL; // Base damage per hour
-            damagePerHour += heroWeapon.UpgradeLevel; // Add weapon upgrade level
-            int levelDifference = Hero.Skills[heroWeapon.WeaponType.Skill].Level - Monster.Level;
-            damagePerHour += levelDifference * Combat.LEVEL_DIFFERENCE_DAMAGE_INFLUENCE; // Add level difference influence
-            
-            damagePerHour *= 1.0f - Hero.Stamina.ExhaustionPercent; // Modify by exhaustion per cent.
+            UpdateNextHeroAttackTime();
 
-            if (damagePerHour < 1.0f)
-                damagePerHour = 1.0f;
+            if (Hero.Health.Current - m_accumulatedHeroDamage <= 0 || Hero.Stamina.ExhaustionPercent >= 1.0f)
+                return;
 
-            return damagePerHour;
+            if(RollIsWon(GetHeroEffectiveCombatLevel(), GetMonsterEffectiveCombatLevel())) {
+                m_accumulatedMonsterDamage += HERO_DAMAGE_PER_ATTACK;
+            }
+        }
+        private void DoMonsterAttack()
+        {
+            UpdateNextMonsterAttackTime();
+
+            if (Monster.CurrentHealth - m_accumulatedMonsterDamage <= 0)
+                return;
+
+            if (RollIsWon(GetMonsterEffectiveCombatLevel(), GetHeroEffectiveCombatLevel())) {
+                m_accumulatedMonsterDamage += Monster.Def.DamagePerAttack;
+            }
         }
 
-        public float GetMonsterDamagePerHour()
+        private bool RollIsWon(int attackerLevel, int defenderLevel)
         {
-            IWeapon heroWeapon = Hero.Equipment.MainWeapon;
+            int attackerRoll = WorldState.Rng.Range(0, attackerLevel + 1);
+            int defenderRoll = WorldState.Rng.Range(0, defenderLevel + 1);
 
-            float damagePerHour = Monster.DamagePerHour;
-            damagePerHour += (Monster.Level - Hero.Skills[heroWeapon.WeaponType.Skill].Level) * Combat.LEVEL_DIFFERENCE_DAMAGE_INFLUENCE;
-
-            if (damagePerHour < 0)
-                damagePerHour = 0;
-
-            return damagePerHour;
+            return attackerRoll > defenderRoll;
         }
 
-        public float GetTimeToHeroVictoryInSeconds()
+        private void UpdateNextHeroAttackTime()
         {
-            float heroDamagePerHour = GetHeroDamagePerHour();
-            return (Monster.CurrentHealth / heroDamagePerHour) * 3600f;
+            NextHeroAttackTime += HERO_SECONDS_PER_ATTACK;
         }
 
-        public float GetTimeToMonsterVictoryInSeconds()
+        private void UpdateNextMonsterAttackTime()
         {
-            float monsterDamagePerHour = GetMonsterDamagePerHour();
-            return ((Hero.Health.Current - accumulatedHeroDamage) / monsterDamagePerHour) * 3600f;
+            NextMonsterAttackTime += Monster.Def.AttackCooldown;
+        }
+
+        private void ApplyAccumulatedDamage()
+        {
+            Monster.CurrentHealth -= m_accumulatedMonsterDamage;
+            Hero.Health.Damage(m_accumulatedHeroDamage);
         }
 
         public void Dispose()
