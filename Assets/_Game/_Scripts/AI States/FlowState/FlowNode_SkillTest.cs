@@ -1,4 +1,5 @@
 using SegoLib;
+using SegoLib.Random;
 using System;
 using UnityEngine;
 using XNode;

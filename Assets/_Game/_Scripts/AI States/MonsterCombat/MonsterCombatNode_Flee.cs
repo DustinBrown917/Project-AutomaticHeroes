@@ -1,4 +1,5 @@
 using Game.Flow;
+using SegoLib.Random;
 using UnityEngine;
 
 namespace Game.Monsters.Combat
@@ -31,7 +32,7 @@ namespace Game.Monsters.Combat
             state.Result = IMonsterCombatState.ECombatResult.Fled;
             newState.nextStageTime = GetNextStageTime(state);
             UpdateFlavourForStage(state, newState.currentStage);
-            bb.Hero.Equipment.GetMainWeaponSkill().GainExperience(state.Monster.CalculateExperienceReward(bb.Hero) * 0.5f);
+            bb.Hero.Equipment.GetMainWeaponSkill().GainExperience(state.Monster.GetExpRewardModifiedByHealthLost());
             return newState;
         }
 

@@ -26,7 +26,7 @@ namespace Game.Monsters.Combat
             state.Result = IMonsterCombatState.ECombatResult.Victorious;
             newState.timeToExitNode = bb.ElapsedTime + bb.WorldState.Rng.Range(600, 1800);
             bb.FlavourText = GetFlavourText(state);
-            bb.Hero.Equipment.GetMainWeaponSkill().GainExperience(state.Monster.CalculateExperienceReward(bb.Hero));
+            bb.Hero.Equipment.GetMainWeaponSkill().GainExperience(state.Monster.ExpReward);
 
             return newState;
         }

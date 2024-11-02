@@ -6,6 +6,11 @@ namespace Game.Monsters.Combat
 {
     public class MonsterCombatNode_Combat : MonsterCombatNode
     {
+
+        /*vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv*/
+        #region ========================================== Subclasses ==================================================
+        /*vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv*/
+
         private class State : FlowNodeState
         {
             public MonsterCombat Combat { get; private set; }
@@ -22,6 +27,11 @@ namespace Game.Monsters.Combat
                 Combat = null;
             }
         }
+
+        /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
+        #endregion ===================================== End Subclasses ================================================
+        /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
+
 
         [Input] public FlowPort entry;
         [Output] public FlowPort victory;
@@ -52,7 +62,7 @@ namespace Game.Monsters.Combat
                 state.Conclude(victory.ConnectedPortData.Node);
             } else if (heroDefeated) {
                 state.Conclude(defeat.ConnectedPortData.Node);
-            } else if(ShouldFlee(state, bb.WorldState.Rng)) {
+            } else if(state.Combat.HeroIsAttemptingToFlee) {
                 state.Conclude(flee.ConnectedPortData.Node);
             }
         }
@@ -66,21 +76,6 @@ namespace Game.Monsters.Combat
                 case nameof(victory): return victory;
                 default: return null;
             }
-        }
-
-        private float GetNextHeroDamageTime(IRandomNumberGenerator rng)
-        {
-            return rng.Range(300, 1600);
-        }
-
-        private bool ShouldFlee(State state, IRandomNumberGenerator rng)
-        {
-            float balanceOfPower = state.Combat.GetBalanceOfPower();
-
-            if (balanceOfPower > 0)
-                return false;
-            else
-                return true;
         }
     }
 }

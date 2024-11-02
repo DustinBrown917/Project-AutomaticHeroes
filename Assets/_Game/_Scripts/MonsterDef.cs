@@ -1,6 +1,6 @@
 using SegoLib;
+using SegoLib.Random;
 using System;
-using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Game
@@ -25,16 +25,21 @@ namespace Game
         {
             Def = def;
             CurrentHealth = def.MaxHealth;
+
+            ExpReward = CalculateExperienceReward();
         }
 
-        public float CalculateExperienceReward(Hero hero)
+        private float CalculateExperienceReward()
         {
-            float heroSkillLevel = hero.Skills[hero.Equipment.MainWeapon.WeaponType.Skill].Level;
-            float exp = (CombatLevel + (CombatLevel - heroSkillLevel)) * Combat.EXP_PER_MONSTER_LEVEL;
-            exp *= (Def.DamagePerAttack * 0.01f) * (Def.MaxHealth * 0.01f);
-            if (exp < 1)
-                exp = 1;
-            return exp;
+            float expFromAttackDamage = (Def.DamagePerAttack / Def.AttackCooldown) * 60; // 1 point per damage per minute
+            float expFromHealth = Def.MaxHealth * 0.1f; // 1 point per 10 health
+            float expFromCombatLevel = CombatLevel; // 1 point per combat level
+            return expFromAttackDamage + expFromHealth + expFromCombatLevel;
+        }
+
+        public float GetExpRewardModifiedByHealthLost()
+        {
+            return ExpReward * (1.0f - (CurrentHealth/Def.MaxHealth));
         }
 
         public override string ToString()
@@ -52,23 +57,6 @@ namespace Game
 
     public class MonsterCombat : SegoLib.IDisposable
     {
-        public const float HERO_SECONDS_PER_ATTACK = 60f;
-        public const float HERO_DAMAGE_PER_ATTACK = 2.0f;
-
-        public readonly struct StepResult
-        {
-            public readonly float damageToHero;
-            public readonly float damageToMonster;
-            public readonly float energySpent;
-
-            public StepResult(float damageToHero, float damageToMonster, float energySpent)
-            {
-                this.damageToHero = damageToHero;
-                this.damageToMonster = damageToMonster;
-                this.energySpent = energySpent;
-            }
-        }
-
         public WorldState WorldState { get; private set; }
         public Hero Hero { get; private set; }
         public Monster Monster { get; private set; }
@@ -79,6 +67,7 @@ namespace Game
         public float ElapsedTime { get; private set; }
         public float NextHeroAttackTime { get; private set; }
         public float NextMonsterAttackTime { get; private set; }
+        public bool HeroIsAttemptingToFlee { get; private set; }
 
         public bool IsDisposed { get; private set; }
         public event Action<IPrivatelyDisposable> disposed;
@@ -95,7 +84,7 @@ namespace Game
 
         private int GetHeroEffectiveCombatLevel()
         {
-            return Hero.Equipment.GetMainWeaponSkill().Level + Hero.Equipment.MainWeapon.UpgradeLevel;
+            return Hero.Equipment.GetMainWeaponSkill().Level;
         }
 
         private int GetMonsterEffectiveCombatLevel()
@@ -116,7 +105,7 @@ namespace Game
             float monsterHitRate = GetWinPercentForA(monsterLevel, heroLevel);
 
             float monsterDps = (Monster.Def.DamagePerAttack / Monster.Def.AttackCooldown) * monsterHitRate;
-            float heroDps = (HERO_DAMAGE_PER_ATTACK / HERO_SECONDS_PER_ATTACK) * heroHitRate;
+            float heroDps = (Hero.Equipment.MainWeapon.DamagePerAttack / Hero.Equipment.MainWeapon.AttackCooldown) * heroHitRate;
 
             float timeToKillMonster = Monster.CurrentHealth / heroDps;
             float timeToKillHero = Hero.Health.Current / monsterDps;
@@ -169,7 +158,7 @@ namespace Game
 
             Hero.Stamina.SpendEnergy(HeroStamina.COMBAT_STAMINA_PER_SECOND * deltaSeconds);
 
-            while (TryGetAttackAtCurrentTime(out Action attackAction)) {
+            while (!HeroIsAttemptingToFlee && TryGetAttackAtCurrentTime(out Action attackAction)) {
                 attackAction.Invoke();
             }
 
@@ -193,11 +182,15 @@ namespace Game
         {
             UpdateNextHeroAttackTime();
 
-            if (Hero.Health.Current - m_accumulatedHeroDamage <= 0 || Hero.Stamina.ExhaustionPercent >= 1.0f)
+            HeroIsAttemptingToFlee = ShouldHeroFlee();
+
+            if (HeroIsAttemptingToFlee ||
+                Hero.Health.Current - m_accumulatedHeroDamage <= 0 || 
+                Hero.Stamina.ExhaustionPercent >= 1.0f)
                 return;
 
             if(RollIsWon(GetHeroEffectiveCombatLevel(), GetMonsterEffectiveCombatLevel())) {
-                m_accumulatedMonsterDamage += HERO_DAMAGE_PER_ATTACK;
+                m_accumulatedMonsterDamage += Hero.Equipment.MainWeapon.DamagePerAttack;
             }
         }
         private void DoMonsterAttack()
@@ -208,7 +201,7 @@ namespace Game
                 return;
 
             if (RollIsWon(GetMonsterEffectiveCombatLevel(), GetHeroEffectiveCombatLevel())) {
-                m_accumulatedMonsterDamage += Monster.Def.DamagePerAttack;
+                m_accumulatedHeroDamage += Monster.Def.DamagePerAttack;
             }
         }
 
@@ -222,7 +215,7 @@ namespace Game
 
         private void UpdateNextHeroAttackTime()
         {
-            NextHeroAttackTime += HERO_SECONDS_PER_ATTACK;
+            NextHeroAttackTime += Hero.Equipment.MainWeapon.AttackCooldown;
         }
 
         private void UpdateNextMonsterAttackTime()
@@ -234,6 +227,19 @@ namespace Game
         {
             Monster.CurrentHealth -= m_accumulatedMonsterDamage;
             Hero.Health.Damage(m_accumulatedHeroDamage);
+
+            m_accumulatedMonsterDamage = 0;
+            m_accumulatedHeroDamage = 0;
+        }
+
+        private bool ShouldHeroFlee()
+        {
+            float balanceOfPower = GetBalanceOfPower();
+
+            // Flip BoP because monster advantage is negative.
+            balanceOfPower *= -1f;
+
+            return WorldState.Rng.Bool(balanceOfPower);
         }
 
         public void Dispose()

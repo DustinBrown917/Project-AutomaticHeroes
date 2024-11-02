@@ -1,6 +1,4 @@
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace SegoLib.Random
 {
@@ -81,29 +79,5 @@ namespace SegoLib.Random
             Activate(this);
             return UnityEngine.Random.Range(minInclusive, maxExclusive);
         }
-
-        public T GetRandom<T>(IReadOnlyList<T> list)
-        {
-            if (list == null)
-                throw new System.ArgumentNullException(nameof(list));
-
-            if (list.Count == 0)
-                throw new System.ArgumentException(nameof(list), $"{nameof(list)} must contain at least one element.");
-
-            Activate(this);
-            return list[Range(0, list.Count)];
-        }
-
-        public float Range(FloatRange rangeInclusive)
-        {
-            return Range(rangeInclusive.Min, rangeInclusive.Max);
-        }
-
-        public int Range(IntRange rangeInclusive)
-        {
-            return Range(rangeInclusive.Min, rangeInclusive.Max + 1);
-        }
-
-        public bool Bool(float chanceOfTrue = 0.5f) => Float01() <= chanceOfTrue;
     }
 }

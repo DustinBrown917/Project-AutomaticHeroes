@@ -9,6 +9,8 @@ namespace Game
         public string DisplayName => m_weapon.DisplayName;
         public int UpgradeLevel => m_weapon.UpgradeLevel;
         public bool IsUpgradeable => m_weapon.IsUpgradeable;
+        public float DamagePerAttack => m_weapon.DamagePerAttack;
+        public float AttackCooldown => m_weapon.AttackCooldown;
 
         [SerializeField] private Weapon m_weapon;
 

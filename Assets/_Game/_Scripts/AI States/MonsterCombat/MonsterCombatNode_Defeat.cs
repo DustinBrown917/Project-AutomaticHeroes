@@ -1,4 +1,5 @@
 using Game.Flow;
+using SegoLib.Random;
 using UnityEngine;
 
 namespace Game.Monsters.Combat
@@ -28,7 +29,7 @@ namespace Game.Monsters.Combat
             state.Result = IMonsterCombatState.ECombatResult.Defeated;
             newState.stateEndTime = bb.ElapsedTime + bb.WorldState.Rng.Range(3600f, 7200f);
             bb.FlavourText = string.Format(bb.WorldState.Rng.GetRandom(m_flavourTexts), bb.Hero, state.Monster);
-            bb.Hero.Equipment.GetMainWeaponSkill().GainExperience(state.Monster.CalculateExperienceReward(bb.Hero) * 0.5f);
+            bb.Hero.Equipment.GetMainWeaponSkill().GainExperience(state.Monster.GetExpRewardModifiedByHealthLost());
             return newState;
         }
 

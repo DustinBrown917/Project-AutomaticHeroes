@@ -1,5 +1,6 @@
 ﻿using Game.Flow;
 using SegoLib;
+using SegoLib.Random;
 using UnityEngine;
 using XNode;
 

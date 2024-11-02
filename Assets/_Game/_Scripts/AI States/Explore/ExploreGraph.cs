@@ -1,4 +1,5 @@
 ﻿using Game.Flow;
+using SegoLib.Random;
 using System.Collections.Generic;
 using UnityEngine;
 using XNode;

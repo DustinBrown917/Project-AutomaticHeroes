@@ -8,7 +8,7 @@ namespace Game
         public HeroSkillDef Skill { get; }
     }
 
-    [CreateAssetMenu(fileName = "New Weapon Type Definition", menuName = "Game/WeaponTypeDef")]
+    [CreateAssetMenu(fileName = "New Weapon Type Definition", menuName = "Game/Weapons/WeaponTypeDef")]
     public class WeaponTypeDef : ScriptableObject, IWeaponTypeDef
     {
         [field: SerializeField] public string DisplayName { get; private set; }

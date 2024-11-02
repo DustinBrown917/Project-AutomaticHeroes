@@ -10,10 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 283ee5ac1f11c764c967ffdf6dfbeb5d, type: 3}
-  m_Name: Short Sword
+  m_Name: Rapier
   m_EditorClassIdentifier: 
   m_weapon:
-    <DisplayName>k__BackingField: Short Sword
-    <WeaponType>k__BackingField: {fileID: 11400000, guid: cc588bbb626c9644ebb853e567873f61, type: 2}
+    <DisplayName>k__BackingField: Rapier
+    <WeaponType>k__BackingField: {fileID: 11400000, guid: a7e3c0fc5f0123e4f90a8b5050d30fa2, type: 2}
     <IsUpgradeable>k__BackingField: 1
     <UpgradeLevel>k__BackingField: 0
+    <DamagePerMinute>k__BackingField: 2
+    <AttackCooldown>k__BackingField: 40
