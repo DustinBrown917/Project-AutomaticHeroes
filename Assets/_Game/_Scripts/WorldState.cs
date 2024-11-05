@@ -11,8 +11,6 @@ namespace Game
 
         public IRandomNumberGenerator Rng { get; private set; }
 
-        public Wait DefaultWaitStateFactory { get; private set; } = new Wait();
-
         public WorldTime Time { get; private set; }
         public WorldDate Date { get; private set; }
 

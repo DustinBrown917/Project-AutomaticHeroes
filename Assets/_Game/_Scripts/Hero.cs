@@ -24,6 +24,7 @@ namespace Game
         public HeroStamina Stamina { get; private set; }
         public HeroSkills Skills { get; private set; }
         public HeroEquipment Equipment { get; private set; }
+        public HeroHeuristics Heuristics { get; private set; }
 
         public bool Initialized { get; private set; }
 
@@ -38,6 +39,7 @@ namespace Game
             Stamina = GetComponent<HeroStamina>();
             Skills = GetComponent<HeroSkills>();
             Equipment = GetComponent<HeroEquipment>();
+            Heuristics = GetComponent<HeroHeuristics>();
         }
 
         private void Start()
@@ -61,6 +63,7 @@ namespace Game
             Stamina = null;
             Skills = null;
             Equipment = null;
+            Heuristics = null;
         }
 
         /// <summary>
@@ -68,14 +71,10 @@ namespace Game
         /// </summary>
         /// <param name="location">Where the hero starts. Cannot be null.</param>
         /// <exception cref="System.ArgumentNullException"></exception>
-        public void Initialize(int id, HeroCore core, ILocation location)
+        public void Initialize(int id, HeroCore core)
         {
             if (Initialized)
                 return;
-
-            if(location == null) {
-                throw new System.ArgumentNullException(nameof(location));
-            }
 
             Id = id;
 
@@ -83,11 +82,12 @@ namespace Game
 
             Skills.Initialize();
             Level.Initialize();
-            Movement.Initialize(location);
+            Movement.Initialize();
             Graphic.Initialize();
             Health.Initialize();
             Stamina.Initialize();
             Equipment.Initialize();
+            Heuristics.Initialize();
             Brain.Initialize();
 
             WorldState.Instance.Time.AddListener(this);

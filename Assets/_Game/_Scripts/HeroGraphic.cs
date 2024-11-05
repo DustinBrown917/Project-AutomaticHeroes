@@ -9,16 +9,6 @@ namespace Game
         [SerializeField] private GameObject m_graphicGameObject;
         [SerializeField] private SpriteRenderer m_spriteRenderer;
 
-        public bool Initialized { get; private set; }
-
-        public void Initialize()
-        {
-            if (Initialized)
-                return;
-
-            Initialized = true;
-        }
-
         public void Enable()
         {
             m_graphicGameObject.SetActive(true);

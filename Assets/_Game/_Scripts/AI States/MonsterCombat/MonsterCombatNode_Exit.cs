@@ -3,20 +3,19 @@ using Game.Flow;
 
 namespace Game.Monsters.Combat
 {
+    [NodeWidth(150)]
     public class MonsterCombatNode_Exit : MonsterCombatNode
     {
         [Input] public FlowPort entry;
 
-        public override IFlowNodeState Enter(IFlowState bb)
+        public override void Enter(IMonsterCombatState bb)
         {
-            FlowNodeState newState = new FlowNodeState(this);
-            newState.Conclude(null);
-            return newState;
+            bb.ConcludeCurrentNode(null);
         }
 
-        public override void OnWorldTimeUpdate(IFlowState bb, float deltaSeconds)
+        public override void OnWorldTimeUpdate(IMonsterCombatState bb, float deltaSeconds)
         {
-            
+
         }
 
         public override FlowPort GetFlowPort(XNode.NodePort port)

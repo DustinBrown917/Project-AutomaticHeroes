@@ -13,8 +13,8 @@ namespace Game
         public static Hero CreateHero(ILocation location)
         {
             Hero hero = Instantiate(m_instance.m_heroPrefab.gameObject).GetComponent<Hero>();
-            hero.Initialize(m_instance.m_nextHeroId, m_instance.m_heroCores[m_instance.GetNextHeroCoreId()], location);
-
+            hero.Initialize(m_instance.m_nextHeroId, m_instance.m_heroCores[m_instance.GetNextHeroCoreId()]);
+            hero.Movement.TeleportToLoation(location);
             m_instance.m_createdHeroes.Add(hero);
 
             m_instance.m_nextHeroId++;

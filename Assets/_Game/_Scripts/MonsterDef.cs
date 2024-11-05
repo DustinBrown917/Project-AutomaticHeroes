@@ -70,7 +70,7 @@ namespace Game
         public bool HeroIsAttemptingToFlee { get; private set; }
 
         public bool IsDisposed { get; private set; }
-        public event Action<IPrivatelyDisposable> disposed;
+        public event Action<IPrivatelyDisposable> Disposed;
 
         public MonsterCombat(WorldState worldState, Hero hero, Monster monster)
         {
@@ -251,8 +251,8 @@ namespace Game
             Hero = null;
             Monster = null;
 
-            disposed?.Invoke(this);
-            disposed = null;
+            Disposed?.Invoke(this);
+            Disposed = null;
         }
     }
 }

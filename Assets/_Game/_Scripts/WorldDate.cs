@@ -9,7 +9,7 @@ namespace Game
         public static int SECONDS_PER_HOUR = 3600;
         public static int SECONDS_PER_DAY = SECONDS_PER_HOUR * 24;
 
-        public enum ETimeOfDay
+        public enum ETimeOfDay : byte
         {
             Night,
             Dawn,
@@ -17,33 +17,59 @@ namespace Game
             Dusk
         }
 
-        private static readonly ETimeOfDay[] m_timeOfDaySchedule = new ETimeOfDay[] {
-            ETimeOfDay.Night, // 00:00
-            ETimeOfDay.Night, // 01:00
-            ETimeOfDay.Night, // 02:00
-            ETimeOfDay.Night, // 03:00
-            ETimeOfDay.Night, // 04:00
-            ETimeOfDay.Dawn,  // 05:00
-            ETimeOfDay.Dawn,  // 06:00
-            ETimeOfDay.Dawn,  // 07:00
-            ETimeOfDay.Dawn,  // 08:00
-            ETimeOfDay.Dawn,  // 09:00
-            ETimeOfDay.Day,   // 10:00
-            ETimeOfDay.Day,   // 11:00
-            ETimeOfDay.Day,   // 12:00
-            ETimeOfDay.Day,   // 13:00
-            ETimeOfDay.Day,   // 14:00
-            ETimeOfDay.Day,   // 15:00
-            ETimeOfDay.Day,   // 16:00
-            ETimeOfDay.Dusk,  // 17:00
-            ETimeOfDay.Dusk,  // 18:00
-            ETimeOfDay.Dusk,  // 19:00
-            ETimeOfDay.Dusk,  // 20:00
-            ETimeOfDay.Dusk,  // 21:00
-            ETimeOfDay.Night, // 22:00
-            ETimeOfDay.Night, // 23:00
+        public enum EPreference : byte
+        {
+            None,
+            Diurnal,
+            Nocturnal,
+        }
 
+        private class TimeOfDayInfo
+        {
+            public readonly ETimeOfDay timeOfDay;
+            public readonly float diurnalPreference;
+            public readonly float nocturnalPreference;
+
+            public TimeOfDayInfo(ETimeOfDay timeOfDay, float diurnalPreference, float nocturnalPreference)
+            {
+                this.timeOfDay = timeOfDay;
+                this.diurnalPreference = diurnalPreference;
+                this.nocturnalPreference = nocturnalPreference;
+            }
+        }
+
+        private static readonly TimeOfDayInfo[] m_timeOfDaySchedule = new TimeOfDayInfo[] {
+            new(ETimeOfDay.Night, 0.0f, 1.0f), // 00:00
+            new(ETimeOfDay.Night, 0.0f, 1.0f), // 01:00
+            new(ETimeOfDay.Night, 0.0f, 1.0f), // 02:00
+            new(ETimeOfDay.Night, 0.0f, 1.0f), // 03:00
+            new(ETimeOfDay.Night, 0.0f, 1.0f), // 04:00
+            new(ETimeOfDay.Dawn, 0.8f, 0.5f),  // 05:00
+            new(ETimeOfDay.Dawn, 0.8f, 0.5f),  // 06:00
+            new(ETimeOfDay.Dawn, 0.8f, 0.5f),  // 07:00
+            new(ETimeOfDay.Dawn, 0.8f, 0.5f),  // 08:00
+            new(ETimeOfDay.Dawn, 0.8f, 0.5f),  // 09:00
+            new(ETimeOfDay.Day, 1.0f, 0.0f),   // 10:00
+            new(ETimeOfDay.Day, 1.0f, 0.0f),   // 11:00
+            new(ETimeOfDay.Day, 1.0f, 0.0f),   // 12:00
+            new(ETimeOfDay.Day, 1.0f, 0.0f),   // 13:00
+            new(ETimeOfDay.Day, 1.0f, 0.0f),   // 14:00
+            new(ETimeOfDay.Day, 1.0f, 0.0f),   // 15:00
+            new(ETimeOfDay.Day, 1.0f, 0.0f),   // 16:00
+            new(ETimeOfDay.Dusk, 0.5f, 0.8f),  // 17:00
+            new(ETimeOfDay.Dusk, 0.5f, 0.8f),  // 18:00
+            new(ETimeOfDay.Dusk, 0.5f, 0.8f),  // 19:00
+            new(ETimeOfDay.Dusk, 0.5f, 0.8f),  // 20:00
+            new(ETimeOfDay.Dusk, 0.5f, 0.8f),  // 21:00
+            new(ETimeOfDay.Night, 0.0f, 1.0f), // 22:00
+            new(ETimeOfDay.Night, 0.0f, 1.0f), // 23:00
+            null, // Will be filled in with the element at 0 to make calculations between [0] and [23] easier.
         };
+
+        static WorldDate()
+        {
+            m_timeOfDaySchedule[m_timeOfDaySchedule.Length - 1] = m_timeOfDaySchedule[0];
+        }
 
         public static string GetTimeOfDayString(ETimeOfDay timeOfDay)
         {
@@ -65,6 +91,14 @@ namespace Game
         }
         [SerializeField, ReadOnly] private ETimeOfDay m_timeOfDay;
         public event ValueChangedWithSourceEvent<WorldDate, ETimeOfDay> timeOfDayChanged;
+
+        public int CurrentHour
+        {
+            get => m_hour;
+            set => SetCurrentHour(value);
+        }
+        [SerializeField, ReadOnly] private int m_hour;
+        public event ValueChangedWithSourceEvent<WorldDate, int> currentHourChanged;
 
         public int ElapsedSecondsThisDay
         {
@@ -147,10 +181,24 @@ namespace Game
             elapsedSecondsThisDayChanged?.Invoke(this, oldValue, newValue);
         }
 
+        private void SetCurrentHour(int newValue)
+        {
+            if(newValue < 0)
+                newValue = 0;
+
+            if (newValue == m_hour)
+                return;
+
+            int oldValue = m_hour;
+            m_hour = newValue;
+
+            currentHourChanged?.Invoke(this, oldValue, newValue);
+        }
+
         private void UpdateTimeOfDay()
         {
-            int hour = m_elapsedSecondsThisDay / SECONDS_PER_HOUR;
-            TimeOfDay = m_timeOfDaySchedule[hour];
+            CurrentHour = m_elapsedSecondsThisDay / SECONDS_PER_HOUR;
+            TimeOfDay = m_timeOfDaySchedule[CurrentHour].timeOfDay;
         }
 
         public ETimeOfDay CalculateTimeOfDayAtFutureOffset(float secondsIntoFuture)
@@ -161,7 +209,14 @@ namespace Game
 
             int hour = dayTimeSeconds / SECONDS_PER_HOUR;
 
-            return m_timeOfDaySchedule[hour];
+            return m_timeOfDaySchedule[hour].timeOfDay;
+        }
+
+        public float GetTimeOfDayPreference(EPreference preference)
+        {
+            if (preference == EPreference.Diurnal) return m_timeOfDaySchedule[CurrentHour].diurnalPreference;
+            if (preference == EPreference.Nocturnal) return m_timeOfDaySchedule[CurrentHour].nocturnalPreference;
+            return 1;
         }
 
         public string GetDateString()

@@ -16,19 +16,12 @@ namespace Game
         public IReadOnlyCollection<IWeaponTypeDef> WeaponProficiencies => m_weaponProficiencies;
         private readonly HashSet<IWeaponTypeDef> m_weaponProficiencies = new();
 
-        public bool Initialized { get; private set; }
-
-        public void Initialize()
+        protected override void OnInitialize()
         {
-            if (Initialized)
-                return;
-
             m_weaponProficiencies.UnionWith(Hero.Core.StartingWeaponProficiencies);
             m_weaponProficiencies.Add(Hero.Core.StartingWeapon.WeaponType);
 
             EquipWeaponAsDominant(Hero.Core.StartingWeapon);
-
-            Initialized = true;
         }
 
         protected override void OnDestroy()

@@ -54,20 +54,13 @@ namespace Game
 
         public float ExhaustionPercent { get; private set; }
 
-
-
         public float MaxEnergy => TotalStaminaPool - Exhaustion;
 
-        public bool Initialized { get; private set; }
 
-        public void Initialize()
+        protected override void OnInitialize()
         {
-            if (Initialized) return;
-
             TotalStaminaPool = 100;
             Energy = TotalStaminaPool;
-
-            Initialized = true;
         }
 
         public void SetCurrentEnergy(float newValue)

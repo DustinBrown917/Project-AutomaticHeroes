@@ -20,7 +20,6 @@ namespace Game
         public event ValueUpdatedWithSourceEvent<ILocation, IReadOnlyList<Hero>> visitorsUpdated;
 
         private readonly List<IRoute> m_routes = new();
-        private readonly List<Travel> m_travelStates = new();
 
         private IHeroBehaviourProvider[] m_heroBehaviourProviders;
 
@@ -38,11 +37,11 @@ namespace Game
         public void AddRoute(IRoute route)
         {
             m_routes.Add(route);
-            if(route.A == (ILocation)this) {
-                m_travelStates.Add(new Travel(new RouteTraversalAToB(route)));
-            } else {
-                m_travelStates.Add(new Travel(new RouteTraversalBToA(route)));
-            }
+            //if(route.A == (ILocation)this) {
+            //    m_travelStates.Add(new Travel(new RouteTraversalAToB(route)));
+            //} else {
+            //    m_travelStates.Add(new Travel(new RouteTraversalBToA(route)));
+            //}
         }
 
         public void OnLocationEnter(Hero hero)
@@ -51,19 +50,19 @@ namespace Game
                 m_visitors.Add(hero);
                 visitorsUpdated?.Invoke(this, Visitors);
 
-                List<IHeroBehaviour> behaviours = UnityEngine.Pool.ListPool<IHeroBehaviour>.Get();
+                List<IHeroBehaviour> behavioursToAdd = UnityEngine.Pool.ListPool<IHeroBehaviour>.Get();
 
-                behaviours.AddRange(m_travelStates);
+                //behaviours.AddRange(m_travelStates);
 
                 foreach(IHeroBehaviourProvider stateProvider in m_heroBehaviourProviders) {
-                    stateProvider.GetStates(behaviours);
+                    stateProvider.GetStates(behavioursToAdd);
                 }
 
-                foreach(IHeroBehaviour behaviour in behaviours) {
+                foreach(IHeroBehaviour behaviour in behavioursToAdd) {
                     hero.Brain.AddBehaviour(behaviour);
                 }
 
-                UnityEngine.Pool.ListPool<IHeroBehaviour>.Release(behaviours);
+                UnityEngine.Pool.ListPool<IHeroBehaviour>.Release(behavioursToAdd);
             }
         }
 
@@ -72,19 +71,19 @@ namespace Game
             if (m_visitors.Remove(hero)) {
                 visitorsUpdated?.Invoke(this, Visitors);
 
-                List<IHeroBehaviour> behaviours = UnityEngine.Pool.ListPool<IHeroBehaviour>.Get();
+                List<IHeroBehaviour> behavioursToRemove = UnityEngine.Pool.ListPool<IHeroBehaviour>.Get();
 
-                behaviours.AddRange(m_travelStates);
+                //behaviours.AddRange(m_travelStates);
 
                 foreach (IHeroBehaviourProvider stateProvider in m_heroBehaviourProviders) {
-                    stateProvider.GetStates(behaviours);
+                    stateProvider.GetStates(behavioursToRemove);
                 }
 
-                foreach (IHeroBehaviour behaviour in behaviours) {
+                foreach (IHeroBehaviour behaviour in behavioursToRemove) {
                     hero.Brain.RemoveBehaviour(behaviour);
                 }
 
-                UnityEngine.Pool.ListPool<IHeroBehaviour>.Release(behaviours);
+                UnityEngine.Pool.ListPool<IHeroBehaviour>.Release(behavioursToRemove);
             }
         }
     }

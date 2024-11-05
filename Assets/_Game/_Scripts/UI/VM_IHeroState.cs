@@ -46,7 +46,7 @@ namespace Game.UI
 
         protected override void UpdateValues()
         {
-            StateString = Model.StateString;
+            StateString = Model.StateText;
             FlavourString = Model.FlavourText;
             ForegroundSprite = Model.ForegroundSprite;
             BackgroundSprite = Model.BackgroundSprite;
@@ -54,20 +54,20 @@ namespace Game.UI
 
         protected override void OnModelChangedToNotNull()
         {
-            Model.foregroundSpriteChanged += Model_ForegroundSpriteChanged;
-            Model.backgroundSpriteChanged += Model_BackgroundSpriteChanged;
-            Model.stateStringChanged += Model_StateStringChanged;
-            Model.flavourTextChanged += Model_FlavourStringChanged;
-            Model.disposed += Model_Disposed;
+            Model.ForegroundSpriteChanged += Model_ForegroundSpriteChanged;
+            Model.BackgroundSpriteChanged += Model_BackgroundSpriteChanged;
+            Model.StateTextChanged += Model_StateStringChanged;
+            Model.FlavourTextChanged += Model_FlavourStringChanged;
+            Model.Disposed += Model_Disposed;
         }
 
         protected override void OnModelChangingFromNotNull()
         {
-            Model.foregroundSpriteChanged -= Model_ForegroundSpriteChanged;
-            Model.backgroundSpriteChanged -= Model_BackgroundSpriteChanged;
-            Model.stateStringChanged -= Model_StateStringChanged;
-            Model.flavourTextChanged -= Model_FlavourStringChanged;
-            Model.disposed -= Model_Disposed;
+            Model.ForegroundSpriteChanged -= Model_ForegroundSpriteChanged;
+            Model.BackgroundSpriteChanged -= Model_BackgroundSpriteChanged;
+            Model.StateTextChanged -= Model_StateStringChanged;
+            Model.FlavourTextChanged -= Model_FlavourStringChanged;
+            Model.Disposed -= Model_Disposed;
         }
 
         private void Model_FlavourStringChanged(IHeroBehaviour.IState source, string oldValue, string newValue)

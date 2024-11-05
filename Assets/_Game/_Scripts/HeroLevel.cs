@@ -40,16 +40,9 @@ namespace Game
         /// </summary>
         public event LevelUpDelegate leveledUp;
 
-        public bool Initialized { get; private set; }
-
-        public void Initialize()
+        protected override void OnInitialize()
         {
-            if (Initialized)
-                return;
-
             ExperienceNeededToLevel = GetExperienceNeededToLevel(m_level);
-
-            Initialized = true;
         }
 
         public void GainExperience(float amount)

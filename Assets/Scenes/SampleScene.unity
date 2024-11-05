@@ -807,16 +807,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 8153231705256620972, guid: 8745bc6e15abee942a7c5c94aca18df4, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 397797190}
-    - targetCorrespondingSourceObject: {fileID: 8153231705256620972, guid: 8745bc6e15abee942a7c5c94aca18df4, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 397797192}
-    - targetCorrespondingSourceObject: {fileID: 8153231705256620972, guid: 8745bc6e15abee942a7c5c94aca18df4, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 397797194}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8745bc6e15abee942a7c5c94aca18df4, type: 3}
 --- !u!4 &312720332 stripped
 Transform:
@@ -828,7 +819,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7108896763118586010, guid: 8745bc6e15abee942a7c5c94aca18df4, type: 3}
   m_PrefabInstance: {fileID: 312720331}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 397797189}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b2baab441e4d1704b9abd32ec5c5684a, type: 3}
@@ -885,84 +876,6 @@ MonoBehaviour:
   - {fileID: 811744023}
   - {fileID: 1571052915}
   - {fileID: 1817677094}
---- !u!1 &397797189 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8153231705256620972, guid: 8745bc6e15abee942a7c5c94aca18df4, type: 3}
-  m_PrefabInstance: {fileID: 312720331}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &397797190
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 397797189}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 531147e6012a58548b3810c2a2cbcda8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_trainingState:
-    m_behaviour:
-      flavours:
-      - flavorText: Learning techniques from a retired soldier.
-        mustBeWieldingWeaponType: []
-      - flavorText: Practicing with the local guards.
-        mustBeWieldingWeaponType: []
-      - flavorText: Working on form.
-        mustBeWieldingWeaponType: []
-      - flavorText: Working on balance.
-        mustBeWieldingWeaponType: []
-      - flavorText: Working on conditioning.
-        mustBeWieldingWeaponType: []
-      - flavorText: Working on accuracy.
-        mustBeWieldingWeaponType: []
-      - flavorText: Practicing neat tricks.
-        mustBeWieldingWeaponType: []
-      - flavorText: Practicing forms from an old manual.
-        mustBeWieldingWeaponType: []
-      - flavorText: Learning from a mentor.
-        mustBeWieldingWeaponType: []
-      stateString: Training {0}.
-      backgroundSprite: {fileID: 21300000, guid: 05a4e847a2522e749bcc1edc6530edaa, type: 3}
-      m_trainerLevel: 10
-      m_skillDef: {fileID: 11400000, guid: e05cfa575c9cda7418fa27739d61c575, type: 2}
---- !u!114 &397797192
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 397797189}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3172378c2de5f634d893f1521c410f80, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_rest:
-    m_behaviour:
-      restQuality: 3
-      flavours: []
-      stateString: Resting.
-      sprite: {fileID: 21300000, guid: 125417720d99f9b4c9be33196ad91861, type: 3}
---- !u!114 &397797194
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 397797189}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9431ef3a1416986459a03414053cc456, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_treatWounds:
-    m_behaviour:
-      stateString: Treating Wounds.
-      treatmentQuality: 3
-      flavours: []
-      sprite: {fileID: 21300000, guid: e5f6bdbb53a6e1e47aa0b7153f16f5f6, type: 3}
 --- !u!1001 &409493989
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1418,13 +1331,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 8153231705256620972, guid: 8745bc6e15abee942a7c5c94aca18df4, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1119288170}
-    - targetCorrespondingSourceObject: {fileID: 8153231705256620972, guid: 8745bc6e15abee942a7c5c94aca18df4, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1119288171}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8745bc6e15abee942a7c5c94aca18df4, type: 3}
 --- !u!4 &409493990 stripped
 Transform:
@@ -1436,7 +1343,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7108896763118586010, guid: 8745bc6e15abee942a7c5c94aca18df4, type: 3}
   m_PrefabInstance: {fileID: 409493989}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1119288168}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b2baab441e4d1704b9abd32ec5c5684a, type: 3}
@@ -2016,10 +1923,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 8153231705256620972, guid: 8745bc6e15abee942a7c5c94aca18df4, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 881797829}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8745bc6e15abee942a7c5c94aca18df4, type: 3}
 --- !u!4 &492528341 stripped
 Transform:
@@ -2031,7 +1935,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7108896763118586010, guid: 8745bc6e15abee942a7c5c94aca18df4, type: 3}
   m_PrefabInstance: {fileID: 492528340}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 881797827}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b2baab441e4d1704b9abd32ec5c5684a, type: 3}
@@ -2918,11 +2822,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 714628797}
   m_CullTransparentMesh: 1
---- !u!1 &736732114 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8153231705256620972, guid: 8745bc6e15abee942a7c5c94aca18df4, type: 3}
-  m_PrefabInstance: {fileID: 1591999998}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &739064430
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3171,47 +3070,12 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 749276323757739308, guid: 35f9f532907d43c4e809fa34bfe81dd1, type: 3}
   m_PrefabInstance: {fileID: 876825930}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &881797827 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8153231705256620972, guid: 8745bc6e15abee942a7c5c94aca18df4, type: 3}
-  m_PrefabInstance: {fileID: 492528340}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &881797829
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 881797827}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 18d8adc0063765e48a91ba2689a9318e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_monsterHunt:
-    m_behaviour:
-      graph: {fileID: 11400000, guid: 041ad374d06978441b7115f854c16294, type: 2}
-      foregroundSprite: {fileID: 21300000, guid: 64db4e4b293f90148b96ecfdf7fd9111, type: 3}
-      stateString: Hunting Monsters.
-      monsterLevelRange:
-        m_min: 1
-        m_max: 10
-      monsters:
-      - <MonsterDef>k__BackingField: {fileID: 11400000, guid: e8cd268d0e2109240bce0902376ec7d6, type: 2}
-        <Density>k__BackingField: 0.4
-      - <MonsterDef>k__BackingField: {fileID: 11400000, guid: 937216b4efea2a8479fbedf9a9077f16, type: 2}
-        <Density>k__BackingField: 0.3
-      - <MonsterDef>k__BackingField: {fileID: 11400000, guid: 6dd260ba34231d1459591b118f7efb2b, type: 2}
-        <Density>k__BackingField: 0.2
-      - <MonsterDef>k__BackingField: {fileID: 11400000, guid: d245e7a13cf773f4d8309d22cae9e200, type: 2}
-        <Density>k__BackingField: 0.1
-      searchingFlavour: Searching for monsters.
 --- !u!114 &945643795 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7108896763118586010, guid: 8745bc6e15abee942a7c5c94aca18df4, type: 3}
   m_PrefabInstance: {fileID: 9104224366963521133}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1009692403}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b2baab441e4d1704b9abd32ec5c5684a, type: 3}
@@ -3428,11 +3292,6 @@ MonoBehaviour:
   m_textMeshPro: {fileID: 974924454}
   m_format: 
   m_formatter: {fileID: 0}
---- !u!1 &981343097 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8153231705256620972, guid: 8745bc6e15abee942a7c5c94aca18df4, type: 3}
-  m_PrefabInstance: {fileID: 1481098514}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &995281921
 GameObject:
   m_ObjectHideFlags: 0
@@ -3470,80 +3329,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 400, y: 100}
   m_Pivot: {x: 0.5, y: 1}
---- !u!1 &1009692403 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8153231705256620972, guid: 8745bc6e15abee942a7c5c94aca18df4, type: 3}
-  m_PrefabInstance: {fileID: 9104224366963521133}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1009692404
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1009692403}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 531147e6012a58548b3810c2a2cbcda8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_trainingState:
-    m_behaviour:
-      flavours:
-      - flavorText: Learning techniques from a retired soldier.
-        mustBeWieldingWeaponType: []
-      - flavorText: Practicing with the local guards.
-        mustBeWieldingWeaponType: []
-      - flavorText: Working on form.
-        mustBeWieldingWeaponType: []
-      - flavorText: Working on balance.
-        mustBeWieldingWeaponType: []
-      - flavorText: Working on conditioning.
-        mustBeWieldingWeaponType: []
-      - flavorText: Working on accuracy.
-        mustBeWieldingWeaponType: []
-      - flavorText: Practicing neat tricks.
-        mustBeWieldingWeaponType: []
-      stateString: Training {0}.
-      backgroundSprite: {fileID: 21300000, guid: 05a4e847a2522e749bcc1edc6530edaa, type: 3}
-      m_trainerLevel: 6
-      m_skillDef: {fileID: 11400000, guid: e05cfa575c9cda7418fa27739d61c575, type: 2}
---- !u!114 &1009692406
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1009692403}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3172378c2de5f634d893f1521c410f80, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_rest:
-    m_behaviour:
-      restQuality: 2
-      flavours: []
-      stateString: Resting.
-      sprite: {fileID: 21300000, guid: 125417720d99f9b4c9be33196ad91861, type: 3}
---- !u!114 &1009692408
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1009692403}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9431ef3a1416986459a03414053cc456, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_treatWounds:
-    m_behaviour:
-      stateString: Treating Wounds.
-      treatmentQuality: 2
-      flavours: []
-      sprite: {fileID: 21300000, guid: e5f6bdbb53a6e1e47aa0b7153f16f5f6, type: 3}
 --- !u!1001 &1023970450
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3651,62 +3436,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timeScale: 900
---- !u!1 &1119288168 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8153231705256620972, guid: 8745bc6e15abee942a7c5c94aca18df4, type: 3}
-  m_PrefabInstance: {fileID: 409493989}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1119288170
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1119288168}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 18d8adc0063765e48a91ba2689a9318e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_monsterHunt:
-    m_behaviour:
-      graph: {fileID: 11400000, guid: 041ad374d06978441b7115f854c16294, type: 2}
-      foregroundSprite: {fileID: 21300000, guid: 64db4e4b293f90148b96ecfdf7fd9111, type: 3}
-      stateString: Hunting Monsters.
-      monsterLevelRange:
-        m_min: 1
-        m_max: 10
-      monsters:
-      - <MonsterDef>k__BackingField: {fileID: 11400000, guid: e8cd268d0e2109240bce0902376ec7d6, type: 2}
-        <Density>k__BackingField: 0.3
-      - <MonsterDef>k__BackingField: {fileID: 11400000, guid: dbc1fedcf95939043916af58759e0472, type: 2}
-        <Density>k__BackingField: 0.3
-      - <MonsterDef>k__BackingField: {fileID: 11400000, guid: dbc7780369251184997535ff1b40848a, type: 2}
-        <Density>k__BackingField: 0.2
-      - <MonsterDef>k__BackingField: {fileID: 11400000, guid: ae005161ec28e3c4086ed0df8d15c6c7, type: 2}
-        <Density>k__BackingField: 0.1
-      - <MonsterDef>k__BackingField: {fileID: 11400000, guid: dee65525f7cd9aa48a38eedae4051f53, type: 2}
-        <Density>k__BackingField: 0.06
-      - <MonsterDef>k__BackingField: {fileID: 11400000, guid: a3e897dec8719e84fabc67468c805585, type: 2}
-        <Density>k__BackingField: 0.04
-      searchingFlavour: Searching for monsters.
---- !u!114 &1119288171
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1119288168}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3803bb5b1a201844ca498b8c3d1a607a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_explore:
-    m_behaviour:
-      graph: {fileID: 11400000, guid: acd3bbfcd3de26c4083104f935a56057, type: 2}
-      sprite: {fileID: 21300000, guid: b44ff8993deb1c74dbc7ee05afc68d99, type: 3}
-      stateString: Exploring ruins.
 --- !u!1001 &1182670005
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3818,11 +3547,6 @@ MonoBehaviour:
   m_routePoints:
   - {fileID: 108854620321530354}
   - {fileID: 1379068220}
---- !u!1 &1200078537 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8153231705256620972, guid: 8745bc6e15abee942a7c5c94aca18df4, type: 3}
-  m_PrefabInstance: {fileID: 1592465697}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1218356006
 GameObject:
   m_ObjectHideFlags: 0
@@ -5079,23 +4803,14 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 8153231705256620972, guid: 8745bc6e15abee942a7c5c94aca18df4, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1481098517}
-    - targetCorrespondingSourceObject: {fileID: 8153231705256620972, guid: 8745bc6e15abee942a7c5c94aca18df4, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1481098519}
-    - targetCorrespondingSourceObject: {fileID: 8153231705256620972, guid: 8745bc6e15abee942a7c5c94aca18df4, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1481098521}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8745bc6e15abee942a7c5c94aca18df4, type: 3}
 --- !u!114 &1481098515 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7108896763118586010, guid: 8745bc6e15abee942a7c5c94aca18df4, type: 3}
   m_PrefabInstance: {fileID: 1481098514}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 981343097}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b2baab441e4d1704b9abd32ec5c5684a, type: 3}
@@ -5106,84 +4821,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8122249882838263000, guid: 8745bc6e15abee942a7c5c94aca18df4, type: 3}
   m_PrefabInstance: {fileID: 1481098514}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1481098517
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 981343097}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 531147e6012a58548b3810c2a2cbcda8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_trainingState:
-    m_behaviour:
-      flavours:
-      - flavorText: Learning techniques from a soldier.
-        mustBeWieldingWeaponType: []
-      - flavorText: Participating in squad drills.
-        mustBeWieldingWeaponType: []
-      - flavorText: Sparring with off duty soldiers.
-        mustBeWieldingWeaponType: []
-      - flavorText: Participating in mock combat.
-        mustBeWieldingWeaponType: []
-      - flavorText: Working on physical conditioning.
-        mustBeWieldingWeaponType: []
-      - flavorText: Studying a skilled master.
-        mustBeWieldingWeaponType: []
-      - flavorText: Building discipline.
-        mustBeWieldingWeaponType: []
-      - flavorText: Sparring with weighted swords.
-        mustBeWieldingWeaponType:
-        - {fileID: 11400000, guid: cc588bbb626c9644ebb853e567873f61, type: 2}
-      - flavorText: Practicing primary cuts.
-        mustBeWieldingWeaponType:
-        - {fileID: 11400000, guid: cc588bbb626c9644ebb853e567873f61, type: 2}
-      - flavorText: Dislodging sword from training dummy.
-        mustBeWieldingWeaponType:
-        - {fileID: 11400000, guid: cc588bbb626c9644ebb853e567873f61, type: 2}
-      stateString: Training {0}.
-      backgroundSprite: {fileID: 21300000, guid: 05a4e847a2522e749bcc1edc6530edaa, type: 3}
-      m_trainerLevel: 15
-      m_skillDef: {fileID: 11400000, guid: e05cfa575c9cda7418fa27739d61c575, type: 2}
---- !u!114 &1481098519
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 981343097}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3172378c2de5f634d893f1521c410f80, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_rest:
-    m_behaviour:
-      restQuality: 1
-      flavours: []
-      stateString: Resting.
-      sprite: {fileID: 21300000, guid: 125417720d99f9b4c9be33196ad91861, type: 3}
---- !u!114 &1481098521
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 981343097}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9431ef3a1416986459a03414053cc456, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_treatWounds:
-    m_behaviour:
-      stateString: Treating Wounds.
-      treatmentQuality: 2
-      flavours: []
-      sprite: {fileID: 21300000, guid: e5f6bdbb53a6e1e47aa0b7153f16f5f6, type: 3}
 --- !u!1001 &1503216868
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5877,16 +5514,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 8153231705256620972, guid: 8745bc6e15abee942a7c5c94aca18df4, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1592000001}
-    - targetCorrespondingSourceObject: {fileID: 8153231705256620972, guid: 8745bc6e15abee942a7c5c94aca18df4, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1592000003}
-    - targetCorrespondingSourceObject: {fileID: 8153231705256620972, guid: 8745bc6e15abee942a7c5c94aca18df4, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1592000005}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8745bc6e15abee942a7c5c94aca18df4, type: 3}
 --- !u!4 &1591999999 stripped
 Transform:
@@ -5898,81 +5526,12 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7108896763118586010, guid: 8745bc6e15abee942a7c5c94aca18df4, type: 3}
   m_PrefabInstance: {fileID: 1591999998}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 736732114}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b2baab441e4d1704b9abd32ec5c5684a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1592000001
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 736732114}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 531147e6012a58548b3810c2a2cbcda8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_trainingState:
-    m_behaviour:
-      flavours:
-      - flavorText: Learning techniques from a retired soldier.
-        mustBeWieldingWeaponType: []
-      - flavorText: Practicing with the local guards.
-        mustBeWieldingWeaponType: []
-      - flavorText: Working on form.
-        mustBeWieldingWeaponType: []
-      - flavorText: Working on balance.
-        mustBeWieldingWeaponType: []
-      - flavorText: Working on conditioning.
-        mustBeWieldingWeaponType: []
-      - flavorText: Working on accuracy.
-        mustBeWieldingWeaponType: []
-      - flavorText: Practicing neat tricks.
-        mustBeWieldingWeaponType: []
-      stateString: Training {0}.
-      backgroundSprite: {fileID: 21300000, guid: 05a4e847a2522e749bcc1edc6530edaa, type: 3}
-      m_trainerLevel: 7
-      m_skillDef: {fileID: 11400000, guid: e05cfa575c9cda7418fa27739d61c575, type: 2}
---- !u!114 &1592000003
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 736732114}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3172378c2de5f634d893f1521c410f80, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_rest:
-    m_behaviour:
-      restQuality: 1
-      flavours: []
-      stateString: Resting.
-      sprite: {fileID: 21300000, guid: 125417720d99f9b4c9be33196ad91861, type: 3}
---- !u!114 &1592000005
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 736732114}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9431ef3a1416986459a03414053cc456, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_treatWounds:
-    m_behaviour:
-      stateString: Treating Wounds.
-      treatmentQuality: 4
-      flavours: []
-      sprite: {fileID: 21300000, guid: e5f6bdbb53a6e1e47aa0b7153f16f5f6, type: 3}
 --- !u!1001 &1592465697
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6428,13 +5987,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 8153231705256620972, guid: 8745bc6e15abee942a7c5c94aca18df4, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1592465701}
-    - targetCorrespondingSourceObject: {fileID: 8153231705256620972, guid: 8745bc6e15abee942a7c5c94aca18df4, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1592465703}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8745bc6e15abee942a7c5c94aca18df4, type: 3}
 --- !u!4 &1592465698 stripped
 Transform:
@@ -6446,48 +5999,12 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7108896763118586010, guid: 8745bc6e15abee942a7c5c94aca18df4, type: 3}
   m_PrefabInstance: {fileID: 1592465697}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1200078537}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b2baab441e4d1704b9abd32ec5c5684a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1592465701
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1200078537}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3172378c2de5f634d893f1521c410f80, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_rest:
-    m_behaviour:
-      restQuality: 4
-      flavours: []
-      stateString: Resting.
-      sprite: {fileID: 21300000, guid: 125417720d99f9b4c9be33196ad91861, type: 3}
---- !u!114 &1592465703
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1200078537}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9431ef3a1416986459a03414053cc456, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_treatWounds:
-    m_behaviour:
-      stateString: Treating Wounds.
-      treatmentQuality: 2
-      flavours: []
-      sprite: {fileID: 21300000, guid: e5f6bdbb53a6e1e47aa0b7153f16f5f6, type: 3}
 --- !u!1 &1624700078
 GameObject:
   m_ObjectHideFlags: 0
@@ -6948,6 +6465,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_timeOfDay: 0
+  m_hour: 0
   m_elapsedSecondsThisDay: 18000
 --- !u!1001 &1907892050
 PrefabInstance:
@@ -8141,16 +7659,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 8153231705256620972, guid: 8745bc6e15abee942a7c5c94aca18df4, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1009692404}
-    - targetCorrespondingSourceObject: {fileID: 8153231705256620972, guid: 8745bc6e15abee942a7c5c94aca18df4, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1009692406}
-    - targetCorrespondingSourceObject: {fileID: 8153231705256620972, guid: 8745bc6e15abee942a7c5c94aca18df4, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1009692408}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8745bc6e15abee942a7c5c94aca18df4, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:

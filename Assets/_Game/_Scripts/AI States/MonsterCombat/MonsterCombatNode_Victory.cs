@@ -5,66 +5,64 @@ namespace Game.Monsters.Combat
 {
     public class MonsterCombatNode_Victory : MonsterCombatNode
     {
-        private class State : FlowNodeState
-        {
-            public float timeToExitNode;
-
-            public State(MonsterCombatNode node) : base(node)
-            {
-            }
-        }
-
         [Input] public FlowPort entry;
-        [Output] public FlowPort exit;
+        [SerializeField] private float m_experienceGainFactor = 1.0f;
+        [Tooltip("Exhausted and wounded.")]
+        [Output] public FlowPort exit_1;
+        [Tooltip("Wounded.")]
+        [Output] public FlowPort exit_2;
+        [Tooltip("Exhausted.")]
+        [Output] public FlowPort exit_3;
+        [Tooltip("Somewhat wounded.")]
+        [Output] public FlowPort exit_4;
+        [Tooltip("Somewhat exhausted.")]
+        [Output] public FlowPort exit_5;
+        [Tooltip("High health & low exhaustion")]
+        [Output] public FlowPort exit_6;
 
-        public override IFlowNodeState Enter(IFlowState bb)
+
+        public override void Enter(IMonsterCombatState bb)
         {
-            if (bb is not IMonsterCombatState state)
-                throw new System.ArgumentException($"Must be of type {nameof(IMonsterCombatState)}", nameof(bb));
-
-            State newState = new State(this);
-            state.Result = IMonsterCombatState.ECombatResult.Victorious;
-            newState.timeToExitNode = bb.ElapsedTime + bb.WorldState.Rng.Range(600, 1800);
-            bb.FlavourText = GetFlavourText(state);
-            bb.Hero.Equipment.GetMainWeaponSkill().GainExperience(state.Monster.ExpReward);
-
-            return newState;
+            bb.Result = IMonsterCombatState.ECombatResult.Victorious;
+            bb.Hero.Equipment.GetMainWeaponSkill().GainExperience(bb.Combat.Monster.ExpReward * m_experienceGainFactor);
+            bb.ConcludeCurrentNode(GetConclusionNode(bb));
         }
 
-        public override void OnWorldTimeUpdate(IFlowState bb, float deltaSeconds)
-        {
-            if (bb.NodeState is not State state)
-                return;
-
-            if(bb.ElapsedTime >= state.timeToExitNode) {
-                state.Conclude(exit.ConnectedPortData?.Node);
-            }
-        }
+        public override void OnWorldTimeUpdate(IMonsterCombatState bb, float deltaSeconds) { }
 
         public override FlowPort GetFlowPort(XNode.NodePort port)
         {
             switch (port.fieldName) {
                 case nameof(entry): return entry;
-                case nameof(exit): return exit;
+                case nameof(exit_1): return exit_1;
+                case nameof(exit_2): return exit_2;
+                case nameof(exit_3): return exit_3;
+                case nameof(exit_4): return exit_4;
+                case nameof(exit_5): return exit_5;
+                case nameof(exit_6): return exit_6;
                 default: return null;
             }
         }
 
-        private string GetFlavourText(IMonsterCombatState bb)
+
+        private MonsterCombatNode GetConclusionNode(IMonsterCombatState bb)
         {
-            if(bb.Hero.Health.Percent < 0.2f && bb.Hero.Stamina.ExhaustionPercent > 0.7f) {
-                return "Collapsed on the ground, wincing victoriously.";
-            } else if (bb.Hero.Health.Percent < 0.2f) {
-                return "Assessing the severity of {0:his} wounds.";
-            } else if (bb.Hero.Stamina.ExhaustionPercent > 0.7f) {
-                return "Lying on the ground, heaving heavily.";
-            } else if(bb.Hero.Health.Percent < 0.5f) {
-                return "Taking a moment to examine wounds.";
-            } else if (bb.Hero.Stamina.ExhaustionPercent > 0.5f) {
-                return "Taking a moment to catch {0:his} breath.";
+            FlowPort port;
+            if(bb.Hero.Heuristics.IsCurrentHealthLow() && bb.Hero.Heuristics.IsExhaustionHigh()) {
+                port = exit_1;
+            } else if (bb.Hero.Heuristics.IsCurrentHealthLow()) {
+                port = exit_2;
+            } else if (bb.Hero.Heuristics.IsExhaustionHigh()) {
+                port = exit_3;
+            } else if (!bb.Hero.Heuristics.IsCurrentHealthHigh()) {
+                port = exit_4;
+            } else if (!bb.Hero.Heuristics.IsExhaustionLow()) {
+                port = exit_5;
             } else {
-                return "Dusting {0:himself} off.";
+                port = exit_6;
             }
+
+            return port.ConnectedPortData?.Node as MonsterCombatNode;
         }
     } 
 }

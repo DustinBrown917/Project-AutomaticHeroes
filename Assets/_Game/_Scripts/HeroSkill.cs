@@ -49,7 +49,7 @@ namespace Game
 
 
         public bool IsDisposed { get; private set; }
-        public event Action<SegoLib.IPrivatelyDisposable> disposed;
+        public event Action<SegoLib.IPrivatelyDisposable> Disposed;
 
         public HeroSkill(HeroSkillDef def)
         {
@@ -135,9 +135,9 @@ namespace Game
             experienceGainMultiplierChanged = null;
             experienceNeededToLevelChanged = null;
 
-            disposed?.Invoke(this);
+            Disposed?.Invoke(this);
             IsDisposed = true;
-            disposed = null;
+            Disposed = null;
         }
     }
 }

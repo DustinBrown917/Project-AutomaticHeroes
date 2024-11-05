@@ -13,7 +13,7 @@ namespace Game
 
         public bool IsDisposed { get; private set; }
 
-        public event Action<SegoLib.IPrivatelyDisposable> disposed;
+        public event Action<SegoLib.IPrivatelyDisposable> Disposed;
 
         private bool m_locationGraphNeedsRebuild = true;
 
@@ -76,7 +76,7 @@ namespace Game
         {
             IsDisposed = true;
             m_locations.Clear();
-            disposed?.Invoke(this);
+            Disposed?.Invoke(this);
         }
     }
 }

@@ -12,21 +12,14 @@ namespace Game
         private HeroSkill[] m_skills = System.Array.Empty<HeroSkill>();
         public int Count => m_skills.Length;
 
-        public bool Initialized { get; private set; }
-
-        public void Initialize()
+        protected override void OnInitialize()
         {
-            if (Initialized)
-                return;
-
             m_skills = new HeroSkill[HeroSkillDef.All.Count];
 
             for (int i = 0; i < m_skills.Length; i++) {
                 m_skills[i] = new HeroSkill(HeroSkillDef.All[i]);
                 m_skills[i].levelChanged += OnSkillLevelChanged;
             }
-
-            Initialized = true;
         }
 
         protected override void OnDestroy()

@@ -1,9 +1,13 @@
 using System.Collections.Generic;
-using UnityEditor.Experimental.GraphView;
 using XNode;
 
 namespace Game.Flow
 {
+    public interface IFlowNode
+    {
+        public XNode.Node WrappedNode { get; }
+    }
+
     public abstract class FlowNode : XNode.Node
     {
         public static int GetIndexFromFieldName(string root, string fieldName)
@@ -56,7 +60,5 @@ namespace Game.Flow
         }
 
         public abstract FlowPort GetFlowPort(NodePort port);
-        public abstract IFlowNodeState Enter(IFlowState bb);
-        public abstract void OnWorldTimeUpdate(IFlowState bb, float deltaSeconds);
     }
 }

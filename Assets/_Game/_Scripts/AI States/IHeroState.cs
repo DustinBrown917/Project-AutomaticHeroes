@@ -1,11 +1,12 @@
+using Game.AI.General;
+using Game.Flow;
 using SegoLib;
 using System;
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace Game
 {
-    public partial interface IHeroBehaviour
+    public partial interface IHeroBehaviour: IInitializable, WorldTime.IListener
     {
 
         /*vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv*/
@@ -16,6 +17,7 @@ namespace Game
         {
             NotYetEntered,
             Active,
+            Paused,
             Succeeded,
             Failed,
             Cancelled
@@ -39,14 +41,15 @@ namespace Game
         /*vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv*/
 
         public delegate void BehaviourConcludedDelegate(IState state, EResult result);
+        public delegate void CreateStateDataInjectionDelegate(IHeroBehaviour behaviour, List<(Identity key, object value)> dataToInject);
 
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
         #endregion ===================================== End Delegates ================================================
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
 
-        public void Initialize();
+        public event CreateStateDataInjectionDelegate CreateStateDataInjector;
 
-        public IState BeginBehaviour(Hero hero);
+        public IState GetNewState(WorldState worldState, Hero hero);
 
         public void CancelState(int stateIndex);
 
@@ -57,104 +60,43 @@ namespace Game
         public bool CanHeroDoBehaviour(Hero hero);
     }
 
-    public partial interface IHeroBehaviour
-    {
-        protected interface IBehaviour
-        {
-            /// <summary>
-            /// Enter the state.
-            /// </summary>
-            /// <returns></returns>
-            public IState BeginBehaviour(Hero hero);
-
-            public void CancelState(int stateIndex);
-
-            public void CancelAllStates();
-        }
-    }
-
-
-    public abstract class HeroBehaviour : IHeroBehaviour
-    {
-        private IHeroBehaviour.IBehaviour m_behaviour;
-        private bool m_initialized;
-
-        public void Initialize()
-        {
-            if (m_initialized)
-                return;
-
-            m_behaviour = InitializeBehaviour();
-
-            m_initialized = true;
-        }
-
-        public IHeroBehaviour.IState BeginBehaviour(Hero hero)
-        {
-            if (!m_initialized)
-                Initialize();
-
-            return m_behaviour.BeginBehaviour(hero);
-        }
-        public void CancelAllStates() => m_behaviour.CancelAllStates();
-        public void CancelState(int stateIndex) => m_behaviour.CancelState(stateIndex);
-
-
-
-        protected abstract IHeroBehaviour.IBehaviour InitializeBehaviour();
-        public abstract bool CanHeroDoBehaviour(Hero hero);
-        public abstract float GetPriority(Hero hero);
-    }
-
-
-
-
     public static class EStatusExtensions
     {
         public static bool IsConcludedSatus(this IHeroBehaviour.EStatus status)
         {
-            return status == IHeroBehaviour.EStatus.Succeeded || 
-                status == IHeroBehaviour.EStatus.Failed || 
+            return status == IHeroBehaviour.EStatus.Succeeded ||
+                status == IHeroBehaviour.EStatus.Failed ||
                 status == IHeroBehaviour.EStatus.Cancelled;
         }
     }
 
     public partial interface IHeroBehaviour
     {
-
-        public interface IState : IPrivatelyDisposable
+        public interface IStateManager : WorldTime.IListener
         {
-            public IHeroBehaviour Behaviour { get; }
+            /// <summary>
+            /// Enter the state.
+            /// </summary>
+            /// <returns></returns>
+            public IState GetNewState(WorldState worldState, Hero hero, params (Identity key, object value)[] injectedData);
 
-            public int Index { get; }
-            public WorldState WorldState { get; }
-            public Hero Hero { get; }
+            public void CancelState(int stateIndex);
 
-            public float ElapsedTime { get; }
-
-            public EStatus Status { get; }
-            public event BehaviourConcludedDelegate stateConcluded;
-
-            public Sprite ForegroundSprite { get; }
-            public event ValueChangedWithSourceEvent<IState, Sprite> foregroundSpriteChanged;
-
-            public Sprite BackgroundSprite { get; }
-            public event ValueChangedWithSourceEvent<IState, Sprite> backgroundSpriteChanged;
-
-            public string FlavourText { get; }
-            public event ValueChangedWithSourceEvent<IState, string> flavourTextChanged;
-            public string StateString { get; }
-            public event ValueChangedWithSourceEvent<IState, string> stateStringChanged;
-
-            public void Cancel();
+            public void CancelAllStates();
         }
 
-        protected interface IState_Internal : IState, SegoLib.IDisposable
+        /// <summary>
+        /// Manages states associated with a behaviour.
+        /// </summary>
+        protected interface IStateManager<TBehaviour, TState> : IStateManager, WorldTime.IListener
+            where TBehaviour : IHeroBehaviour
+            where TState : IState_Internal
         {
-            public void Succeed();
-            public void Fail();
-            public void UpdateIndex(int newIndex);
-            public void AdvanceTime(float deltaSeconds);
+            /// <summary>
+            /// Enter the state.
+            /// </summary>
+            /// <returns></returns>
+            public new TState GetNewState(WorldState worldState, Hero hero, params (Identity key, object value)[] injectedData);
         }
     }
 
@@ -162,298 +104,135 @@ namespace Game
 
 
 
-
-
-
-
-
-
-
-
     public partial interface IHeroBehaviour
     {
-        protected class State : IState_Internal
+        protected abstract class StateManager<TBehaviour, TState> : IStateManager<TBehaviour, TState>
+            where TBehaviour : IHeroBehaviour 
+            where TState : IState_Internal
         {
-            public IHeroBehaviour Behaviour { get; }
-            public int Index { get; private set; }
+            private StateCollection<TState> m_stateCollection = new();
 
-            public Hero Hero { get; private set; }
-            public WorldState WorldState { get; private set; }
+            public TBehaviour ParentBehaviour { get; }
 
-            public EStatus Status { get; private set; } = EStatus.NotYetEntered;
-            public event BehaviourConcludedDelegate stateConcluded;
-
-            public Sprite ForegroundSprite
-            {
-                get => m_foregroundSprite;
-                set => SetForegroundSprite(value);
-            }
-            private Sprite m_foregroundSprite;
-            public event ValueChangedWithSourceEvent<IState, Sprite> foregroundSpriteChanged;
-
-            public Sprite BackgroundSprite
-            {
-                get => m_backgroundSprite;
-                set => SetBackgroundSprite(value);
-            }
-            private Sprite m_backgroundSprite;
-            public event ValueChangedWithSourceEvent<IState, Sprite> backgroundSpriteChanged;
-
-            public string StateString
-            {
-                get => m_stateString;
-                set => SetStateString(value);
-            }
-            private string m_stateString;
-            public event ValueChangedWithSourceEvent<IState, string> stateStringChanged;
-
-            public string FlavourText
-            {
-                get => m_flavourString;
-                protected set => SetFlavourString(value);
-            }
-            private string m_flavourString;
-            public event ValueChangedWithSourceEvent<IState, string> flavourTextChanged;
-
-            public float ElapsedTime { get; private set; }
-
-            public bool IsDisposed { get; private set; }
-            public event Action<SegoLib.IPrivatelyDisposable> disposed;
-
-            public State(IHeroBehaviour behaviour, WorldState worldState, Hero hero)
-            {
-                Behaviour = behaviour;
-                Hero = hero;
-                WorldState = worldState;
-            }
-
-            #region SETTERS
-            protected void SetForegroundSprite(Sprite newValue)
-            {
-                if (newValue == ForegroundSprite)
-                    return;
-
-                Sprite oldValue = m_foregroundSprite;
-                m_foregroundSprite = newValue;
-
-                foregroundSpriteChanged?.Invoke(this, oldValue, newValue);
-            }
-
-            protected void SetBackgroundSprite(Sprite newValue)
-            {
-                if (newValue == BackgroundSprite)
-                    return;
-
-                Sprite oldValue = m_backgroundSprite;
-                m_backgroundSprite = newValue;
-
-                backgroundSpriteChanged?.Invoke(this, oldValue, newValue);
-            }
-            protected void SetFlavourString(string newValue)
-            {
-                if (newValue == null)
-                    newValue = string.Empty;
-
-                newValue = string.Format(WorldState.HeroFormatProvider, newValue, Hero);
-
-                if (newValue == m_flavourString)
-                    return;
-
-                string oldValue = m_flavourString;
-                m_flavourString = newValue;
-
-                flavourTextChanged?.Invoke(this, oldValue, newValue);
-            } 
-
-            protected void SetStateString(string newValue)
-            {
-                if (newValue == null)
-                    newValue = string.Empty;
-
-                if(newValue == m_stateString) 
-                    return;
-
-                string oldValue = m_stateString;
-                m_stateString = newValue;
-
-                stateStringChanged?.Invoke(this, oldValue, newValue);
-            }
-
-            public void UpdateIndex(int newIndex)
-            {
-                Index = newIndex;
-            }
-
-            public void AdvanceTime(float deltaSeconds)
-            {
-                ElapsedTime += deltaSeconds;
-            }
-            #endregion /SETTERS
-
-            public void Succeed()
-            {
-                if (Status.IsConcludedSatus())
-                    return;
-
-                Status = EStatus.Succeeded;
-                stateConcluded?.Invoke(this, EResult.Succeeded);
-            }
-
-            public void Fail()
-            {
-                if (Status.IsConcludedSatus())
-                    return;
-
-                Status = EStatus.Failed;
-                stateConcluded?.Invoke(this, EResult.Failed);
-            }
-
-            public void Cancel()
-            {
-                if (Status.IsConcludedSatus())
-                    return;
-
-                Status = EStatus.Cancelled;
-                stateConcluded?.Invoke(this, EResult.Cancelled);
-            }
-
-            public void Dispose()
-            {
-                if (IsDisposed)
-                    return;
-
-                OnDisposed();
-
-                WorldState = null;
-                Hero = null;
-                m_foregroundSprite = null;
-                m_flavourString = null;
-
-                foregroundSpriteChanged = null;
-                flavourTextChanged = null;
-                stateStringChanged = null;
-
-                disposed?.Invoke(this);
-                disposed = null;
-            }
-
-            protected virtual void OnDisposed() { }
-        }
-    }
-
-
-
-
-
-
-    public partial interface IHeroBehaviour
-    {
-        protected class StateCollection<T> where T : IState_Internal
-        {
-            public T this[int index] => m_blackboards[index];
-
-            private readonly List<T> m_blackboards = new();
-
-            public int Count => m_blackboards.Count;
-
-            public void Add(T item)
-            {
-                m_blackboards.Add(item);
-                item.UpdateIndex(Count - 1);
-            }
-
-            public void RemoveAt(int index)
-            {
-                if (index < 0 || index >= m_blackboards.Count)
-                    return;
-
-                m_blackboards.RemoveAt(index);
-
-                UpdateIndeces(index);
-            }
-
-            private void UpdateIndeces(int fromIndex = 0)
-            {
-                for (int i = fromIndex; i < m_blackboards.Count; i++) {
-                    m_blackboards[i].UpdateIndex(i);
-                }
-            }
-        }
-    }
-
-
-    public partial interface IHeroBehaviour
-    {
-        protected abstract class Behaviour<T> : IBehaviour, WorldTime.IListener where T : IState_Internal
-        {
-            private StateCollection<T> m_blackboardCollection = new();
-
-            public IHeroBehaviour ParentBehaviour { get; }
-
-            public Behaviour(IHeroBehaviour parentBehaviour)
+            public StateManager(TBehaviour parentBehaviour)
             {
                 ParentBehaviour = parentBehaviour;
             }
 
-            public void CancelState(int blackboardIndex)
+            public void CancelState(int stateIndex)
             {
-                T blackboard = m_blackboardCollection[blackboardIndex];
+                TState blackboard = m_stateCollection[stateIndex];
                 blackboard.Cancel();
             }
 
             public void CancelAllStates()
             {
-                for (int i = 0; i < m_blackboardCollection.Count; i++)
-                    m_blackboardCollection[i].Cancel();
+                for (int i = 0; i < m_stateCollection.Count; i++)
+                    m_stateCollection[i].Cancel();
             }
 
             public void OnWorldTimeUpdate(float deltaSeconds)
             {
-                for(int i = m_blackboardCollection.Count -1; i >= 0; i--) {
+                for(int i = m_stateCollection.Count -1; i >= 0; i--) {
 
-                    T blackboard = m_blackboardCollection[i];
+                    TState state = m_stateCollection[i];
 
-                    if (blackboard.Status.IsConcludedSatus()) {
-                        RetireBlackboard(blackboard);
+                    if (state.BehaviourStatus.IsConcludedSatus()) {
+                        RetireState(state);
+                    } else if (state.BehaviourStatus == EStatus.Paused) {
+                        continue;
                     } else {
-                        blackboard.AdvanceTime(deltaSeconds);
-                        OnWorldTimeUpdate(m_blackboardCollection[i], deltaSeconds);
+                        state.OnWorldTimeUpdate(deltaSeconds);
                     }
                 }
             }
 
-            private void RetireBlackboard(T blackboard)
+            private void RetireState(TState state)
             {
-                m_blackboardCollection.RemoveAt(blackboard.Index);
-                blackboard.Dispose();
-
-                if(m_blackboardCollection.Count == 0) {
-                    if(WorldState.Instance != null && WorldState.Instance.Time != null) {
-                        WorldState.Instance.Time.RemoveListener(this);
-                    }
-                }
+                m_stateCollection.RemoveAt(state.Index);
+                state.Dispose();
             }
 
 
-            public IState BeginBehaviour(Hero hero)
+            public TState GetNewState(WorldState worldState, Hero hero, params (Identity key, object value)[] injectedData)
             {
-                T blackboard = CreateNewState(hero);
-                m_blackboardCollection.Add(blackboard);
+                TState state = CreateNewState(worldState, hero, injectedData);
+                m_stateCollection.Add(state);
 
-                if (m_blackboardCollection.Count == 1)
-                    WorldState.Instance.Time.AddListener(this);
-
-                OnBegin(blackboard);
-                return blackboard;
+                return state;
             }
 
-
-
-            protected virtual void OnBegin(T blackboard) { }
-            protected virtual void OnWorldTimeUpdate(T bb, float deltaSeconds) { }
+            IState IStateManager.GetNewState(WorldState worldState, Hero hero, params (Identity key, object value)[] injectedData) => GetNewState(worldState, hero, injectedData);
             
-            
-            protected abstract T CreateNewState(Hero hero);
+            protected abstract TState CreateNewState(WorldState worldState, Hero hero, params (Identity key, object value)[] injectedData);
         }
     }
+
+
+    public partial interface IHeroBehaviour
+    {
+        public interface INode
+        {
+            public interface IState : IPrivatelyDisposable
+            {
+                public bool IsConcluded { get; }
+                public INode NextNode { get; }
+            }
+            protected interface IState_Internal : IState, SegoLib.IDisposable
+            {
+                public void Conclude(INode nextNode);
+            }
+
+            protected class State : IState_Internal
+            {
+                public bool IsConcluded { get; private set; }
+                public INode NextNode { get; private set; }
+
+                public bool IsDisposed { get; private set; }
+                public event Action<IPrivatelyDisposable> Disposed;
+
+                /// <summary>
+                /// Disposed in IHeroBehaviour.Node when the node is exited.
+                /// </summary>
+                public void Dispose()
+                {
+                    if(IsDisposed) return;
+                    IsDisposed = true;
+
+                    OnDisposed();
+
+                    Disposed?.Invoke(this);
+                    Disposed = null;
+                }
+
+                protected virtual void OnDisposed() { }
+
+                public void Conclude(INode nextNode)
+                {
+                    IsConcluded = true;
+                    NextNode = nextNode;
+                }
+            }
+
+            public IState Enter(IHeroBehaviour.IState bb);
+            public void OnWorldTimeUpdate(IHeroBehaviour.IState bb, IState node_bb, float deltaSeconds);
+            public void Exit(IState node_bb);
+        }
+
+        [NodeWidth(300)]
+        public abstract class Node : FlowNode, INode
+        {
+            public abstract INode.IState Enter(IState bb);
+
+            public void Exit(INode.IState node_bb)
+            {
+                if(node_bb is INode.IState_Internal state_internal) {
+                    state_internal.Dispose();
+                }
+            }
+
+            public abstract void OnWorldTimeUpdate(IState bb, INode.IState node_bb, float deltaSeconds);
+        }
+    }
+
 }

@@ -1,3 +1,4 @@
+using Game.AI.General;
 using SegoLib;
 using SegoLib.Random;
 using System.Collections.Generic;
@@ -7,11 +8,6 @@ namespace Game
 {
     public class HeroBrain : HeroComponent
     {
-        public bool Initialized { get; private set; }
-
-        private Rest m_restAtCamp = new Rest() { StateString = "Resting at camp.", RestQuality = RestQuality.Terrible, Sprite = SpriteLibrary.GetSprite("fire")};
-        private Wait m_wait = new Wait() { StateString = "Waiting...", Sprite = SpriteLibrary.GetSprite("Wait Icon") };
-
         public IHeroBehaviour.IState CurrentState
         {
             get => m_currentState;
@@ -23,24 +19,22 @@ namespace Game
 
         private readonly HashSet<IHeroBehaviour> m_availableBehaviours = new();
 
-        public void Initialize()
-        {
-            if (Initialized)
-                return;
+        [SerializeField] private HeroBehaviourGraph m_campGraph;
+        [SerializeField] private HeroBehaviourGraph m_waitGraph;
 
-            AddBehaviour(m_restAtCamp);
+        protected override void OnInitialize()
+        {
+            AddBehaviour(m_campGraph);
 
             SetBehaviour(GetRandomState());
-
-            Initialized = true;
         }
 
         protected override void OnDestroy()
         {
             base.OnDestroy();
             if(m_currentState != null) {
-                m_currentState.stateConcluded -= OnBehaviourConcluded;
-                m_currentState.disposed -= CurrentStateDisposed;
+                m_currentState.StateConcluded -= OnBehaviourConcluded;
+                m_currentState.Disposed -= CurrentStateDisposed;
                 m_currentState.Cancel();
                 m_currentState = null;
             }
@@ -54,25 +48,25 @@ namespace Game
             if (newBehaviour == null) 
                 return;
 
-            if (m_currentState != null && m_currentState.Behaviour == newBehaviour && !m_currentState.Status.IsConcludedSatus())
+            if (m_currentState != null && m_currentState.Behaviour == newBehaviour && !m_currentState.BehaviourStatus.IsConcludedSatus())
                 return;
 
             IHeroBehaviour.IState oldState = m_currentState;
 
             if(oldState != null) {
-                m_currentState.stateConcluded -= OnBehaviourConcluded;
-                m_currentState.disposed -= CurrentStateDisposed;
+                m_currentState.StateConcluded -= OnBehaviourConcluded;
+                m_currentState.Disposed -= CurrentStateDisposed;
 
-                if (!oldState.Status.IsConcludedSatus()) {
+                if (!oldState.BehaviourStatus.IsConcludedSatus()) {
                     oldState.Cancel();
                 }
 
                 m_currentState = null;
             }
 
-            m_currentState = newBehaviour.BeginBehaviour(Hero);
-            m_currentState.stateConcluded += OnBehaviourConcluded;
-            m_currentState.disposed += CurrentStateDisposed;
+            m_currentState = newBehaviour.GetNewState(WorldState.Instance, Hero);
+            m_currentState.StateConcluded += OnBehaviourConcluded;
+            m_currentState.Disposed += CurrentStateDisposed;
 
             stateChanged?.Invoke(this, oldState, m_currentState);
         }
@@ -102,28 +96,8 @@ namespace Game
                 }
             }
 
-            //StringBuilder sb = new StringBuilder();
-            //sb.Append("Time of day: ");
-            //sb.Append(WorldState.Instance.Date.TimeOfDay.ToString());
-            //sb.Append(" || Hero Stamina: ");
-            //sb.Append(Hero.Stamina.EnergyPercent);
-            //sb.Append(" || Hero Health: ");
-            //sb.Append(Hero.Health.Percent);
-            //sb.Append(" || Hero Treated Wounds: ");
-            //sb.Append(Hero.Health.TreatedPercent);
-            //sb.Append(" || Hero Location: ");
-            //sb.Append(Hero.Movement.Location.DisplayName);
-            //sb.AppendLine();
-            //for (int i = 0; i < availableStates.Count; i++) {
-            //    sb.Append(availableStates[i].GetType().Name);
-            //    sb.Append(" = ");
-            //    sb.Append(priorities[i]);
-            //    sb.AppendLine();
-            //}
-            //UnityEngine.Debug.Log(sb.ToString());
-
             if (availableBehaviours.Count == 0)
-                return m_wait;
+                return m_waitGraph;
 
             int index = WeightedRandom.Naive(priorities, sumOfPriorites, WorldState.Instance.Rng);
 

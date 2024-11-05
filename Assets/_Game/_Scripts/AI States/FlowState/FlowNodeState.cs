@@ -19,7 +19,7 @@ namespace Game.Flow
         public FlowNode NextNode { get; private set; }
 
         public bool IsDisposed { get; private set; }
-        public event Action<IPrivatelyDisposable> disposed;
+        public event Action<IPrivatelyDisposable> Disposed;
 
         public FlowNodeState(FlowNode node)
         {
@@ -43,8 +43,8 @@ namespace Game.Flow
 
             Node = null;
 
-            disposed?.Invoke(this);
-            disposed = null;
+            Disposed?.Invoke(this);
+            Disposed = null;
         }
 
         protected virtual void OnDisposed() { }

@@ -12,7 +12,7 @@ namespace SegoLib
         /// <summary>
         /// Raised when this object gets disposed.
         /// </summary>
-        public event System.Action<IPrivatelyDisposable> disposed;
+        public event System.Action<IPrivatelyDisposable> Disposed;
     }
 
     public interface IDisposable : IPrivatelyDisposable, System.IDisposable

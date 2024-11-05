@@ -37,17 +37,11 @@ namespace Game
 
         public float TreatedPercent { get; private set; }
 
-        public bool Initialized { get; private set; }
-
-        public void Initialize()
+        protected override void OnInitialize()
         {
-            if (Initialized) return;
-
             Max = 100;
             Current = Max;
             UpdateTreatedPercent();
-
-            Initialized = true;
         }
 
         public void Damage(float damage)

@@ -43,27 +43,16 @@ namespace Game
 
         private float m_routeDistanceTravelled;
 
-        public bool RouteCompleted { get; private set; }
         public event RouteCompletedDelegate routeCompleted;
 
-        public bool Initialized { get; private set; }
 
-
-        public void Initialize(ILocation location)
+        protected override void OnInitialize()
         {
-            if (Initialized)
-                return;
-
-            transform.position = location.Position;
-            Location = location;
-
             UpdateMovePerSecond();
-
-            Initialized = true;
         }
 
         /// <summary>
-        /// Leaves the current location and enables ProgressBySecons to move the hero.
+        /// Leaves the current location and enables ProgressBySeconds to move the hero.
         /// </summary>
         public void Depart()
         {
@@ -160,6 +149,18 @@ namespace Game
 
             m_currentRoute = newRoute;
             currentRouteChanged?.Invoke(this, oldRoute, newRoute);
+        }
+
+        public void TeleportToLoation(ILocation location)
+        {
+            transform.position = location.Position;
+            Location = location;
+
+            if (CurrentRoute != null) {
+                RouteProgress = 1.0f;
+                routeCompleted?.Invoke(this, CurrentRoute);
+                CurrentRoute = null;
+            }
         }
 
         private void UpdatePosition()

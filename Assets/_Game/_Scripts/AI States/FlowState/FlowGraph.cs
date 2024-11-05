@@ -1,10 +1,11 @@
+using SegoLib;
 using XNode;
 
 namespace Game.Flow
 {
-    public class FlowGraph : NodeGraph
+    public class FlowGraph : NodeGraph, IInitializable
     {
-        [field: System.NonSerialized] public bool Initialized { get; private set; }
+        [field: System.NonSerialized] public bool IsInitialized { get; private set; }
 
         private void OnEnable()
         {
@@ -17,10 +18,12 @@ namespace Game.Flow
 
         public void Initialize()
         {
-            if(Initialized) 
+            if(IsInitialized) 
                 return;
 
             OnInitialize();
+
+            IsInitialized = true;
         }
 
 

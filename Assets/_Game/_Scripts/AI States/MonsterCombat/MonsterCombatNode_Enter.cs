@@ -2,30 +2,22 @@ using Game.Flow;
 
 namespace Game.Monsters.Combat
 {
+    [NodeWidth(150)]
     public class MonsterCombatNode_Enter : MonsterCombatNode
     {
-        public class State : FlowNodeState
-        {
-            public State(MonsterCombatNode node) : base(node)
-            {
-            }
-        }
+
 
         [Output] public FlowPort exit;
 
-        public override IFlowNodeState Enter(IFlowState bb)
+
+        public override void Enter(IMonsterCombatState state)
         {
-            State state = new State(this);
-
-            state.Conclude(exit.ConnectedPortData.Node);
-
-            return state;
+            state.ConcludeCurrentNode(exit.ConnectedPortData?.Node as MonsterCombatNode);
         }
 
-        public override void OnWorldTimeUpdate(IFlowState bb, float deltaSeconds)
+        public override void OnWorldTimeUpdate(IMonsterCombatState bb, float deltaSeconds)
         {
-            if (bb.NodeState is not State state)
-                return;
+            
         }
 
         public override FlowPort GetFlowPort(XNode.NodePort port)
@@ -35,5 +27,6 @@ namespace Game.Monsters.Combat
                 default: return null;
             }
         }
-    } 
+
+    }
 }
