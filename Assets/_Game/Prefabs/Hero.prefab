@@ -32,6 +32,67 @@ Transform:
   - {fileID: 7831918383088647730}
   m_Father: {fileID: 7058089731345908914}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &3361741707121873596
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6643757560103444172}
+  - component: {fileID: 4227679580025336108}
+  - component: {fileID: 1532761492509208290}
+  m_Layer: 0
+  m_Name: Constant States
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6643757560103444172
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3361741707121873596}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7058089731345908914}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4227679580025336108
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3361741707121873596}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8e91fb90b3f6b704bb25e381d916d010, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_behaviour: {fileID: 11400000, guid: 3a85b39a1cc53a64091ebc8608f21e9a, type: 2}
+--- !u!114 &1532761492509208290
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3361741707121873596}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9cae23d5505fd05488cf7d4b9fe47a98, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_behaviour: {fileID: 11400000, guid: 6c17b103f86f392448acd880f4c2f3f8, type: 2}
+  exhaustionRecoveredPerHour: 3
+  stateText: Resting at camp.
 --- !u!1 &4100121308280149663
 GameObject:
   m_ObjectHideFlags: 0
@@ -224,6 +285,7 @@ Transform:
   m_Children:
   - {fileID: 1528285693407945271}
   - {fileID: 6490222537682563857}
+  - {fileID: 6643757560103444172}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &9136296130780974435
@@ -325,8 +387,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <CurrentHealthHeuristic>k__BackingField:
+    m_high: 0.7
     m_low: 0.3
   <ExhaustionHeuristic>k__BackingField:
+    m_high: 0.7
     m_low: 0.3
 --- !u!114 &7158317994977308614
 MonoBehaviour:
@@ -340,6 +404,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e8117b296e4acd49879b62fba99de56, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_campState: {fileID: 1532761492509208290}
+  m_waitBehaviour: {fileID: 4227679580025336108}
 --- !u!114 &4589041351288292370
 MonoBehaviour:
   m_ObjectHideFlags: 0

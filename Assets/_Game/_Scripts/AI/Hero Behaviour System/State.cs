@@ -29,7 +29,7 @@ namespace Game
 
             public string FlavourText { get; set; }
             public event ValueChangedWithSourceEvent<IState, string> FlavourTextChanged;
-            public string StateText { get; }
+            public string StateText { get; set; }
             public event ValueChangedWithSourceEvent<IState, string> StateTextChanged;
 
             public void Pause();

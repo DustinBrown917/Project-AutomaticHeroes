@@ -41,21 +41,16 @@ namespace Game
         /*vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv*/
 
         public delegate void BehaviourConcludedDelegate(IState state, EResult result);
-        public delegate void CreateStateDataInjectionDelegate(IHeroBehaviour behaviour, List<(Identity key, object value)> dataToInject);
 
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
         #endregion ===================================== End Delegates ================================================
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
 
-        public event CreateStateDataInjectionDelegate CreateStateDataInjector;
-
-        public IState GetNewState(WorldState worldState, Hero hero);
+        public IState GetNewState(WorldState worldState, Hero hero, params (Identity key, object value)[] injectedData);
 
         public void CancelState(int stateIndex);
 
         public void CancelAllStates();
-
-        public float GetPriority(Hero hero);
 
         public bool CanHeroDoBehaviour(Hero hero);
     }
@@ -177,10 +172,10 @@ namespace Game
             {
                 public bool IsConcluded { get; }
                 public INode NextNode { get; }
+                public void Conclude(INode nextNode);
             }
             protected interface IState_Internal : IState, SegoLib.IDisposable
             {
-                public void Conclude(INode nextNode);
             }
 
             protected class State : IState_Internal
@@ -232,7 +227,22 @@ namespace Game
             }
 
             public abstract void OnWorldTimeUpdate(IState bb, INode.IState node_bb, float deltaSeconds);
+
+            public void ConcludeViaPort(INode.IState node_bb, FlowPort port)
+            {
+                node_bb.Conclude(port.ConnectedPortData?.Node as INode);
+            }
         }
     }
 
+
+    public interface IHeroBehaviourStateCreator
+    {
+        public IHeroBehaviour Behaviour { get; }
+
+        public IHeroBehaviour.IState CreateState(WorldState worldState, Hero hero);
+
+        public float Utility(WorldState worldState, Hero hero);
+        public bool CanDo(WorldState worldState, Hero hero);
+    }
 }

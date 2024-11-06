@@ -3,6 +3,7 @@ using XNode;
 
 namespace Game.AI.General
 {
+    [NodeWidth(150)]
     public class HeroBehaviourNode_Entry : IHeroBehaviour.Node
     {
 

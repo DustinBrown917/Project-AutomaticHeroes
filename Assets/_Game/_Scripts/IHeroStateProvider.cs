@@ -4,6 +4,6 @@ namespace Game
 {
     public interface IHeroBehaviourProvider
     {
-        public void GetStates(List<IHeroBehaviour> container);
+        public void GetStates(List<IHeroBehaviourStateCreator> container);
     } 
 }

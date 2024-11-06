@@ -50,7 +50,7 @@ namespace Game
                 m_visitors.Add(hero);
                 visitorsUpdated?.Invoke(this, Visitors);
 
-                List<IHeroBehaviour> behavioursToAdd = UnityEngine.Pool.ListPool<IHeroBehaviour>.Get();
+                List<IHeroBehaviourStateCreator> behavioursToAdd = UnityEngine.Pool.ListPool<IHeroBehaviourStateCreator>.Get();
 
                 //behaviours.AddRange(m_travelStates);
 
@@ -58,11 +58,11 @@ namespace Game
                     stateProvider.GetStates(behavioursToAdd);
                 }
 
-                foreach(IHeroBehaviour behaviour in behavioursToAdd) {
-                    hero.Brain.AddBehaviour(behaviour);
+                foreach(IHeroBehaviourStateCreator behaviour in behavioursToAdd) {
+                    hero.Brain.AddBehaviourStateCreator(behaviour);
                 }
 
-                UnityEngine.Pool.ListPool<IHeroBehaviour>.Release(behavioursToAdd);
+                UnityEngine.Pool.ListPool<IHeroBehaviourStateCreator>.Release(behavioursToAdd);
             }
         }
 
@@ -71,7 +71,7 @@ namespace Game
             if (m_visitors.Remove(hero)) {
                 visitorsUpdated?.Invoke(this, Visitors);
 
-                List<IHeroBehaviour> behavioursToRemove = UnityEngine.Pool.ListPool<IHeroBehaviour>.Get();
+                List<IHeroBehaviourStateCreator> behavioursToRemove = UnityEngine.Pool.ListPool<IHeroBehaviourStateCreator>.Get();
 
                 //behaviours.AddRange(m_travelStates);
 
@@ -79,11 +79,11 @@ namespace Game
                     stateProvider.GetStates(behavioursToRemove);
                 }
 
-                foreach (IHeroBehaviour behaviour in behavioursToRemove) {
-                    hero.Brain.RemoveBehaviour(behaviour);
+                foreach (IHeroBehaviourStateCreator behaviour in behavioursToRemove) {
+                    hero.Brain.RemoveBehaviourStateCreator(behaviour);
                 }
 
-                UnityEngine.Pool.ListPool<IHeroBehaviour>.Release(behavioursToRemove);
+                UnityEngine.Pool.ListPool<IHeroBehaviourStateCreator>.Release(behavioursToRemove);
             }
         }
     }

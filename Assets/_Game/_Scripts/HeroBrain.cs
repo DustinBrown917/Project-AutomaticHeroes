@@ -15,16 +15,14 @@ namespace Game
         private IHeroBehaviour.IState m_currentState;
         public event ValueChangedWithSourceEvent<HeroBrain, IHeroBehaviour.IState> stateChanged;
 
-        public BasePriorities BasePriorities { get; } = new BasePriorities(0.98f, 0.3f, 1.0f, 0.5f, 0.5f);
+        private readonly HashSet<IHeroBehaviourStateCreator> m_availableBehaviours = new();
 
-        private readonly HashSet<IHeroBehaviour> m_availableBehaviours = new();
-
-        [SerializeField] private HeroBehaviourGraph m_campGraph;
-        [SerializeField] private HeroBehaviourGraph m_waitGraph;
+        [SerializeField] private RestStateCreator m_campState;
+        [SerializeField] private HeroBehaviourStateCreator m_waitBehaviour;
 
         protected override void OnInitialize()
         {
-            AddBehaviour(m_campGraph);
+            AddBehaviourStateCreator(m_campState);
 
             SetBehaviour(GetRandomState());
         }
@@ -43,12 +41,12 @@ namespace Game
             m_availableBehaviours.Clear();
         }
 
-        private void SetBehaviour(IHeroBehaviour newBehaviour)
+        private void SetBehaviour(IHeroBehaviourStateCreator newBehaviour)
         {
             if (newBehaviour == null) 
                 return;
 
-            if (m_currentState != null && m_currentState.Behaviour == newBehaviour && !m_currentState.BehaviourStatus.IsConcludedSatus())
+            if (m_currentState != null && m_currentState.Behaviour == newBehaviour.Behaviour && !m_currentState.BehaviourStatus.IsConcludedSatus())
                 return;
 
             IHeroBehaviour.IState oldState = m_currentState;
@@ -64,7 +62,7 @@ namespace Game
                 m_currentState = null;
             }
 
-            m_currentState = newBehaviour.GetNewState(WorldState.Instance, Hero);
+            m_currentState = newBehaviour.CreateState(WorldState.Instance, Hero);
             m_currentState.StateConcluded += OnBehaviourConcluded;
             m_currentState.Disposed += CurrentStateDisposed;
 
@@ -82,39 +80,39 @@ namespace Game
             SetBehaviour(GetRandomState());
         }
 
-        private IHeroBehaviour GetRandomState()
+        private IHeroBehaviourStateCreator GetRandomState()
         {
-            List<IHeroBehaviour> availableBehaviours = UnityEngine.Pool.ListPool<IHeroBehaviour>.Get();
+            List<IHeroBehaviourStateCreator> availableBehaviours = UnityEngine.Pool.ListPool<IHeroBehaviourStateCreator>.Get();
             List<float> priorities = UnityEngine.Pool.ListPool<float>.Get();
             float sumOfPriorites = 0;
 
-            foreach(IHeroBehaviour behaviour in m_availableBehaviours) {
-                if (behaviour.CanHeroDoBehaviour(Hero)) {
+            foreach(IHeroBehaviourStateCreator behaviour in m_availableBehaviours) {
+                if (behaviour.CanDo(WorldState.Instance, Hero)) {
                     availableBehaviours.Add(behaviour);
-                    priorities.Add(behaviour.GetPriority(Hero));
+                    priorities.Add(behaviour.Utility(WorldState.Instance, Hero));
                     sumOfPriorites += priorities[^1];
                 }
             }
 
             if (availableBehaviours.Count == 0)
-                return m_waitGraph;
+                return m_waitBehaviour;
 
             int index = WeightedRandom.Naive(priorities, sumOfPriorites, WorldState.Instance.Rng);
 
-            IHeroBehaviour chosen = availableBehaviours[index];
+            IHeroBehaviourStateCreator chosen = availableBehaviours[index];
 
             UnityEngine.Pool.ListPool<float>.Release(priorities);
-            UnityEngine.Pool.ListPool<IHeroBehaviour>.Release(availableBehaviours);
+            UnityEngine.Pool.ListPool<IHeroBehaviourStateCreator>.Release(availableBehaviours);
 
             return chosen;
         }
 
-        public void AddBehaviour(IHeroBehaviour behaviour)
+        public void AddBehaviourStateCreator(IHeroBehaviourStateCreator behaviour)
         {
             m_availableBehaviours.Add(behaviour);
         }
 
-        public void RemoveBehaviour(IHeroBehaviour behaviour)
+        public void RemoveBehaviourStateCreator(IHeroBehaviourStateCreator behaviour)
         {
             m_availableBehaviours.Remove(behaviour);
         }

@@ -78,13 +78,12 @@ namespace Game.AI.General
 
         private IHeroBehaviour.IStateManager m_stateManager;
 
-        public event IHeroBehaviour.CreateStateDataInjectionDelegate CreateStateDataInjector;
-
         protected override void OnInitialize()
         {
             GatherEntryNodes();
             m_stateManager = CreateStateManager();
-            WorldState.Instance.Time.AddListener(this);
+            if(WorldState.Instance != null && WorldState.Instance.Time != null)
+                WorldState.Instance.Time.AddListener(this);
         }
 
         protected override void OnDisposed()
@@ -95,7 +94,6 @@ namespace Game.AI.General
 
             m_stateManager = null;
             m_entries = null;
-            CreateStateDataInjector = null;
         }
 
         private void GatherEntryNodes()
@@ -113,18 +111,10 @@ namespace Game.AI.General
             UnityEngine.Pool.ListPool<HeroBehaviourNode_Entry>.Release(entryNodes);
         }
 
-        public IHeroBehaviour.IState GetNewState(WorldState worldState, Hero hero)
+        public IHeroBehaviour.IState GetNewState(WorldState worldState, Hero hero, params (Identity key, object value)[] injectedData)
         {
             if (!IsInitialized)
                 Initialize();
-
-            List<(Identity, object)> injectedDataContainer = UnityEngine.Pool.ListPool<(Identity, object)>.Get();
-
-            CreateStateDataInjector?.Invoke(this, injectedDataContainer);
-
-            (Identity key, object value)[] injectedData = injectedDataContainer.ToArray();
-
-            UnityEngine.Pool.ListPool<(Identity, object)>.Release(injectedDataContainer);
 
             return m_stateManager.GetNewState(worldState, hero, injectedData);
         }
