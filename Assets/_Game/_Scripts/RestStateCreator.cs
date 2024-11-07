@@ -12,9 +12,14 @@ namespace Game
             return new (Identity key, object value)[] { (InjectedDataIdentities.RestExhaustionRecoveryRate, WorldTime.HoursToSeconds(exhaustionRecoveredPerHour)) };
         }
 
-        protected override void OnStateCreated(IHeroBehaviour.IState createdState)
+        protected override void OnStateCreated(WorldState worldState, Hero hero, IHeroBehaviour.IState createdState)
         {
             createdState.StateText = stateText;
+        }
+
+        public override float Utility(WorldState worldState, Hero hero)
+        {
+            return (hero.Stamina.Exhaustion + hero.Core.TimeOfDayPreference.GetPreferenceForCurrentTime()) * 0.5f;
         }
     } 
 }

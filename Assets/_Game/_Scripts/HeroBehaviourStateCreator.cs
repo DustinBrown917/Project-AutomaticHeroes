@@ -15,7 +15,7 @@ namespace Game
         public IHeroBehaviour.IState CreateState(WorldState worldState, Hero hero)
         {
             IHeroBehaviour.IState state = m_behaviour.GetNewState(worldState, hero, GetInjectedData(worldState, hero));
-            OnStateCreated(state);
+            OnStateCreated(worldState, hero, state);
             return state;
         }
 
@@ -28,7 +28,7 @@ namespace Game
         {
             return 1.0f;
         }
-        public bool CanDo(WorldState worldState, Hero hero)
+        public virtual bool CanDo(WorldState worldState, Hero hero)
         {
             return true;
         }
@@ -38,7 +38,7 @@ namespace Game
             return Array.Empty<(Identity key, object value)>();
         }
 
-        protected virtual void OnStateCreated(IHeroBehaviour.IState createdState)
+        protected virtual void OnStateCreated(WorldState worldState, Hero hero, IHeroBehaviour.IState createdState)
         {
 
         }

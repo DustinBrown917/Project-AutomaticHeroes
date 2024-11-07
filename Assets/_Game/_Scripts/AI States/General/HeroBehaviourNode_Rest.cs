@@ -22,7 +22,7 @@ namespace Game.AI.General
         public override IHeroBehaviour.INode.IState Enter(IHeroBehaviour.IState bb)
         {
             State state = new();
-            state.exitTime = bb.ElapsedTime + 3600f;
+            state.exitTime = bb.ElapsedTime + m_restInterval;
 
             if(bb.WorldState.Rng.Bool(GetWakeupChance(bb))) {
                 ConcludeViaPort(state, doneResting);
@@ -62,7 +62,7 @@ namespace Game.AI.General
         float GetWakeupChance(IHeroBehaviour.IState bb)
         {
             float exhaustionFactor =  1.0f - bb.Hero.Stamina.ExhaustionPercent;
-            float timeOfDatFactor = (0.85f * bb.WorldState.Date.GetTimeOfDayPreference(bb.Hero.Core.TimeOfDayPreference)) + 0.1f;
+            float timeOfDatFactor = (0.85f * bb.Hero.Core.TimeOfDayPreference.GetPreferenceForCurrentTime()) + 0.1f;
 
             return exhaustionFactor * timeOfDatFactor;
         }

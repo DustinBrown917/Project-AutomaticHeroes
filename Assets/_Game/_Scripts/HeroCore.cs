@@ -23,7 +23,7 @@ namespace Game
 
         [field: SerializeField, ShowAssetPreview] public Sprite CharacterSprite { get; private set; }
         [field: SerializeField] public GenderDef Gender { get; private set; }
-        [field: SerializeField] public WorldDate.EPreference TimeOfDayPreference { get; private set; } = WorldDate.EPreference.Diurnal;
+        [field: SerializeField] public TimeOfDayPreference TimeOfDayPreference { get; private set; }
         [field: SerializeField] public Color Base { get; private set; }
         [field: SerializeField] public Color Primary { get; private set; } = Color.white;
         [field: SerializeField] public Color Secondary { get; private set; } = Color.black;

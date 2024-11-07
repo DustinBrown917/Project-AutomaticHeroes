@@ -17,14 +17,16 @@ namespace Game
 
         private readonly HashSet<IHeroBehaviourStateCreator> m_availableBehaviours = new();
 
-        [SerializeField] private RestStateCreator m_campState;
-        [SerializeField] private HeroBehaviourStateCreator m_waitBehaviour;
+        [SerializeField] private RestStateCreator m_campStateCreator;
+        [SerializeField] private HeroTravelStateCreator m_travelStateCreator;
+        [SerializeField] private HeroBehaviourStateCreator m_waitStateCreator;
 
         protected override void OnInitialize()
         {
-            AddBehaviourStateCreator(m_campState);
+            AddBehaviourStateCreator(m_campStateCreator);
+            AddBehaviourStateCreator(m_travelStateCreator);
 
-            SetBehaviour(GetRandomState());
+            SetBehaviour(m_waitStateCreator);
         }
 
         protected override void OnDestroy()
@@ -36,6 +38,9 @@ namespace Game
                 m_currentState.Cancel();
                 m_currentState = null;
             }
+
+            m_campStateCreator = null;
+            m_waitStateCreator = null;
 
             stateChanged = null;
             m_availableBehaviours.Clear();
@@ -95,7 +100,7 @@ namespace Game
             }
 
             if (availableBehaviours.Count == 0)
-                return m_waitBehaviour;
+                return m_waitStateCreator;
 
             int index = WeightedRandom.Naive(priorities, sumOfPriorites, WorldState.Instance.Rng);
 
