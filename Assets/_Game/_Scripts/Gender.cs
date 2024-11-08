@@ -13,7 +13,7 @@ namespace Game
     }
 
     [System.Serializable]
-    public class Pronouns
+    public class Pronouns : IFormattable
     {
         [field: Tooltip("He/She/They")]
         [field: SerializeField] public string Subjective { get; private set; } = "He/She/They";
@@ -25,41 +25,19 @@ namespace Game
         [field: SerializeField] public string Possessive_Adj { get; private set; } = "His/Her/Their";
         [field: Tooltip("Himself/Herself/Themself")]
         [field: SerializeField] public string Reflexive { get; private set; } = "Himself/Herself/Themself";
-    }
 
-    public class HeroFormatProvider : IFormatProvider, ICustomFormatter
-    {
-        public string Format(string format, object arg, IFormatProvider formatProvider)
+        public string ToString(string format, IFormatProvider formatProvider)
         {
-            if (arg is not Hero hero)
-                return HandleOtherFormats(format, arg);
+            if (string.IsNullOrEmpty(format)) return Subjective;
 
             switch (format.ToLower()) {
-                case "he": return hero.Core.Gender.Pronouns.Subjective;
-                case "him": return hero.Core.Gender.Pronouns.Objective;
-                case "his": return hero.Core.Gender.Pronouns.Possessive_Adj;
-                case "hers": return hero.Core.Gender.Pronouns.Possessive_Pro;
-                case "himself": return hero.Core.Gender.Pronouns.Reflexive;
-                default: return hero.ToString();
+                case "he": return Subjective;
+                case "him": return Objective;
+                case "his": return Possessive_Adj;
+                case "hers": return Possessive_Pro;
+                case "self": return Reflexive;
+                default: return Subjective;
             }
-        }
-
-        public object GetFormat(Type formatType)
-        {
-            if (formatType == typeof(ICustomFormatter))
-                return this;
-            else
-                return null;
-        }
-
-        private string HandleOtherFormats(string format, object arg)
-        {
-            if (arg is IFormattable)
-                return ((IFormattable)arg).ToString(format, CultureInfo.CurrentCulture);
-            else if (arg != null)
-                return arg.ToString();
-            else
-                return String.Empty;
         }
     }
 }

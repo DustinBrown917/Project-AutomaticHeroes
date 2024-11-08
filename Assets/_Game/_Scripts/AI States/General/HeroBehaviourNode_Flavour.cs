@@ -27,7 +27,7 @@ namespace Game.AI.General
         public override IHeroBehaviour.INode.IState Enter(IHeroBehaviour.IState bb)
         {
             IHeroBehaviour.INode.State state = new();
-            bb.FlavourText = bb.WorldState.Rng.GetRandom(m_flavours);
+            bb.FlavourText = bb.Format(bb.WorldState.Rng.GetRandom(m_flavours));
             state.Conclude(exit.ConnectedPortData.Node as IHeroBehaviour.INode);
             return state;
         }

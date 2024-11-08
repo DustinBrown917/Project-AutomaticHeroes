@@ -1,4 +1,3 @@
-using Game.Flow;
 using SegoLib;
 
 namespace Game.Monsters.Combat
@@ -25,5 +24,6 @@ namespace Game.Monsters.Combat
 
         public void ConcludeCurrentNode(MonsterCombatNode nextNode);
         public void OnWorldTimeUpdate(float deltaSeconds);
+        public string Format(string str);
     }
 }

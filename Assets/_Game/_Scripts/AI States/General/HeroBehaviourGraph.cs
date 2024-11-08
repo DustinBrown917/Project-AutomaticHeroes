@@ -74,24 +74,34 @@ namespace Game.AI.General
     [RequireNode(typeof(HeroBehaviourNode_Entry), typeof(HeroBehaviourNode_Exit))]
     public abstract class HeroBehaviourGraph_Base : FlowGraph, IHeroBehaviour
     {
+        [SerializeField] private string m_defaultStateText;
+        [SerializeField] private Sprite m_defaultForegroundSprite;
+        [SerializeField] private Sprite m_defaultBackgroundSprite;
+        [SerializeField] private Tag[] m_tagArray;
+
         [NonSerialized] private HeroBehaviourNode_Entry[] m_entries;
 
-        private IHeroBehaviour.IStateManager m_stateManager;
+        [NonSerialized] private IHeroBehaviour.IStateManager m_stateManager;
+
+        [NonSerialized] private WorldState m_subscribedWorldState;
+
+        [NonSerialized] private HashSet<Tag> m_tags = new HashSet<Tag>();
 
         protected override void OnInitialize()
         {
             GatherEntryNodes();
             m_stateManager = CreateStateManager();
-            if(WorldState.Instance != null && WorldState.Instance.Time != null)
-                WorldState.Instance.Time.AddListener(this);
+
+            m_tags.UnionWith(m_tagArray);
         }
 
         protected override void OnDisposed()
         {
-            if (WorldState.Instance != null && WorldState.Instance.Time != null) {
-                WorldState.Instance.Time.RemoveListener(this);
+            if (m_subscribedWorldState != null && m_subscribedWorldState.Time != null) {
+                m_subscribedWorldState.Time.RemoveListener(this);
             }
 
+            m_subscribedWorldState = null;
             m_stateManager = null;
             m_entries = null;
         }
@@ -116,7 +126,18 @@ namespace Game.AI.General
             if (!IsInitialized)
                 Initialize();
 
-            return m_stateManager.GetNewState(worldState, hero, injectedData);
+            IHeroBehaviour.IState state = m_stateManager.GetNewState(worldState, hero, injectedData);
+
+            state.StateText = m_defaultStateText;
+            state.ForegroundSprite = m_defaultForegroundSprite;
+            state.BackgroundSprite = m_defaultBackgroundSprite;
+
+            if(m_subscribedWorldState == null) {
+                worldState.Time.AddListener(this);
+                m_subscribedWorldState = worldState;
+            }
+
+            return state;
         }
 
         public void OnWorldTimeUpdate(float deltaSeconds)
@@ -132,7 +153,10 @@ namespace Game.AI.General
         public void CancelAllStates() => m_stateManager.CancelAllStates();
         public void CancelState(int stateIndex) => m_stateManager.CancelState(stateIndex);
 
-
+        public bool HasTag(Tag tag)
+        {
+            return m_tags.Contains(tag);
+        }
 
         protected abstract IHeroBehaviour.IStateManager CreateStateManager();
         public abstract bool CanHeroDoBehaviour(Hero hero);

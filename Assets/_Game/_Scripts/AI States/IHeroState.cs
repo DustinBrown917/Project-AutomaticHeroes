@@ -1,4 +1,3 @@
-using Game.AI.General;
 using Game.Flow;
 using SegoLib;
 using System;
@@ -48,6 +47,8 @@ namespace Game
 
         public IState GetNewState(WorldState worldState, Hero hero, params (Identity key, object value)[] injectedData);
 
+        public bool HasTag(Tag tag);
+
         public void CancelState(int stateIndex);
 
         public void CancelAllStates();
@@ -69,6 +70,7 @@ namespace Game
     {
         public interface IStateManager : WorldTime.IListener
         {
+            public int ActiveStateCount { get; }
             /// <summary>
             /// Enter the state.
             /// </summary>
@@ -106,6 +108,8 @@ namespace Game
             where TState : IState_Internal
         {
             private StateCollection<TState> m_stateCollection = new();
+
+            public int ActiveStateCount => m_stateCollection.Count;
 
             public TBehaviour ParentBehaviour { get; }
 

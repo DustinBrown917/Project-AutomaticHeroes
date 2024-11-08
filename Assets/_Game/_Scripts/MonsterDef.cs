@@ -14,7 +14,7 @@ namespace Game
         [field: SerializeField] public float MaxHealth { get; private set; }
     } 
 
-    public class Monster
+    public class Monster : IFormattable
     {
         public MonsterDef Def { get; }
         public int CombatLevel => Def.CombatLevel;
@@ -45,6 +45,11 @@ namespace Game
         public override string ToString()
         {
             return $"{Def.name}";
+        }
+
+        public string ToString(string format, IFormatProvider formatProvider)
+        {
+            return ToString();
         }
     }
 

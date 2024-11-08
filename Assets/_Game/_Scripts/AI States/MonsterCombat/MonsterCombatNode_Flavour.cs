@@ -17,7 +17,7 @@ namespace Game.Monsters.Combat
 
         public override void Enter(IMonsterCombatState bb)
         {
-            bb.FlavourText = bb.WorldState.Rng.GetRandom(m_flavourTexts);
+            bb.FlavourText = bb.Format(bb.WorldState.Rng.GetRandom(m_flavourTexts));
             bb.NodeEndTime = bb.ElapsedTime + bb.WorldState.Rng.Range(m_nodeDuration);
         }
 

@@ -21,10 +21,10 @@ namespace Game
             public EStatus BehaviourStatus { get; }
             public event BehaviourConcludedDelegate StateConcluded;
 
-            public Sprite ForegroundSprite { get; }
+            public Sprite ForegroundSprite { get; set; }
             public event ValueChangedWithSourceEvent<IState, Sprite> ForegroundSpriteChanged;
 
-            public Sprite BackgroundSprite { get; }
+            public Sprite BackgroundSprite { get; set; }
             public event ValueChangedWithSourceEvent<IState, Sprite> BackgroundSpriteChanged;
 
             public string FlavourText { get; set; }
@@ -40,6 +40,11 @@ namespace Game
             public void InjectData(Identity key, object value);
             public bool TryGetInjectedData<T>(Identity key, out T value);
             public bool RemoveInjectedData(Identity key);
+
+            public string Format(string str);
+            public string Format(string str, object obj1);
+            public string Format(string str, object obj1, object obj2);
+            public string Format(string str, object obj1, object obj2, object obj3);
         }
 
         protected interface IState_Internal : IState, SegoLib.IDisposable
@@ -148,8 +153,6 @@ namespace Game
             {
                 if (newValue == null)
                     newValue = string.Empty;
-
-                newValue = string.Format(WorldState.HeroFormatProvider, newValue, Hero);
 
                 if (newValue == m_flavourString)
                     return;
@@ -308,6 +311,14 @@ namespace Game
             }
 
             protected virtual void OnDisposed() { }
+
+            public string Format(string str) => string.Format(str, WorldState, Hero);
+
+            public string Format(string str, object obj1) => string.Format(str, WorldState, Hero, obj1);
+
+            public string Format(string str, object obj1, object obj2) => string.Format(str, WorldState, Hero, obj1, obj2);
+
+            public string Format(string str, object obj1, object obj2, object obj3) => string.Format(str, WorldState, Hero, obj1, obj2, obj3);
         }
     }
 }

@@ -79,6 +79,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_behaviour: {fileID: 11400000, guid: 3a85b39a1cc53a64091ebc8608f21e9a, type: 2}
+  m_overrideStateText: 
+  m_overrideForegroundSprite: {fileID: 0}
+  m_overrideBackgroundSprite: {fileID: 0}
 --- !u!114 &1532761492509208290
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -92,6 +95,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_behaviour: {fileID: 11400000, guid: 6c17b103f86f392448acd880f4c2f3f8, type: 2}
+  m_overrideStateText: Resting at camp.
+  m_overrideForegroundSprite: {fileID: 21300000, guid: d823908dcac23724ea33395f597052d0, type: 3}
+  m_overrideBackgroundSprite: {fileID: 0}
   exhaustionRecoveredPerHour: 3
   stateText: Resting at camp.
 --- !u!114 &8041288703009976603
@@ -107,7 +113,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_behaviour: {fileID: 11400000, guid: 07f16c47b239f7f4486484b859d9931f, type: 2}
-  m_stateText: Traveling to {0}.
+  m_overrideStateText: Traveling to {0}.
+  m_overrideForegroundSprite: {fileID: 0}
+  m_overrideBackgroundSprite: {fileID: 0}
+  m_travelTag: {fileID: 11400000, guid: e51d1423642f8fc4b86b55582475aea6, type: 2}
 --- !u!1 &4100121308280149663
 GameObject:
   m_ObjectHideFlags: 0

@@ -846,8 +846,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_behaviour: {fileID: 11400000, guid: 6c17b103f86f392448acd880f4c2f3f8, type: 2}
+  m_overrideStateText: Resting in a fancy inn.
+  m_overrideForegroundSprite: {fileID: 0}
+  m_overrideBackgroundSprite: {fileID: 0}
   exhaustionRecoveredPerHour: 3
-  stateText: Resting in a fancy inn.
+  stateText: 
 --- !u!1 &373692442
 GameObject:
   m_ObjectHideFlags: 0
@@ -4865,8 +4868,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_behaviour: {fileID: 11400000, guid: 6c17b103f86f392448acd880f4c2f3f8, type: 2}
+  m_overrideStateText: Resting in an uncomfy cot.
+  m_overrideForegroundSprite: {fileID: 0}
+  m_overrideBackgroundSprite: {fileID: 0}
   exhaustionRecoveredPerHour: 2.5
-  stateText: Resting in an uncomfy cot.
+  stateText: 
 --- !u!1001 &1503216868
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5599,8 +5605,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_behaviour: {fileID: 11400000, guid: 6c17b103f86f392448acd880f4c2f3f8, type: 2}
+  m_overrideStateText: Resting in a seedy inn.
+  m_overrideForegroundSprite: {fileID: 0}
+  m_overrideBackgroundSprite: {fileID: 0}
   exhaustionRecoveredPerHour: 3
-  stateText: Resting in a seedy inn.
+  stateText: 
 --- !u!1001 &1592465697
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6095,8 +6104,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_behaviour: {fileID: 11400000, guid: 6c17b103f86f392448acd880f4c2f3f8, type: 2}
+  m_overrideStateText: Resting in a cozy inn.
+  m_overrideForegroundSprite: {fileID: 0}
+  m_overrideBackgroundSprite: {fileID: 0}
   exhaustionRecoveredPerHour: 3.5
-  stateText: Resting in a cozy inn.
+  stateText: 
 --- !u!1 &1624700078
 GameObject:
   m_ObjectHideFlags: 0
@@ -7774,8 +7786,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_behaviour: {fileID: 11400000, guid: 6c17b103f86f392448acd880f4c2f3f8, type: 2}
+  m_overrideStateText: Resting in an inn.
+  m_overrideForegroundSprite: {fileID: 0}
+  m_overrideBackgroundSprite: {fileID: 0}
   exhaustionRecoveredPerHour: 3
-  stateText: Resting in an inn.
+  stateText: 
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

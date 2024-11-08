@@ -94,6 +94,7 @@ namespace Game.Monsters.Combat
                 Disposed = null;
             }
 
+            public string Format(string str) => string.Format(str, WorldState, Hero, Monster);
 
         }
 

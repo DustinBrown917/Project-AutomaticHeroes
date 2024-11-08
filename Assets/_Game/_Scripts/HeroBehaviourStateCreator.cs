@@ -11,10 +11,23 @@ namespace Game
         public IHeroBehaviour Behaviour => m_behaviour;
         [SerializeField] private HeroBehaviourGraph m_behaviour;
 
+        [SerializeField] private string m_overrideStateText;
+        [SerializeField] private Sprite m_overrideForegroundSprite;
+        [SerializeField] private Sprite m_overrideBackgroundSprite;
 
         public IHeroBehaviour.IState CreateState(WorldState worldState, Hero hero)
         {
             IHeroBehaviour.IState state = m_behaviour.GetNewState(worldState, hero, GetInjectedData(worldState, hero));
+
+            if(!string.IsNullOrEmpty(m_overrideStateText)) 
+                state.StateText = m_overrideStateText;
+
+            if(m_overrideForegroundSprite != null)
+                state.ForegroundSprite = m_overrideForegroundSprite;
+
+            if(m_overrideBackgroundSprite != null)
+                state.BackgroundSprite = m_overrideBackgroundSprite;
+
             OnStateCreated(worldState, hero, state);
             return state;
         }

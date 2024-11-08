@@ -5,7 +5,7 @@ namespace Game
 {
     public class HeroTravelStateCreator : HeroBehaviourStateCreator
     {
-        [SerializeField] private string m_stateText = "Traveling to {0}.";
+        [SerializeField] private Tag m_travelTag;
 
         private IRouteTraversal GetRoute(WorldState worldState, Hero hero)
         {
@@ -26,9 +26,12 @@ namespace Game
 
         public override float Utility(WorldState worldState, Hero hero)
         {
+            float wasJustTravellingModifer = hero.Brain.CurrentState.Behaviour.HasTag(m_travelTag) ? 0.5f : 1.0f;
+
             return (1.0f - hero.Stamina.ExhaustionPercent) * // Exhaustion factor
                 ((hero.Core.TimeOfDayPreference.GetPreferenceForCurrentTime() * 0.9f) + 0.1f) * // Time of day factor scaled to 0.1f - 1.0f;
-                0.5f; // Genera weight of travel. Maybe replace in the future with something more meaningful?
+                wasJustTravellingModifer * // To prevent hero from constantly travelling.
+                0.5f; // General weight of travel. Maybe replace in the future with something more meaningful?
         }
 
         public override bool CanDo(WorldState worldState, Hero hero)
@@ -39,7 +42,7 @@ namespace Game
         protected override void OnStateCreated(WorldState worldState, Hero hero, IHeroBehaviour.IState createdState)
         {
             hero.Movement.CurrentRoute = GetRoute(worldState, hero);
-            createdState.StateText = string.Format(m_stateText, hero.Movement.CurrentRoute.End.DisplayName);
+            createdState.StateText = string.Format(createdState.StateText, hero.Movement.CurrentRoute.End.DisplayName);
         }
     } 
 }

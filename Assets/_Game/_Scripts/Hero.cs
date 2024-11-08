@@ -11,7 +11,7 @@ namespace Game
     [RequireComponent(typeof(HeroHealth))]
     [RequireComponent(typeof(HeroSkills))]
     [RequireComponent(typeof(HeroEquipment))]
-    public class Hero : MonoBehaviour, WorldTime.IListener, IIdentifiable<int>
+    public partial class Hero : MonoBehaviour, WorldTime.IListener, IIdentifiable<int>
     {
         public int Id { get; private set; }
 
@@ -101,4 +101,27 @@ namespace Game
             Stamina.RecoverEnergy(deltaSeconds);
         }
     }
+
+    public partial class Hero : System.IFormattable
+    {
+        public string ToString(string format, System.IFormatProvider formatProvider)
+        {
+            if (string.IsNullOrEmpty(format)) return Core.Name;
+            
+            switch (format) {
+                // Pronouns
+                case "he":
+                case "him":
+                case "his":
+                case "hers":
+                case "self":
+                    return Core.Gender.Pronouns.ToString(format, formatProvider);
+                case "end": return Movement.CurrentRoute != null ? Movement.CurrentRoute.End.DisplayName : "nowhere";
+                case "start": return Movement.CurrentRoute != null ? Movement.CurrentRoute.Start.DisplayName : "nowhere";
+                case "loc": return Movement.Location != null ? Movement.Location.DisplayName : "nowhere";
+                default: return Core.Name;
+            }
+        }
+    }
+
 }
