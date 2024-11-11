@@ -6,8 +6,8 @@ namespace Game
 {
     public class WorldDate : MonoBehaviour, WorldTime.IListener
     {
-        public static int SECONDS_PER_HOUR = 3600;
-        public static int SECONDS_PER_DAY = SECONDS_PER_HOUR * 24;
+        public const int SECONDS_PER_HOUR = 3600;
+        public const int SECONDS_PER_DAY = SECONDS_PER_HOUR * 24;
 
         public enum ETimeOfDay : byte
         {

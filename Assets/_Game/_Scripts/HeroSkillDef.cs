@@ -24,6 +24,8 @@ namespace Game
             for(int i = 0; i < All.Count; i++) {
                 All[i].RuntimeIndex = i;
             }
+
+            Debug.Log($"HeroSkillDefs Loaded. Count: {All.Count}");
         }
 
 

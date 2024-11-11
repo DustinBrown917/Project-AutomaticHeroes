@@ -1,29 +1,33 @@
 using SegoLib;
 using UnityEngine;
+using XNode;
 
 namespace Game
 {
     public class HeroStamina : HeroComponent
     {
         public const float DEFAULT_STAMINA_PER_HOUR = 6.25f;
-        public const float DEFAULT_STAMINA_PER_SECOND = DEFAULT_STAMINA_PER_HOUR / 3600f;
+        public const float DEFAULT_STAMINA_PER_SECOND = DEFAULT_STAMINA_PER_HOUR / WorldDate.SECONDS_PER_HOUR;
 
         public const float MOVEMENT_STAMINA_PER_HOUR = 8.4f;
-        public const float MOVEMENT_STAMINA_PER_SECOND = MOVEMENT_STAMINA_PER_HOUR / 3600f;
+        public const float MOVEMENT_STAMINA_PER_SECOND = MOVEMENT_STAMINA_PER_HOUR / WorldDate.SECONDS_PER_HOUR;
         public const float TRAINING_STAMINA_PER_HOUR = 16f;
-        public const float TRAINING_STAMINA_PER_SECOND = TRAINING_STAMINA_PER_HOUR / 3600f;
+        public const float TRAINING_STAMINA_PER_SECOND = TRAINING_STAMINA_PER_HOUR / WorldDate.SECONDS_PER_HOUR;
 
-        public const float COMBAT_STAMINA_PER_HOUR = MOVEMENT_STAMINA_PER_HOUR;
-        public const float COMBAT_STAMINA_PER_SECOND = COMBAT_STAMINA_PER_HOUR / 3600f;
+        public const float COMBAT_ENERGY_PER_HOUR = 100f;
+        public const float COMBAT_ENERGY_PER_SECOND = COMBAT_ENERGY_PER_HOUR / WorldDate.SECONDS_PER_HOUR;
 
         public const float ENERGY_PERCENT_RECOVERED_PER_HOUR = 0.15f;
-        public const float ENERGY_PERCENT_RECOVERED_PER_SECOND = ENERGY_PERCENT_RECOVERED_PER_HOUR / 3600;
+        public const float ENERGY_PERCENT_RECOVERED_PER_SECOND = ENERGY_PERCENT_RECOVERED_PER_HOUR / WorldDate.SECONDS_PER_HOUR;
 
-        public static float GetExhaustionCombatModifier(float exhaustionPercent)
-        {
-            float t = Mathf.InverseLerp(0, 0.5f, exhaustionPercent);
-            return Mathf.Lerp(0.1f, 1.0f, t);
-        }
+        public const float TRAVEL_EXTRA_EXHAUSTION_DRAIN_PER_HOUR = 1f;
+        public const float TRAVEL_EXTRA_EXHAUSTION_DRAIN_PER_SECOND = TRAVEL_EXTRA_EXHAUSTION_DRAIN_PER_HOUR / WorldDate.SECONDS_PER_HOUR;
+
+        public const float COMBAT_EXTRA_EXHAUSTION_DRAIN_PER_HOUR = 2.0f;
+        public const float COMBAT_EXTRA_EXHAUSTION_DRAIN_PER_SECOND = COMBAT_EXTRA_EXHAUSTION_DRAIN_PER_HOUR / WorldDate.SECONDS_PER_HOUR;
+
+        public const float PASSIVE_EXHAUSTION_DRAIN_PER_HOUR = 2.0f;
+        public const float PASSIVE_EXHAUSTION_DRAIN_PER_SECOND = ENERGY_PERCENT_RECOVERED_PER_HOUR / WorldDate.SECONDS_PER_HOUR;
 
         public float TotalStaminaPool
         {
@@ -132,9 +136,10 @@ namespace Game
             return !depleted;
         }
 
-        public void RecoverEnergy(float deltaSeconds)
+        public void OnWorldTimeUpdate(float deltaSeconds)
         {
             Energy += GetEnergyRecoveryPerSecond() * deltaSeconds;
+            Exhaustion += PASSIVE_EXHAUSTION_DRAIN_PER_SECOND * deltaSeconds;
         }
 
         public void RecoverExhaustion(float amount)

@@ -1,10 +1,21 @@
 using SegoLib;
+using SegoLib.Random;
 using System;
 
 namespace Game
 {
     public class HeroSkill : SegoLib.IDisposable
     {
+        public static int RollForCheck(int skillLevel, IRandomNumberGenerator rng)
+        {
+            return rng.Range(0, skillLevel * 2 + 1);
+        }
+
+        public static int RollForContest(int skillLevel, IRandomNumberGenerator rng)
+        {
+            return rng.Range(0, skillLevel + 1);
+        }
+
         public static int GetExperienceNeededToLevel(int currentLevel)
         {
             return (currentLevel + 1) * 10;
@@ -123,6 +134,16 @@ namespace Game
             m_experienceGainMultiplier = newValue;
 
             experienceGainMultiplierChanged?.Invoke(this, oldValue, newValue);
+        }
+
+        public int Check(IRandomNumberGenerator rng)
+        {
+            return RollForCheck(Level, rng);
+        }
+
+        public int Contest(IRandomNumberGenerator rng)
+        {
+            return RollForContest(Level, rng);
         }
 
         public void Dispose()

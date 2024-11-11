@@ -92,7 +92,8 @@ namespace Game.AI.General
             GatherEntryNodes();
             m_stateManager = CreateStateManager();
 
-            m_tags.UnionWith(m_tagArray);
+            if(m_tagArray != null)
+                m_tags.UnionWith(m_tagArray);
         }
 
         protected override void OnDisposed()

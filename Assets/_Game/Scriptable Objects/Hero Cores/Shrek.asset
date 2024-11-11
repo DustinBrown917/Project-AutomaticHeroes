@@ -15,6 +15,11 @@ MonoBehaviour:
   <CharacterSprite>k__BackingField: {fileID: 21300000, guid: 5da781557a9785046bdafb11cdc65200, type: 3}
   <Gender>k__BackingField: {fileID: 11400000, guid: 54b55efa43584474ab7f1fd9650fcda7, type: 2}
   <TimeOfDayPreference>k__BackingField: {fileID: 11400000, guid: cf2a76370f239f14cad07510d96685e8, type: 2}
+  <SkillFavour>k__BackingField:
+  - <Skill>k__BackingField: {fileID: 11400000, guid: f189a98a4004c044fa63681fa975b4e8, type: 2}
+    <Favour>k__BackingField: 0.3
+  - <Skill>k__BackingField: {fileID: 11400000, guid: bc6d595399377c148a062aa83ab8fb15, type: 2}
+    <Favour>k__BackingField: 0.3
   <Base>k__BackingField: {r: 0.4528302, g: 0.34292996, b: 0.21146315, a: 1}
   <Primary>k__BackingField: {r: 0.6728644, g: 0.8773585, b: 0.4262638, a: 1}
   <Secondary>k__BackingField: {r: 0.19872859, g: 0.4339623, b: 0.14533643, a: 1}

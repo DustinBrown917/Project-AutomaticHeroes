@@ -1,3 +1,4 @@
+using Game.Monsters.Combat;
 using SegoLib;
 using SegoLib.Random;
 using System;
@@ -8,10 +9,14 @@ namespace Game
     [CreateAssetMenu(fileName = "New Monster Def", menuName = "Game/MonsterDef")]
     public class MonsterDef : ScriptableObject
     {
-        [field: SerializeField] public int CombatLevel { get; private set; }
-        [field: SerializeField] public float DamagePerAttack { get; private set; }
-        [field: SerializeField] public float AttackCooldown { get; private set; }
-        [field: SerializeField] public float MaxHealth { get; private set; }
+        [field: Tooltip("How skilled is this creature at combat.")]
+        [field: SerializeField] public int CombatLevel { get; private set; } = 4;
+        [field: Tooltip("How much damage the monster does on a landed attack. A weak creature would do 1, a strong creature would do 10+.")]
+        [field: SerializeField] public float DamagePerAttack { get; private set; } = 4f;
+        [field: Tooltip("How many seconds between attacks. Default is 60.")]
+        [field: SerializeField] public float AttackCooldown { get; private set; } = 60f;
+        [field: Tooltip("How much health the monster starts with. Default / a normal human is 100.")]
+        [field: SerializeField] public float MaxHealth { get; private set; } = 100f;
     } 
 
     public class Monster : IFormattable
@@ -31,7 +36,13 @@ namespace Game
 
         private float CalculateExperienceReward()
         {
-            float expFromAttackDamage = (Def.DamagePerAttack / Def.AttackCooldown) * 60; // 1 point per damage per minute
+            float expFromAttackDamage;
+
+            if(Def.DamagePerAttack <= 0 || Def.AttackCooldown <= 0)
+                expFromAttackDamage = 0;
+            else
+                expFromAttackDamage = (Def.DamagePerAttack / Def.AttackCooldown) * 60; // 1 point per damage per minute
+
             float expFromHealth = Def.MaxHealth * 0.1f; // 1 point per 10 health
             float expFromCombatLevel = CombatLevel; // 1 point per combat level
             return expFromAttackDamage + expFromHealth + expFromCombatLevel;
@@ -53,15 +64,10 @@ namespace Game
         }
     }
 
-    public static class Combat
-    {
-        public const float EXP_PER_MONSTER_LEVEL = 3f;
-        public const float HERO_DAMAGE_PER_HOUR_AT_EQUAL_LEVEL = 100f;
-        public const float LEVEL_DIFFERENCE_DAMAGE_INFLUENCE = 1.0f;
-    }
-
     public class MonsterCombat : SegoLib.IDisposable
     {
+        private const float OUT_OF_ENERGY_COOLDOWN_FACTOR = 1.5f;
+
         public WorldState WorldState { get; private set; }
         public Hero Hero { get; private set; }
         public Monster Monster { get; private set; }
@@ -72,12 +78,14 @@ namespace Game
         public float ElapsedTime { get; private set; }
         public float NextHeroAttackTime { get; private set; }
         public float NextMonsterAttackTime { get; private set; }
-        public bool HeroIsAttemptingToFlee { get; private set; }
+        public bool HeroIsAttemptingToYield { get; private set; }
+
+        public IMonsterCombatHeroYieldHandler ShouldHeroYield { get; private set; }
 
         public bool IsDisposed { get; private set; }
         public event Action<IPrivatelyDisposable> Disposed;
 
-        public MonsterCombat(WorldState worldState, Hero hero, Monster monster)
+        public MonsterCombat(WorldState worldState, Hero hero, Monster monster, IMonsterCombatHeroYieldHandler shouldHeroYield)
         {
             WorldState = worldState;
             Hero = hero;
@@ -85,6 +93,7 @@ namespace Game
 
             UpdateNextHeroAttackTime();
             UpdateNextMonsterAttackTime();
+            this.ShouldHeroYield = shouldHeroYield;
         }
 
         private int GetHeroEffectiveCombatLevel()
@@ -103,6 +112,9 @@ namespace Game
         /// <returns></returns>
         public float GetBalanceOfPower()
         {
+            if (Monster.Def.DamagePerAttack <= 0 || Monster.Def.AttackCooldown <= 0)
+                return 1;
+
             int heroLevel = GetHeroEffectiveCombatLevel();
             int monsterLevel = GetMonsterEffectiveCombatLevel();
 
@@ -110,12 +122,15 @@ namespace Game
             float monsterHitRate = GetWinPercentForA(monsterLevel, heroLevel);
 
             float monsterDps = (Monster.Def.DamagePerAttack / Monster.Def.AttackCooldown) * monsterHitRate;
-            float heroDps = (Hero.Equipment.MainWeapon.DamagePerAttack / Hero.Equipment.MainWeapon.AttackCooldown) * heroHitRate;
+            float heroDps = (Hero.Equipment.MainWeapon.DamagePerAttack / Hero.Equipment.MainWeapon.AttackCooldown);
+
+            if (Hero.Stamina.EnergyPercent <= float.Epsilon)
+                heroDps /= OUT_OF_ENERGY_COOLDOWN_FACTOR;
+
+            heroDps *= heroHitRate;
 
             float timeToKillMonster = Monster.CurrentHealth / heroDps;
             float timeToKillHero = Hero.Health.Current / monsterDps;
-            
-            // TODO: Consider hero exhaustion in this calculation.
 
             float sum = timeToKillMonster + timeToKillHero;
 
@@ -161,9 +176,9 @@ namespace Game
         {
             ElapsedTime += deltaSeconds;
 
-            Hero.Stamina.SpendEnergy(HeroStamina.COMBAT_STAMINA_PER_SECOND * deltaSeconds);
+            Hero.Stamina.SpendEnergy(HeroStamina.COMBAT_ENERGY_PER_SECOND * deltaSeconds);
 
-            while (!HeroIsAttemptingToFlee && TryGetAttackAtCurrentTime(out Action attackAction)) {
+            while (!HeroIsAttemptingToYield && TryGetAttackAtCurrentTime(out Action attackAction)) {
                 attackAction.Invoke();
             }
 
@@ -187,9 +202,9 @@ namespace Game
         {
             UpdateNextHeroAttackTime();
 
-            HeroIsAttemptingToFlee = ShouldHeroFlee();
+            HeroIsAttemptingToYield = ShouldHeroYield.ShouldHeroYield(this);
 
-            if (HeroIsAttemptingToFlee ||
+            if (HeroIsAttemptingToYield ||
                 Hero.Health.Current - m_accumulatedHeroDamage <= 0 || 
                 Hero.Stamina.ExhaustionPercent >= 1.0f)
                 return;
@@ -212,20 +227,24 @@ namespace Game
 
         private bool RollIsWon(int attackerLevel, int defenderLevel)
         {
-            int attackerRoll = WorldState.Rng.Range(0, attackerLevel + 1);
-            int defenderRoll = WorldState.Rng.Range(0, defenderLevel + 1);
+            int attackerRoll = HeroSkill.RollForContest(attackerLevel, WorldState.Rng);
+            int defenderRoll = HeroSkill.RollForContest(defenderLevel, WorldState.Rng);
 
             return attackerRoll > defenderRoll;
         }
 
         private void UpdateNextHeroAttackTime()
         {
-            NextHeroAttackTime += Hero.Equipment.MainWeapon.AttackCooldown;
+            if (Hero.Stamina.EnergyPercent <= float.Epsilon)
+                NextHeroAttackTime += Hero.Equipment.MainWeapon.AttackCooldown * OUT_OF_ENERGY_COOLDOWN_FACTOR;
+            else
+                NextHeroAttackTime += Hero.Equipment.MainWeapon.AttackCooldown;
         }
 
         private void UpdateNextMonsterAttackTime()
         {
-            NextMonsterAttackTime += Monster.Def.AttackCooldown;
+            if(Monster.Def.AttackCooldown <= 0)
+            NextMonsterAttackTime = float.MaxValue;
         }
 
         private void ApplyAccumulatedDamage()
@@ -237,16 +256,6 @@ namespace Game
             m_accumulatedHeroDamage = 0;
         }
 
-        private bool ShouldHeroFlee()
-        {
-            float balanceOfPower = GetBalanceOfPower();
-
-            // Flip BoP because monster advantage is negative.
-            balanceOfPower *= -1f;
-
-            return WorldState.Rng.Bool(balanceOfPower);
-        }
-
         public void Dispose()
         {
             if(IsDisposed) return;
@@ -255,6 +264,7 @@ namespace Game
             WorldState = null;
             Hero = null;
             Monster = null;
+            ShouldHeroYield = null;
 
             Disposed?.Invoke(this);
             Disposed = null;

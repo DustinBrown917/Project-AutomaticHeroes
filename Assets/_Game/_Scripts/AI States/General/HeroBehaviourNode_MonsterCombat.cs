@@ -29,32 +29,38 @@ namespace Game.AI.General
         #endregion ===================================== End Subclasses ================================================
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
 
-        [SerializeField] private MonsterPopulation[] m_monsters;
         [SerializeField] private MonsterCombatGraph m_combatGraph;
+        [SerializeField] private Object m_monsterProviderObject;
 
-        [System.NonSerialized] private float m_sumOfMonsterPopulation;
+        [System.NonSerialized] private IMonsterProvider m_monsterProvider;
 
         [Input] public FlowPort entry;
         [Output] public FlowPort exit_victory;
-        [Output] public FlowPort exit_flee;
+        [Output] public FlowPort exit_yield;
         [Output] public FlowPort exit_defeat;
 
         protected override void Init()
         {
             base.Init();
-            m_sumOfMonsterPopulation = 0;
-            if(m_monsters != null) {
-                foreach (MonsterPopulation monster in m_monsters) {
-                    m_sumOfMonsterPopulation += monster.Density;
-                }
-            }
+            m_monsterProvider = m_monsterProviderObject as IMonsterProvider;
+        }
+
+        private void OnValidate()
+        {
+            if (m_monsterProviderObject is not IMonsterProvider)
+                m_monsterProviderObject = null;
         }
 
         public override IHeroBehaviour.INode.IState Enter(IHeroBehaviour.IState bb)
         {
             State newState = new();
 
-            newState.combatState = m_combatGraph.Enter(bb.WorldState, bb.Hero, GetMonster(bb));
+            if(m_monsterProvider == null) {
+                newState.Conclude(exit_yield.ConnectedPortData.Node as IHeroBehaviour.INode);
+                return newState;
+            }
+
+            newState.combatState = m_combatGraph.Enter(bb.WorldState, bb.Hero, m_monsterProvider.GetMonster(bb.WorldState, bb.Hero));
 
             bb.FlavourText = newState.combatState.FlavourText;
 
@@ -74,6 +80,7 @@ namespace Game.AI.General
             state.combatState.OnWorldTimeUpdate(deltaSeconds);
 
             if (state.combatState.CombatIsConcluded) {
+                bb.InjectData(InjectedDataIdentities.PreviousCombatSummary, state.combatState.GetSummary());
                 state.Conclude(GetNextNode(state) as IHeroBehaviour.INode);
             }
         }
@@ -83,30 +90,25 @@ namespace Game.AI.General
             switch (nodePort.fieldName) {
                 case nameof(entry): return entry;
                 case nameof(exit_victory): return exit_victory;
-                case nameof(exit_flee): return exit_flee;
+                case nameof(exit_yield): return exit_yield;
                 case nameof(exit_defeat): return exit_defeat;
                 default: return null;
             }
         }
 
-        private Monster GetMonster(IHeroBehaviour.IState bb)
-        {
-            int index = WeightedRandom.Naive(m_monsters, m_sumOfMonsterPopulation, bb.WorldState.Rng, x => x.Density);
-            return new Monster(m_monsters[index].MonsterDef);
-        }
-
         private FlowNode GetNextNode(State state)
         {
             switch (state.combatState.Result) {
-                case IMonsterCombatState.ECombatResult.Victorious:
+                case ECombatResult.Victorious:
                     return exit_victory.ConnectedPortData.Node;
-                case IMonsterCombatState.ECombatResult.Fled:
-                    return exit_flee.ConnectedPortData.Node;
-                case IMonsterCombatState.ECombatResult.Defeated:
+                case ECombatResult.HeroYield:
+                    return exit_yield.ConnectedPortData.Node;
+                case ECombatResult.HeroDowned:
                     return exit_defeat.ConnectedPortData.Node;
                 default:
                     return null;
             }
         }
     } 
+
 }

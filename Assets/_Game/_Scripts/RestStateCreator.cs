@@ -13,7 +13,7 @@ namespace Game
 
         public override float Utility(WorldState worldState, Hero hero)
         {
-            return (hero.Stamina.Exhaustion + hero.Core.TimeOfDayPreference.GetPreferenceForCurrentTime()) * 0.5f;
+            return (hero.Stamina.ExhaustionPercent + hero.Core.TimeOfDayPreference.GetPreferenceForCurrentTime()) * 0.5f;
         }
     } 
 }

@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Game.Monsters.Combat
 {
-    public class MonsterCombatNode_Defeat : MonsterCombatNode
+    public class MonsterCombatNode_Downed : MonsterCombatNode
     {
         [Input] public FlowPort entry;
         [SerializeField] private float m_expedrienceGainScale = 1.0f;
@@ -11,7 +11,7 @@ namespace Game.Monsters.Combat
 
         public override void Enter(IMonsterCombatState bb)
         {
-            bb.Result = IMonsterCombatState.ECombatResult.Defeated;
+            bb.Result = ECombatResult.HeroDowned;
             bb.Hero.Equipment.GetMainWeaponSkill().GainExperience(bb.Combat.Monster.GetExpRewardModifiedByHealthLost() * m_expedrienceGainScale);
             bb.ConcludeCurrentNode(exit.ConnectedPortData?.Node as MonsterCombatNode);
         }

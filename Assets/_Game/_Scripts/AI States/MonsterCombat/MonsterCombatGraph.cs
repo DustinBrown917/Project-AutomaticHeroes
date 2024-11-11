@@ -2,6 +2,7 @@ using SegoLib;
 using System;
 using UnityEngine;
 using Game.Flow;
+using SegoLib.Random;
 
 namespace Game.Monsters.Combat
 {
@@ -22,7 +23,7 @@ namespace Game.Monsters.Combat
             public float ElapsedTime { get; private set; }
             public float NodeEndTime { get; set; }
             public bool CombatIsConcluded { get; private set; }
-            public IMonsterCombatState.ECombatResult Result { get; set; }
+            public ECombatResult Result { get; set; }
 
             public string FlavourText
             {
@@ -38,12 +39,12 @@ namespace Game.Monsters.Combat
             public event Action<IPrivatelyDisposable> Disposed;
 
 
-            public State(WorldState worldState, Hero hero, Monster monster, MonsterCombatNode node)
+            public State(WorldState worldState, Hero hero, Monster monster, MonsterCombatNode node, IMonsterCombatHeroYieldHandler shouldHeroYield)
             {
                 WorldState = worldState;
                 Hero = hero;
                 Monster = monster;
-                Combat = new MonsterCombat(worldState, hero, monster);
+                Combat = new MonsterCombat(worldState, hero, monster, shouldHeroYield);
                 m_currentNode = node;
             }
 
@@ -96,13 +97,35 @@ namespace Game.Monsters.Combat
 
             public string Format(string str) => string.Format(str, WorldState, Hero, Monster);
 
+            public MonsterCombatSummary GetSummary()
+            {
+                return new MonsterCombatSummary(Hero, Monster, ElapsedTime, Result);
+            }
         }
 
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
         #endregion ===================================== End Subclasses ================================================
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
 
+        public enum EHeroYieldCondition : byte
+        {
+            None,
+            Sparring,
+            Real
+        }
 
+
+        public static IMonsterCombatHeroYieldHandler GetHeroYieldHandler(EHeroYieldCondition condition)
+        {
+            switch (condition) {
+                case EHeroYieldCondition.None: return new ShouldHeroYield_Default();
+                case EHeroYieldCondition.Sparring: return new ShouldHeroYield_Sparring();
+                case EHeroYieldCondition.Real: return new ShouldHeroYield_Real();
+                default: return new ShouldHeroYield_Default();
+            }
+        }
+
+        public EHeroYieldCondition heroYieldCondition;
         private MonsterCombatNode_Enter m_entryNode;
 
         protected override void OnInitialize()
@@ -114,7 +137,7 @@ namespace Game.Monsters.Combat
 
         public IMonsterCombatState Enter(WorldState worldState, Hero hero, Monster monster)
         {
-            State newState = new(worldState, hero, monster, m_entryNode);
+            State newState = new(worldState, hero, monster, m_entryNode, GetHeroYieldHandler(heroYieldCondition));
             return newState;
         }
 
@@ -128,5 +151,37 @@ namespace Game.Monsters.Combat
 
             return null;
         }
+
     } 
+
+    public interface IMonsterCombatHeroYieldHandler
+    {
+        public bool ShouldHeroYield(MonsterCombat combat);
+    }
+
+    public class ShouldHeroYield_Sparring : IMonsterCombatHeroYieldHandler 
+    {
+        public bool ShouldHeroYield(MonsterCombat combat)
+        {
+            return combat.Hero.Heuristics.IsCurrentHealthLow() || combat.Hero.Heuristics.IsExhaustionHigh();
+        }
+    }
+
+    public class ShouldHeroYield_Real : IMonsterCombatHeroYieldHandler
+    {
+        public bool ShouldHeroYield(MonsterCombat combat)
+        {
+            float balanceOfPower = combat.GetBalanceOfPower();
+
+            // Flip BoP because monster advantage is negative.
+            balanceOfPower *= -1f;
+
+            return combat.WorldState.Rng.Bool(balanceOfPower);
+        }
+    }
+
+    public class ShouldHeroYield_Default : IMonsterCombatHeroYieldHandler
+    {
+        public bool ShouldHeroYield(MonsterCombat combat) => false;
+    }
 }

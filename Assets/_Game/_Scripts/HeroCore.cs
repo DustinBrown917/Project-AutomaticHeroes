@@ -24,6 +24,7 @@ namespace Game
         [field: SerializeField, ShowAssetPreview] public Sprite CharacterSprite { get; private set; }
         [field: SerializeField] public GenderDef Gender { get; private set; }
         [field: SerializeField] public TimeOfDayPreference TimeOfDayPreference { get; private set; }
+        [field: SerializeField] public SkillFavour[] SkillFavour { get; private set; } = Array.Empty<SkillFavour>();
         [field: SerializeField] public Color Base { get; private set; }
         [field: SerializeField] public Color Primary { get; private set; } = Color.white;
         [field: SerializeField] public Color Secondary { get; private set; } = Color.black;
@@ -58,6 +59,11 @@ namespace Game
         }
         private Sprite m_bannerSprite;
 
+        private void OnEnable()
+        {
+            Debug.Log("Hero core enabled!");
+        }
+
         private void CreateBannerSprite()
         {
             Texture2D bannerTex = TextureCombiner.Combine(m_bannerBase, Base, m_primaryDecal, Primary, m_secondaryDecal, Secondary);
@@ -68,5 +74,13 @@ namespace Game
         {
             m_coloredName = $"<color=#{Primary.ToHexString()}>{Name}</color>";
         }
-    } 
+    }
+
+
+    [System.Serializable]
+    public class SkillFavour
+    {
+        [field: SerializeField] public HeroSkillDef Skill { get; private set; }
+        [field: SerializeField] public float Favour { get; private set; }
+    }
 }

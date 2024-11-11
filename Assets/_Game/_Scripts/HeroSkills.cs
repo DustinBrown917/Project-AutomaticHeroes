@@ -12,6 +12,8 @@ namespace Game
         private HeroSkill[] m_skills = System.Array.Empty<HeroSkill>();
         public int Count => m_skills.Length;
 
+        private float[] m_skillFavour;
+
         protected override void OnInitialize()
         {
             m_skills = new HeroSkill[HeroSkillDef.All.Count];
@@ -19,6 +21,21 @@ namespace Game
             for (int i = 0; i < m_skills.Length; i++) {
                 m_skills[i] = new HeroSkill(HeroSkillDef.All[i]);
                 m_skills[i].levelChanged += OnSkillLevelChanged;
+            }
+
+            UpdateSkillFavourability();
+        }
+
+        private void UpdateSkillFavourability()
+        {
+            m_skillFavour = new float[m_skills.Length];
+
+            for(int i = 0; i < m_skills.Length; i++) {
+                m_skillFavour[i] = 1.0f;
+            }
+
+            foreach(SkillFavour skillAffinity in Hero.Core.SkillFavour) {
+                m_skillFavour[skillAffinity.Skill.RuntimeIndex] = UnityEngine.Mathf.Clamp01(skillAffinity.Favour);
             }
         }
 
@@ -38,9 +55,19 @@ namespace Game
             Hero.Level.GainExperience(1.0f);
         }
 
-        public int Roll(HeroSkillDef skill, WorldState worldState)
+        public int RollForCheck(HeroSkillDef skill, WorldState worldState)
         {
             return worldState.Rng.Range(0, this[skill].Level * 2 + 1);
+        }
+
+        public int RollForContest(HeroSkillDef skill, WorldState worldState)
+        {
+            return worldState.Rng.Range(0, this[skill].Level + 1);
+        }
+
+        public float GetFavour(HeroSkillDef skill)
+        {
+            return m_skillFavour[skill.RuntimeIndex];
         }
 
         public IEnumerator<HeroSkill> GetEnumerator() => ((IEnumerable<HeroSkill>)m_skills).GetEnumerator();

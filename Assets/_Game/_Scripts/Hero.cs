@@ -98,7 +98,7 @@ namespace Game
         public void OnWorldTimeUpdate(float deltaSeconds)
         {
             Health.Recover(deltaSeconds);
-            Stamina.RecoverEnergy(deltaSeconds);
+            Stamina.OnWorldTimeUpdate(deltaSeconds);
         }
     }
 

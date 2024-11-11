@@ -27,9 +27,9 @@ namespace Game.AI.General
             if(bb.WorldState.Rng.Bool(GetWakeupChance(bb))) {
                 ConcludeViaPort(state, doneResting);
             } else if(bb.TryGetInjectedData(InjectedDataIdentities.RestExhaustionRecoveryRate, out float rate)) {
-                state.exhaustionRegenRatePerSecond = rate;
+                state.exhaustionRegenRatePerSecond = rate + HeroStamina.PASSIVE_EXHAUSTION_DRAIN_PER_SECOND;
             } else {
-                state.exhaustionRegenRatePerSecond = 0.0012f; // About 100/24hrs.
+                state.exhaustionRegenRatePerSecond = 0.0012f + HeroStamina.PASSIVE_EXHAUSTION_DRAIN_PER_SECOND; // About 100/24hrs.
             }
 
             return state;
@@ -52,7 +52,7 @@ namespace Game.AI.General
                 return;
             }
 
-            bb.Hero.Stamina.Exhaustion -= state.exhaustionRegenRatePerSecond;
+            bb.Hero.Stamina.RecoverExhaustion(state.exhaustionRegenRatePerSecond * deltaSeconds);
 
             if(bb.ElapsedTime >= state.exitTime) {
                 ConcludeViaPort(state, keepResting);

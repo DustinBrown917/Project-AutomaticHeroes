@@ -3,13 +3,15 @@ using UnityEngine;
 using Game.AI.General;
 using SegoLib;
 using System;
+using XNode;
 
 namespace Game
 {
-    public class HeroBehaviourStateCreator : MonoBehaviour, IHeroBehaviourStateCreator, IHeroBehaviourProvider
+    public class HeroBehaviourStateCreator : SceneGraph<HeroBehaviourGraph>, IHeroBehaviourStateCreator, IHeroBehaviourProvider
     {
-        public IHeroBehaviour Behaviour => m_behaviour;
-        [SerializeField] private HeroBehaviourGraph m_behaviour;
+        [SerializeField] private string m_name;
+
+        public IHeroBehaviour Behaviour => graph;
 
         [SerializeField] private string m_overrideStateText;
         [SerializeField] private Sprite m_overrideForegroundSprite;
@@ -17,7 +19,7 @@ namespace Game
 
         public IHeroBehaviour.IState CreateState(WorldState worldState, Hero hero)
         {
-            IHeroBehaviour.IState state = m_behaviour.GetNewState(worldState, hero, GetInjectedData(worldState, hero));
+            IHeroBehaviour.IState state = graph.GetNewState(worldState, hero, GetInjectedData(worldState, hero));
 
             if(!string.IsNullOrEmpty(m_overrideStateText)) 
                 state.StateText = m_overrideStateText;

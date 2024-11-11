@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Hero Behaviour Node_Exit
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 1016, y: -8}
+  position: {x: 1464, y: -8}
   ports:
     keys:
     - entry
@@ -30,6 +30,50 @@ MonoBehaviour:
       _connectionType: 0
       _typeConstraint: 0
       _dynamic: 0
+--- !u!114 &-5502774418233490732
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fc53f7db6b905145b01d34f3bc0f799, type: 3}
+  m_Name: Hero Behaviour Node_Constant Delay
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: -136, y: -24}
+  ports:
+    keys:
+    - entry
+    - exit
+    values:
+    - _fieldName: entry
+      _node: {fileID: -5502774418233490732}
+      _typeQualifiedName: Game.Flow.FlowPort, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: exit
+        node: {fileID: 5696015639493930353}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: exit
+      _node: {fileID: -5502774418233490732}
+      _typeQualifiedName: Game.Flow.FlowPort, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: entry
+        node: {fileID: 2958324625011518848}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  m_timeToSpendInNode: 900
 --- !u!114 &-1920076168696532875
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -43,7 +87,7 @@ MonoBehaviour:
   m_Name: Hero Behaviour Node_Constant Delay
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 616, y: -24}
+  position: {x: 1064, y: -24}
   ports:
     keys:
     - entry
@@ -54,8 +98,8 @@ MonoBehaviour:
       _typeQualifiedName: Game.Flow.FlowPort, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
         PublicKeyToken=null
       connections:
-      - fieldName: routeComplete
-        node: {fileID: 2958324625011518848}
+      - fieldName: exit
+        node: {fileID: 8529680859948003633}
         reroutePoints: []
       _direction: 0
       _connectionType: 0
@@ -91,6 +135,9 @@ MonoBehaviour:
   - {fileID: -6267682959029750968}
   - {fileID: 2958324625011518848}
   - {fileID: -1920076168696532875}
+  - {fileID: 5696015639493930353}
+  - {fileID: -5502774418233490732}
+  - {fileID: 8529680859948003633}
   m_defaultStateText: Travelling...
   m_defaultForegroundSprite: {fileID: 21300000, guid: fe098d659c7d191448b362ccf571cb99, type: 3}
   m_defaultBackgroundSprite: {fileID: 0}
@@ -109,7 +156,7 @@ MonoBehaviour:
   m_Name: Hero Behaviour Node_Travel
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 232, y: -8}
+  position: {x: 248, y: -8}
   ports:
     keys:
     - entry
@@ -121,7 +168,7 @@ MonoBehaviour:
         PublicKeyToken=null
       connections:
       - fieldName: exit
-        node: {fileID: 3996143142054482926}
+        node: {fileID: -5502774418233490732}
         reroutePoints: []
       _direction: 0
       _connectionType: 0
@@ -133,7 +180,7 @@ MonoBehaviour:
         PublicKeyToken=null
       connections:
       - fieldName: entry
-        node: {fileID: -1920076168696532875}
+        node: {fileID: 8529680859948003633}
         reroutePoints: []
       _direction: 1
       _connectionType: 0
@@ -152,7 +199,7 @@ MonoBehaviour:
   m_Name: Hero Behaviour Node_Entry
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 0, y: 0}
+  position: {x: -728, y: -24}
   ports:
     keys:
     - exit
@@ -163,9 +210,99 @@ MonoBehaviour:
         PublicKeyToken=null
       connections:
       - fieldName: entry
-        node: {fileID: 2958324625011518848}
+        node: {fileID: 5696015639493930353}
         reroutePoints: []
       _direction: 1
       _connectionType: 0
       _typeConstraint: 0
       _dynamic: 0
+--- !u!114 &5696015639493930353
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cf164281cec02ad4c931d9f23103b9fc, type: 3}
+  m_Name: Hero Behaviour Node_Flavour
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: -520, y: -56}
+  ports:
+    keys:
+    - entry
+    - exit
+    values:
+    - _fieldName: entry
+      _node: {fileID: 5696015639493930353}
+      _typeQualifiedName: Game.Flow.FlowPort, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: exit
+        node: {fileID: 3996143142054482926}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: exit
+      _node: {fileID: 5696015639493930353}
+      _typeQualifiedName: Game.Flow.FlowPort, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: entry
+        node: {fileID: -5502774418233490732}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  m_flavours:
+  - Leaving {1:loc}.
+--- !u!114 &8529680859948003633
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cf164281cec02ad4c931d9f23103b9fc, type: 3}
+  m_Name: Hero Behaviour Node_Flavour
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 648, y: -56}
+  ports:
+    keys:
+    - entry
+    - exit
+    values:
+    - _fieldName: entry
+      _node: {fileID: 8529680859948003633}
+      _typeQualifiedName: Game.Flow.FlowPort, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: routeComplete
+        node: {fileID: 2958324625011518848}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: exit
+      _node: {fileID: 8529680859948003633}
+      _typeQualifiedName: Game.Flow.FlowPort, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: entry
+        node: {fileID: -1920076168696532875}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  m_flavours:
+  - Entering {1:loc}.

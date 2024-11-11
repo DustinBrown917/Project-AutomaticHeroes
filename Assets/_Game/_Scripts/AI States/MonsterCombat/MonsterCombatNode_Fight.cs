@@ -7,8 +7,8 @@ namespace Game.Monsters.Combat
     {
         [Input] public FlowPort entry;
         [Output] public FlowPort victory;
-        [Output] public FlowPort flee;
-        [Output] public FlowPort defeat;
+        [Output] public FlowPort heroYield;
+        [Output] public FlowPort heroDowned;
 
         public override void Enter(IMonsterCombatState bb)
         {
@@ -25,9 +25,9 @@ namespace Game.Monsters.Combat
             if (monsterDefeated) {
                 bb.ConcludeCurrentNode(victory.ConnectedPortData?.Node as MonsterCombatNode);
             } else if (heroDefeated) {
-                bb.ConcludeCurrentNode(defeat.ConnectedPortData?.Node as MonsterCombatNode);
-            } else if (bb.Combat.HeroIsAttemptingToFlee) {
-                bb.ConcludeCurrentNode(flee.ConnectedPortData?.Node as MonsterCombatNode);
+                bb.ConcludeCurrentNode(heroDowned.ConnectedPortData?.Node as MonsterCombatNode);
+            } else if (bb.Combat.HeroIsAttemptingToYield) {
+                bb.ConcludeCurrentNode(heroYield.ConnectedPortData?.Node as MonsterCombatNode);
             }
         }
 
@@ -35,13 +35,11 @@ namespace Game.Monsters.Combat
         {
             switch (port.fieldName) {
                 case nameof(entry): return entry;
-                case nameof(defeat): return defeat;
-                case nameof(flee): return flee;
+                case nameof(heroDowned): return heroDowned;
+                case nameof(heroYield): return heroYield;
                 case nameof(victory): return victory;
                 default: return null;
             }
         }
-
-
     }
 }

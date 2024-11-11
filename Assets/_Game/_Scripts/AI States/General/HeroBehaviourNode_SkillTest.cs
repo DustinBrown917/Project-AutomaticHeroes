@@ -9,8 +9,9 @@ namespace Game.AI.General
     {
         [Input] public FlowPort entry;
 
-        [field: SerializeField] public HeroSkillDef Skill { get; private set; }
-        [field: SerializeField] public int Level { get; private set; }
+        [field: SerializeField] public SkillCheck SkillCheck { get; private set; }
+        [field: SerializeField] public float ExpGainMultiplierOnSuccess { get; private set; } = 1.0f;
+        [field: SerializeField] public float ExpGainMultiplierOnFailure { get; private set; } = 0.5f;
 
         [Output] public FlowPort success;
         [Output] public FlowPort failure;
@@ -30,18 +31,18 @@ namespace Game.AI.General
 
         private bool HeroPassesSkillTest(IHeroBehaviour.IState bb)
         {
-            return bb.Hero.Skills.Roll(Skill, bb.WorldState) >= Level;
+            return SkillCheck.HeroPassesCheck(bb.Hero, bb.WorldState, out _, out _);
         }
 
-        private void OnHeroSucceedsSkillTest(IHeroBehaviour.IState bb, IHeroBehaviour.INode.State state)
+        private void OnHeroSucceedsSkillTest(IHeroBehaviour.IState bb, IHeroBehaviour.INode.IState state)
         {
-            bb.Hero.Skills[Skill].GainExperience(Level);
+            bb.Hero.Skills[SkillCheck.Skill].GainExperience(SkillCheck.Level * ExpGainMultiplierOnSuccess);
             state.Conclude(success.ConnectedPortData.Node as IHeroBehaviour.Node);
         }
 
-        private void OnHeroFailsSkillTest(IHeroBehaviour.IState bb, IHeroBehaviour.INode.State state)
+        private void OnHeroFailsSkillTest(IHeroBehaviour.IState bb, IHeroBehaviour.INode.IState state)
         {
-            bb.Hero.Skills[Skill].GainExperience(Level * 0.5f);
+            bb.Hero.Skills[SkillCheck.Skill].GainExperience(SkillCheck.Level * ExpGainMultiplierOnFailure);
             state.Conclude(failure.ConnectedPortData.Node as IHeroBehaviour.Node);
         }
 

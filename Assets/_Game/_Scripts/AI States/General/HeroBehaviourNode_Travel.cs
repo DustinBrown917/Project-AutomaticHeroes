@@ -27,7 +27,7 @@ namespace Game.AI.General
 
         public override void OnWorldTimeUpdate(IHeroBehaviour.IState bb, IHeroBehaviour.INode.IState node_bb, float deltaSeconds)
         {
-            bb.Hero.Stamina.TrySpendEnergy(HeroStamina.MOVEMENT_STAMINA_PER_SECOND * deltaSeconds);
+            bb.Hero.Stamina.Exhaustion += HeroStamina.TRAVEL_EXTRA_EXHAUSTION_DRAIN_PER_SECOND * deltaSeconds;
             bb.Hero.Movement.ProgressBySeconds(deltaSeconds);
 
             if(bb.Hero.Movement.RouteProgress >= 1.0f || bb.Hero.Movement.CurrentRoute == null) {
