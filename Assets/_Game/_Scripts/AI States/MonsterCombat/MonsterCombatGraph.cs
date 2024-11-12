@@ -46,16 +46,18 @@ namespace Game.Monsters.Combat
                 Monster = monster;
                 Combat = new MonsterCombat(worldState, hero, monster, shouldHeroYield);
                 m_currentNode = node;
+                m_currentNode.Enter(this);
             }
 
 
             public void ConcludeCurrentNode(MonsterCombatNode nextNode)
             {
                 m_currentNode = nextNode;
-                m_currentNode.Enter(this);
 
                 if (m_currentNode == null)
                     CombatIsConcluded = true;
+                 else
+                    m_currentNode.Enter(this);
             }
 
             public void OnWorldTimeUpdate(float deltaSeconds)

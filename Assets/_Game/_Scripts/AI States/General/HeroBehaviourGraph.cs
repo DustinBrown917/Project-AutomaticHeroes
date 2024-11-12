@@ -32,7 +32,7 @@ namespace Game.AI.General
 
             protected override State CreateNewState(WorldState worldState, Hero hero, params (Identity key, object value)[] injectedData)
             {
-                return new State(ParentBehaviour, worldState, hero, ParentBehaviour.GetEntryNode(worldState, hero));
+                return new State(ParentBehaviour, worldState, hero, ParentBehaviour.GetEntryNode(worldState, hero), injectedData);
             }
         }
 

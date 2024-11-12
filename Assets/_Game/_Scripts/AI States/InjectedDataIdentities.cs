@@ -4,7 +4,8 @@ namespace Game
 {
     public static class InjectedDataIdentities
     {
-        public static Identity RestExhaustionRecoveryRate { get; } = Identity<Identity>.GetNew(nameof(RestExhaustionRecoveryRate));
-        public static Identity PreviousCombatSummary { get; } = Identity<Identity>.GetNew(nameof(PreviousCombatSummary));
+        public static Identity RestExhaustionRecoveryRate { get; } = Identity<Identity>.Get(nameof(RestExhaustionRecoveryRate));
+        public static Identity PreviousCombatSummary { get; } = Identity<Identity>.Get(nameof(PreviousCombatSummary));
+        public static Identity MonsterProviderPool { get; } = Identity<Identity>.Get(nameof(MonsterProviderPool));
     } 
 }

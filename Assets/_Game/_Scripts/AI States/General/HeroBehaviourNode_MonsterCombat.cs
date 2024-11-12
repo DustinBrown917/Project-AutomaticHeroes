@@ -1,6 +1,6 @@
 using Game.Flow;
 using Game.Monsters.Combat;
-using SegoLib.Random;
+using System.Collections.Generic;
 using UnityEngine;
 using XNode;
 
@@ -9,7 +9,6 @@ namespace Game.AI.General
     [NodeWidth(300)]
     public class HeroBehaviourNode_MonsterCombat : IHeroBehaviour.Node
     {
-
         /*vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv*/
         #region ========================================== Subclasses ==================================================
         /*vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv*/
@@ -30,9 +29,12 @@ namespace Game.AI.General
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
 
         [SerializeField] private MonsterCombatGraph m_combatGraph;
-        [SerializeField] private Object m_monsterProviderObject;
+        [Tooltip("The id of the monster provider to use within the monster provider pool.")]
+        [SerializeField] private string m_monsterSource;
+        [Tooltip("If no monster provider is found at the above id, or the above id is empty, this will be used as the monster provider instead.")]
+        [SerializeField] private Object m_fallbackMonsterProviderObj;
 
-        [System.NonSerialized] private IMonsterProvider m_monsterProvider;
+        [System.NonSerialized] private IMonsterProvider m_fallbackMonsterProvider;
 
         [Input] public FlowPort entry;
         [Output] public FlowPort exit_victory;
@@ -42,25 +44,27 @@ namespace Game.AI.General
         protected override void Init()
         {
             base.Init();
-            m_monsterProvider = m_monsterProviderObject as IMonsterProvider;
+            m_fallbackMonsterProvider = m_fallbackMonsterProviderObj as IMonsterProvider;
         }
 
         private void OnValidate()
         {
-            if (m_monsterProviderObject is not IMonsterProvider)
-                m_monsterProviderObject = null;
+            if (m_fallbackMonsterProviderObj is not IMonsterProvider)
+                m_fallbackMonsterProviderObj = null;
         }
 
         public override IHeroBehaviour.INode.IState Enter(IHeroBehaviour.IState bb)
         {
             State newState = new();
 
-            if(m_monsterProvider == null) {
+            IMonsterProvider monsterProvider = GetMonsterProvider(bb);
+
+            if (monsterProvider == null) {
                 newState.Conclude(exit_yield.ConnectedPortData.Node as IHeroBehaviour.INode);
                 return newState;
             }
 
-            newState.combatState = m_combatGraph.Enter(bb.WorldState, bb.Hero, m_monsterProvider.GetMonster(bb.WorldState, bb.Hero));
+            newState.combatState = m_combatGraph.Enter(bb.WorldState, bb.Hero, monsterProvider.GetMonster(bb.WorldState, bb.Hero));
 
             bb.FlavourText = newState.combatState.FlavourText;
 
@@ -109,6 +113,16 @@ namespace Game.AI.General
                     return null;
             }
         }
-    } 
 
+        protected IMonsterProvider GetMonsterProvider(IHeroBehaviour.IState bb)
+        {
+            if (string.IsNullOrEmpty(m_monsterSource) || // If source string is null or empty
+                !bb.TryGetInjectedData(InjectedDataIdentities.MonsterProviderPool, out MonsterProviderPool pool) || // if no pool was provided
+                !pool.TryGetWithFallback(m_monsterSource, out IMonsterProvider provider) // Pool doesn't contain provider with id
+                )
+                return m_fallbackMonsterProvider;
+
+            return provider;
+        }
+    }
 }

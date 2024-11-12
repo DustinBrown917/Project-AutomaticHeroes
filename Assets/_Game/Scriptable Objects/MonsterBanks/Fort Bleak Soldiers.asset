@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c468e65e735a1ca479c954ac84be4ea0, type: 3}
+  m_Name: Fort Bleak Soldiers
+  m_EditorClassIdentifier: 
+  m_subBanks: []
+  m_monsters:
+  - <MonsterDef>k__BackingField: {fileID: 11400000, guid: 4310bf4c7628ed14a960d536feacf2b7, type: 2}
+    <Density>k__BackingField: 0.8
+  - <MonsterDef>k__BackingField: {fileID: 11400000, guid: e45ada0012e1aee46af03edb861349e0, type: 2}
+    <Density>k__BackingField: 0.3
+  - <MonsterDef>k__BackingField: {fileID: 11400000, guid: 9591f8cc21168af469970d8461564359, type: 2}
+    <Density>k__BackingField: 0.3
+  - <MonsterDef>k__BackingField: {fileID: 11400000, guid: c65fed6b8547b0b458cbb68ea69e06f6, type: 2}
+    <Density>k__BackingField: 0.5
+  - <MonsterDef>k__BackingField: {fileID: 11400000, guid: 0bcd62104a598294da64ecb92ebf5bd7, type: 2}
+    <Density>k__BackingField: 0.2
+  - <MonsterDef>k__BackingField: {fileID: 11400000, guid: b865454f6c7047e419a69fec628b0526, type: 2}
+    <Density>k__BackingField: 0.1

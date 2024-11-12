@@ -252,33 +252,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 749276323757739308, guid: 35f9f532907d43c4e809fa34bfe81dd1, type: 3}
   m_PrefabInstance: {fileID: 138940258}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &176646821
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c9f87d98816f68746b8465a1f5d682af, type: 3}
-  m_Name: Hero Behaviour Node_Exit
-  m_EditorClassIdentifier: 
-  graph: {fileID: 1462942826}
-  position: {x: 856, y: -232}
-  ports:
-    keys:
-    - entry
-    values:
-    - _fieldName: entry
-      _node: {fileID: 176646821}
-      _typeQualifiedName: Game.Flow.FlowPort, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-        PublicKeyToken=null
-      connections: []
-      _direction: 0
-      _connectionType: 0
-      _typeConstraint: 0
-      _dynamic: 0
 --- !u!1 &201942120
 GameObject:
   m_ObjectHideFlags: 0
@@ -2299,33 +2272,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 749276323757739308, guid: 35f9f532907d43c4e809fa34bfe81dd1, type: 3}
   m_PrefabInstance: {fileID: 537673561}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &576923929
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 619221dc333348b4e874a6ba2edff1c6, type: 3}
-  m_Name: Hero Behaviour Node_Entry
-  m_EditorClassIdentifier: 
-  graph: {fileID: 1462942826}
-  position: {x: 146.53854, y: -244.46335}
-  ports:
-    keys:
-    - exit
-    values:
-    - _fieldName: exit
-      _node: {fileID: 576923929}
-      _typeQualifiedName: Game.Flow.FlowPort, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-        PublicKeyToken=null
-      connections: []
-      _direction: 1
-      _connectionType: 0
-      _typeConstraint: 0
-      _dynamic: 0
 --- !u!1 &580834463
 GameObject:
   m_ObjectHideFlags: 0
@@ -4259,25 +4205,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1460507727}
   m_CullTransparentMesh: 1
---- !u!114 &1462942826
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 186c0ea8afa5ceb4da38ef54ee276c5e, type: 3}
-  m_Name: Fort Bleak-graph
-  m_EditorClassIdentifier: 
-  nodes:
-  - {fileID: 576923929}
-  - {fileID: 176646821}
-  m_defaultStateText: 
-  m_defaultForegroundSprite: {fileID: 0}
-  m_defaultBackgroundSprite: {fileID: 0}
-  m_tagArray: []
 --- !u!1001 &1464275541
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4908,7 +4835,7 @@ PrefabInstance:
       addedObject: {fileID: 1481098518}
     - targetCorrespondingSourceObject: {fileID: 8153231705256620972, guid: 8745bc6e15abee942a7c5c94aca18df4, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1481098520}
+      addedObject: {fileID: 1481098519}
   m_SourcePrefab: {fileID: 100100000, guid: 8745bc6e15abee942a7c5c94aca18df4, type: 3}
 --- !u!114 &1481098515 stripped
 MonoBehaviour:
@@ -4949,7 +4876,7 @@ MonoBehaviour:
   m_overrideForegroundSprite: {fileID: 0}
   m_overrideBackgroundSprite: {fileID: 0}
   exhaustionRecoveredPerHour: 2.5
---- !u!114 &1481098520
+--- !u!114 &1481098519
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -4958,14 +4885,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 1481098517}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8e91fb90b3f6b704bb25e381d916d010, type: 3}
+  m_Script: {fileID: 11500000, guid: f4fb887d96f456c43a7e5819682caf4f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  graph: {fileID: 1462942826}
-  m_name: Train with Soldiers
-  m_overrideStateText: 
-  m_overrideForegroundSprite: {fileID: 0}
+  graph: {fileID: 11400000, guid: fe21e4e9ec18b424ca5d700cbf63b891, type: 2}
+  m_name: Spar with soldiers
+  m_overrideStateText: Sparring with soldiers
+  m_overrideForegroundSprite: {fileID: 21300000, guid: 41ef6c35f155bcb43952d5da316374fd, type: 3}
   m_overrideBackgroundSprite: {fileID: 0}
+  m_monsterBanks:
+  - <id>k__BackingField: default
+    <Bank>k__BackingField: {fileID: 11400000, guid: 015f66befe61fa0429256d05a58767c8, type: 2}
 --- !u!1001 &1503216868
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6162,6 +6092,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 8153231705256620972, guid: 8745bc6e15abee942a7c5c94aca18df4, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1592465701}
+    - targetCorrespondingSourceObject: {fileID: 8153231705256620972, guid: 8745bc6e15abee942a7c5c94aca18df4, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1592465703}
   m_SourcePrefab: {fileID: 100100000, guid: 8745bc6e15abee942a7c5c94aca18df4, type: 3}
 --- !u!4 &1592465698 stripped
 Transform:
@@ -6202,6 +6135,26 @@ MonoBehaviour:
   m_overrideForegroundSprite: {fileID: 0}
   m_overrideBackgroundSprite: {fileID: 0}
   exhaustionRecoveredPerHour: 3.5
+--- !u!114 &1592465703
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1592465700}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4fb887d96f456c43a7e5819682caf4f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000, guid: fe21e4e9ec18b424ca5d700cbf63b891, type: 2}
+  m_name: Spar with soldiers
+  m_overrideStateText: Sparring with soldiers
+  m_overrideForegroundSprite: {fileID: 21300000, guid: 41ef6c35f155bcb43952d5da316374fd, type: 3}
+  m_overrideBackgroundSprite: {fileID: 0}
+  m_monsterBanks:
+  - <id>k__BackingField: default
+    <Bank>k__BackingField: {fileID: 11400000, guid: 015f66befe61fa0429256d05a58767c8, type: 2}
 --- !u!1 &1624700078
 GameObject:
   m_ObjectHideFlags: 0

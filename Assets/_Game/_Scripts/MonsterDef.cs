@@ -244,7 +244,9 @@ namespace Game
         private void UpdateNextMonsterAttackTime()
         {
             if(Monster.Def.AttackCooldown <= 0)
-            NextMonsterAttackTime = float.MaxValue;
+                NextMonsterAttackTime = float.MaxValue;
+            else
+                NextMonsterAttackTime = ElapsedTime + Monster.Def.AttackCooldown;
         }
 
         private void ApplyAccumulatedDamage()

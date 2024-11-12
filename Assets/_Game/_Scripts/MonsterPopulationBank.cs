@@ -1,3 +1,4 @@
+using SegoLib.Random;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -39,6 +40,7 @@ namespace Game
             foreach ((MonsterDef monsterDef, float density) in monsterPopulationPrecursor) {
                 m_monstersInternal[index] = new MonsterPopulation(monsterDef, density);
                 m_sumOfWeights += density;
+                index++;
             }
 
             UnityEngine.Pool.DictionaryPool<MonsterDef, float>.Release(monsterPopulationPrecursor);
@@ -47,7 +49,9 @@ namespace Game
 
         public override Monster GetMonster(WorldState worldState, Hero hero)
         {
-            throw new System.NotImplementedException();
+            int index = WeightedRandom.Naive(m_monstersInternal, m_sumOfWeights, worldState.Rng, x => x.Density);
+
+            return new Monster(m_monstersInternal[index].MonsterDef);
         }
 
         public IEnumerator<MonsterPopulation> GetEnumerator()
