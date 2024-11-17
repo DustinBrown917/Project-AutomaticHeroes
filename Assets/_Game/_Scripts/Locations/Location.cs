@@ -1,5 +1,7 @@
+using Game.Causes;
 using Game.UI;
 using SegoLib;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -10,7 +12,7 @@ namespace Game
         public string DisplayName => name;
 
         public int Id { get; private set; }
-
+        [field: SerializeField] public CauseFavourTracker CauseFavourTracker { get; private set; } = new();
         public Vector2 Position => transform.position;
 
         public IReadOnlyList<IRoute> Routes => m_routes;
@@ -25,6 +27,7 @@ namespace Game
 
         private void Awake()
         {
+            CauseFavourTracker.Initialize();
             m_heroBehaviourProviders = GetComponentsInChildren<IHeroBehaviourProvider>(true);
         }
 
@@ -37,11 +40,6 @@ namespace Game
         public void AddRoute(IRoute route)
         {
             m_routes.Add(route);
-            //if(route.A == (ILocation)this) {
-            //    m_travelStates.Add(new Travel(new RouteTraversalAToB(route)));
-            //} else {
-            //    m_travelStates.Add(new Travel(new RouteTraversalBToA(route)));
-            //}
         }
 
         public void OnLocationEnter(Hero hero)
@@ -52,8 +50,6 @@ namespace Game
 
                 List<IHeroBehaviourStateCreator> behavioursToAdd = UnityEngine.Pool.ListPool<IHeroBehaviourStateCreator>.Get();
 
-                //behaviours.AddRange(m_travelStates);
-
                 foreach(IHeroBehaviourProvider stateProvider in m_heroBehaviourProviders) {
                     stateProvider.GetStates(behavioursToAdd);
                 }
@@ -63,6 +59,8 @@ namespace Game
                 }
 
                 UnityEngine.Pool.ListPool<IHeroBehaviourStateCreator>.Release(behavioursToAdd);
+
+                CauseFavourTracker.AddFavour(hero.Core.Cause, 5);
             }
         }
 
@@ -72,8 +70,6 @@ namespace Game
                 visitorsUpdated?.Invoke(this, Visitors);
 
                 List<IHeroBehaviourStateCreator> behavioursToRemove = UnityEngine.Pool.ListPool<IHeroBehaviourStateCreator>.Get();
-
-                //behaviours.AddRange(m_travelStates);
 
                 foreach (IHeroBehaviourProvider stateProvider in m_heroBehaviourProviders) {
                     stateProvider.GetStates(behavioursToRemove);

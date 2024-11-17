@@ -7,5 +7,4 @@ namespace Game
     public class HeroSkillDefLibrary : ScriptableLibrary<HeroSkillDef>
     {
     }
-
 }

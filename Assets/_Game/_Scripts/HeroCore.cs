@@ -3,6 +3,7 @@ using NaughtyAttributes;
 using Unity.VisualScripting;
 using System;
 using System.Collections.Generic;
+using Game.Causes;
 
 namespace Game
 {
@@ -23,6 +24,16 @@ namespace Game
 
         [field: SerializeField, ShowAssetPreview] public Sprite CharacterSprite { get; private set; }
         [field: SerializeField] public GenderDef Gender { get; private set; }
+        public CauseDef Cause
+        {
+            get {
+                if (m_cause == null)
+                    return m_cause = CauseDef.All[0];
+
+                return m_cause;
+            }
+        }
+        [SerializeField] private CauseDef m_cause;
         [field: SerializeField] public TimeOfDayPreference TimeOfDayPreference { get; private set; }
         [field: SerializeField] public SkillFavour[] SkillFavour { get; private set; } = Array.Empty<SkillFavour>();
         [field: SerializeField] public Color Base { get; private set; }
@@ -58,11 +69,6 @@ namespace Game
             }
         }
         private Sprite m_bannerSprite;
-
-        private void OnEnable()
-        {
-            Debug.Log("Hero core enabled!");
-        }
 
         private void CreateBannerSprite()
         {

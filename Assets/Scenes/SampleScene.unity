@@ -9884,6 +9884,14 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7108896763118586010, guid: 8745bc6e15abee942a7c5c94aca18df4, type: 3}
+      propertyPath: <Favour>k__BackingField.m_causeFavours.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7108896763118586010, guid: 8745bc6e15abee942a7c5c94aca18df4, type: 3}
+      propertyPath: <Favour>k__BackingField.m_causeFavours.Array.data[0].<Cause>k__BackingField
+      value: 
+      objectReference: {fileID: 11400000, guid: a1ac967acd232dd4fb5db4400e10884e, type: 2}
     - target: {fileID: 8122249882838263000, guid: 8745bc6e15abee942a7c5c94aca18df4, type: 3}
       propertyPath: m_LocalPosition.x
       value: -8.779

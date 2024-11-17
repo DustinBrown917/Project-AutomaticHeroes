@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <CharacterSprite>k__BackingField: {fileID: 21300000, guid: 5da781557a9785046bdafb11cdc65200, type: 3}
   <Gender>k__BackingField: {fileID: 11400000, guid: 54b55efa43584474ab7f1fd9650fcda7, type: 2}
+  m_cause: {fileID: 11400000, guid: 6c357d773d450af4eb013a6cd50b997e, type: 2}
   <TimeOfDayPreference>k__BackingField: {fileID: 11400000, guid: cf2a76370f239f14cad07510d96685e8, type: 2}
   <SkillFavour>k__BackingField:
   - <Skill>k__BackingField: {fileID: 11400000, guid: f189a98a4004c044fa63681fa975b4e8, type: 2}
