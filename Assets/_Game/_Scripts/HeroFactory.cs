@@ -10,16 +10,27 @@ namespace Game
 
         public static IReadOnlyList<Hero> AllCreatedHeroes => m_instance.m_createdHeroes;
 
-        public static Hero CreateHero(ILocation location)
+        public static bool TryCreateNextHero(ILocation location, out Hero hero)
         {
-            Hero hero = Instantiate(m_instance.m_heroPrefab.gameObject).GetComponent<Hero>();
-            hero.Initialize(m_instance.m_nextHeroId, m_instance.m_heroCores[m_instance.GetNextHeroCoreId()]);
+            if (m_instance == null) {
+                Debug.LogError("Attempting to create hero, but a factory instance has not been created yet.");
+                hero = null;
+                return false;
+            }
+            
+            if(m_instance.m_nextHeroId >= m_instance.m_heroCores.Length) {
+                hero = null;
+                return false;
+            }
+
+            hero = Instantiate(m_instance.m_heroPrefab.gameObject).GetComponent<Hero>();
+            hero.Initialize(m_instance.m_nextHeroId, m_instance.m_heroCores[m_instance.m_nextHeroId]);
             hero.Movement.TeleportToLoation(location);
             m_instance.m_createdHeroes.Add(hero);
 
             m_instance.m_nextHeroId++;
 
-            return hero;
+            return true;
         }
 
 
@@ -46,11 +57,6 @@ namespace Game
             m_createdHeroes.Clear();
             m_heroCores = null;
             m_heroPrefab = null;
-        }
-
-        private int GetNextHeroCoreId()
-        {
-            return m_nextHeroId % m_heroCores.Length;
         }
     }
 }

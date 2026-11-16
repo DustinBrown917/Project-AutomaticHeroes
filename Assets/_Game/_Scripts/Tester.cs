@@ -24,20 +24,31 @@ public class Tester : MonoBehaviour
     {
         List<Location> locations = new List<Location>(m_locations);
 
-        for(int i = 0; i < 4 && locations.Count > 0; i++) {
-            int index = rng.Range(0, locations.Count);
-
-            Location location = locations[index];
-            locations.RemoveAt(index);
-
-            Hero newHero = HeroFactory.CreateHero(location);
-
+        while(CreateNextHero(locations, out Hero newHero)) {
             m_heroes.Add(newHero);
             m_targetGroup.AddMember(newHero.transform, 1.0f, 2.0f);
-
             VM_Hero heroUi = Instantiate(m_vmHeroPrefab, m_heroUiContent).GetComponent<VM_Hero>();
             heroUi.SetModel(newHero);
         }
+    }
+
+    private bool CreateNextHero(List<Location> locations, out Hero newHero)
+    {
+        if (locations.Count == 0) {
+            newHero = null;
+            return false;
+        }
+
+        int index = rng.Range(0, locations.Count);
+
+        Location location = locations[index];
+
+        if (!HeroFactory.TryCreateNextHero(location, out newHero))
+            return false;
+
+        locations.RemoveAt(index);
+
+        return true;
     }
 }
 
