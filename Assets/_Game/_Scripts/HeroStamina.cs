@@ -95,7 +95,7 @@ namespace Game
                 Energy = m_totalStaminaPool;
 
             UpdateEnergyPercent();
-            UpdateExuastionPercent();
+            UpdateExaustionPercent();
             totalStaminaPoolChanged?.Invoke(this, oldValue, newValue);
         }
 
@@ -109,7 +109,7 @@ namespace Game
             float oldValue = m_exhaustion;
             m_exhaustion = newValue;
 
-            UpdateExuastionPercent();
+            UpdateExaustionPercent();
 
             if(Energy > MaxEnergy)
                 Energy = MaxEnergy;
@@ -159,7 +159,7 @@ namespace Game
                 EnergyPercent = Energy / TotalStaminaPool;
         }
 
-        private void UpdateExuastionPercent()
+        private void UpdateExaustionPercent()
         {
             if (TotalStaminaPool == 0)
                 ExhaustionPercent = 0;
