@@ -48,6 +48,12 @@ namespace Game
             Model.currentDayChanged += Model_CurrentDayChanged;
         }
 
+        protected override void OnModelChangingFromNotNull()
+        {
+            Model.timeOfDayChanged -= Model_TimeOfDayChanged;
+            Model.currentDayChanged -= Model_CurrentDayChanged;
+        }
+
         private void Model_CurrentDayChanged(WorldDate source, int oldValue, int newValue)
         {
             DateString = Model.GetDateString();
