@@ -36,7 +36,9 @@ namespace Game
 
         public override bool CanDo(WorldState worldState, Hero hero)
         {
-            return !hero.Heuristics.IsExhaustionHigh();
+            return hero.Movement.Location != null &&  // Must be at valid location.
+                hero.Movement.Location.Routes.Count > 0 && //Location must have at least one valid route.
+                !hero.Heuristics.IsExhaustionHigh(); // Hero must not be exhausted.
         }
 
         protected override void OnStateCreated(WorldState worldState, Hero hero, IHeroBehaviour.IState createdState)
