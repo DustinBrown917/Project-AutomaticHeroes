@@ -14,7 +14,7 @@ namespace Game
 
         public override void Set(Hero hero, float value)
         {
-            hero.Stamina.Exhaustion = value * hero.Stamina.MaxEnergy;
+            hero.Stamina.Exhaustion = value * hero.Stamina.TotalStaminaPool;
         }
     } 
 }

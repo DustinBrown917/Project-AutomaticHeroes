@@ -91,8 +91,8 @@ namespace Game
             float oldValue = m_totalStaminaPool;
             m_totalStaminaPool = newValue;
 
-            if (m_totalStaminaPool > Energy)
-                Energy = m_totalStaminaPool;
+            if (Energy > MaxEnergy)
+                Energy = MaxEnergy;
 
             UpdateEnergyPercent();
             UpdateExaustionPercent();
