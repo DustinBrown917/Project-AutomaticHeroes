@@ -230,7 +230,7 @@ namespace Game
             int attackerRoll = HeroSkill.RollForContest(attackerLevel, WorldState.Rng);
             int defenderRoll = HeroSkill.RollForContest(defenderLevel, WorldState.Rng);
 
-            return attackerRoll > defenderRoll;
+            return attackerRoll >= defenderRoll;
         }
 
         private void UpdateNextHeroAttackTime()
