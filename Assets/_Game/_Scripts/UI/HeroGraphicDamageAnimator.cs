@@ -1,6 +1,4 @@
 using DG.Tweening;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -43,6 +41,12 @@ namespace Game.UI
 
             if (m_heroVM != null)
                 m_heroVM.ModelChanged -= VMModelChanged;
+
+            m_positionTween?.Kill();
+            m_positionTween = null;
+
+            m_colorTween?.Kill();
+            m_colorTween = null;
 
             m_heroVM = null;
         }
