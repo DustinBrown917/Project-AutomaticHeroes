@@ -9,17 +9,17 @@ namespace Game
 
         private IRouteTraversal GetRoute(WorldState worldState, Hero hero)
         {
+            ILocation location = hero.Movement.Location;
+
+            IRoute route = worldState.Rng.GetRandom(location.Routes);
+
             IRouteTraversal routeTraversal = null;
-            if(hero.Movement.Location != null) {
-                ILocation location = hero.Movement.Location;
 
-                IRoute route = worldState.Rng.GetRandom(location.Routes);
+            if (route.A == location)
+                routeTraversal = new RouteTraversalAToB(route);
+            else
+                routeTraversal = new RouteTraversalBToA(route);
 
-                if(route.A == location)
-                    routeTraversal = new RouteTraversalAToB(route);
-                else
-                    routeTraversal = new RouteTraversalBToA(route);
-            }
 
             return routeTraversal;
         }
