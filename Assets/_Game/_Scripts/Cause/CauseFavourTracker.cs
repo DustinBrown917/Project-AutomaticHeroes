@@ -112,15 +112,15 @@ namespace Game.Causes
         /// <param name="amount"></param>
         public void AddFavour(CauseDef cause, float amount)
         {
-            if (amount < 0)
-                return;
-
             // Get how much available favour there is outside of what's already owned by cause
             float totalFavourLessTargetCause = TotalAvailableFavour - m_causeFavours[cause.RuntimeIndex].Favour;
 
             // The amount we're trying to add must not be greater than the amount that's available.
             if (amount > totalFavourLessTargetCause)
                 amount = totalFavourLessTargetCause;
+
+            if (amount <= 0)
+                return;
 
             // Subtract from each other favour an amount proportional to how much of the available favour they currently hold.
             foreach (CauseFavour favour in m_causeFavours) {
