@@ -155,16 +155,16 @@ namespace Game
         {
             if (TotalStaminaPool == 0)
                 EnergyPercent = 0;
-
-            EnergyPercent = Energy / TotalStaminaPool;
+            else
+                EnergyPercent = Energy / TotalStaminaPool;
         }
 
         private void UpdateExuastionPercent()
         {
             if (TotalStaminaPool == 0)
                 ExhaustionPercent = 0;
-
-            ExhaustionPercent = Exhaustion / TotalStaminaPool;
+            else
+                ExhaustionPercent = Exhaustion / TotalStaminaPool;
         }
 
         private float GetEnergyRecoveryPerSecond()
