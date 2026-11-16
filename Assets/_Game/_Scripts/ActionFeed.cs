@@ -5,25 +5,23 @@ namespace Game
 {
     public static class ActionFeed
     {
-        public class Message : IComparable<Message>
+        public class Message
         {
-            public readonly float time;
+            public readonly double time;
             public readonly string message;
 
-            public Message(string message)
+            public Message(string message, double time)
             {
-                this.time = Time.unscaledDeltaTime;
+                this.time = time;
                 this.message = message;
             }
-
-            public int CompareTo(Message other) => time.CompareTo(other.time);
         }
 
         public static event Action<Message> messagePosted;
 
-        public static void Post(string message)
+        public static void Post(string message, double time)
         {
-            messagePosted?.Invoke(new Message(message));
+            messagePosted?.Invoke(new Message(message, time));
         }
     } 
 }
