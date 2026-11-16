@@ -32,6 +32,8 @@ namespace Game.AI.General
         protected override void Init()
         {
             base.Init();
+
+            m_sumOfWeights = 0f;
             if(exits != null) {
                 foreach(WeightedFlowPort port in exits) {
                     m_sumOfWeights += port.weight;
