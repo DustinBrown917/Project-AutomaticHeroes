@@ -179,7 +179,7 @@ namespace Game
 
             public void InjectData(Identity key, object value)
             {
-                m_injectedData.Add(key, value);
+                m_injectedData[key] = value;
             }
 
             public bool TryGetInjectedData<T>(Identity key, out T value)

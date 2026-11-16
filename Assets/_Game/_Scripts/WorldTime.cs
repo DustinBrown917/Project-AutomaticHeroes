@@ -60,8 +60,14 @@ namespace Game
 
         private void UpdateListeners(float deltaTime)
         {
-            foreach (IListener listener in m_listeners)
-                listener.OnWorldTimeUpdate(deltaTime);
+            foreach (IListener listener in m_listeners) {
+                try {
+                    listener.OnWorldTimeUpdate(deltaTime);
+                } 
+                catch (System.Exception e) {
+                    Debug.LogException(e);
+                }
+            }
         }
 
         private void ExecuteRemovalQueue()
