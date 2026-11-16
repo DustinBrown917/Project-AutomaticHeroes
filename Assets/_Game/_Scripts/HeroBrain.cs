@@ -99,17 +99,25 @@ namespace Game
                 }
             }
 
-            if (availableBehaviours.Count == 0)
+            if (availableBehaviours.Count == 0) {
+                ReleasePooledLists();
                 return m_waitStateCreator;
+            }
+                
 
             int index = WeightedRandom.Naive(priorities, sumOfPriorites, WorldState.Instance.Rng);
 
             IHeroBehaviourStateCreator chosen = availableBehaviours[index];
 
-            UnityEngine.Pool.ListPool<float>.Release(priorities);
-            UnityEngine.Pool.ListPool<IHeroBehaviourStateCreator>.Release(availableBehaviours);
+            ReleasePooledLists();
 
             return chosen;
+
+            void ReleasePooledLists()
+            {
+                UnityEngine.Pool.ListPool<float>.Release(priorities);
+                UnityEngine.Pool.ListPool<IHeroBehaviourStateCreator>.Release(availableBehaviours);
+            }
         }
 
         public void AddBehaviourStateCreator(IHeroBehaviourStateCreator behaviour)
