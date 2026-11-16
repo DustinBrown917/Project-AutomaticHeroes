@@ -187,7 +187,7 @@ namespace Game
 
         private bool TryGetAttackAtCurrentTime(out Action attackAction)
         {
-            if(ElapsedTime >= NextHeroAttackTime) {
+            if(ElapsedTime >= NextHeroAttackTime && NextHeroAttackTime <= NextMonsterAttackTime) {
                 attackAction = DoHeroAttack;
             } else if(ElapsedTime >= NextMonsterAttackTime) {
                 attackAction = DoMonsterAttack;
@@ -235,6 +235,11 @@ namespace Game
 
         private void UpdateNextHeroAttackTime()
         {
+            if(Hero.Equipment.MainWeapon.AttackCooldown <= 0) {
+                NextHeroAttackTime = float.MaxValue;
+                return;
+            }
+
             if (Hero.Stamina.EnergyPercent <= float.Epsilon)
                 NextHeroAttackTime += Hero.Equipment.MainWeapon.AttackCooldown * OUT_OF_ENERGY_COOLDOWN_FACTOR;
             else
@@ -246,7 +251,7 @@ namespace Game
             if(Monster.Def.AttackCooldown <= 0)
                 NextMonsterAttackTime = float.MaxValue;
             else
-                NextMonsterAttackTime = ElapsedTime + Monster.Def.AttackCooldown;
+                NextMonsterAttackTime += Monster.Def.AttackCooldown;
         }
 
         private void ApplyAccumulatedDamage()
