@@ -44,15 +44,6 @@ namespace Game
             m_locationGraphNeedsRebuild = true;
         }
 
-        public void CopyTo(LocationManager other)
-        {
-            other.m_locations.Clear();
-
-            foreach (ILocation location in other.m_locations) {
-                m_locations.Add(location);
-            }
-        }
-
         /// <summary>
         /// Get a path from <paramref name="start"/> to <paramref name="end"/>.
         /// </summary>
