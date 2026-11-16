@@ -27,7 +27,7 @@ namespace Game
         public const float COMBAT_EXTRA_EXHAUSTION_DRAIN_PER_SECOND = COMBAT_EXTRA_EXHAUSTION_DRAIN_PER_HOUR / WorldDate.SECONDS_PER_HOUR;
 
         public const float PASSIVE_EXHAUSTION_DRAIN_PER_HOUR = 2.0f;
-        public const float PASSIVE_EXHAUSTION_DRAIN_PER_SECOND = ENERGY_PERCENT_RECOVERED_PER_HOUR / WorldDate.SECONDS_PER_HOUR;
+        public const float PASSIVE_EXHAUSTION_DRAIN_PER_SECOND = PASSIVE_EXHAUSTION_DRAIN_PER_HOUR / WorldDate.SECONDS_PER_HOUR;
 
         public float TotalStaminaPool
         {
