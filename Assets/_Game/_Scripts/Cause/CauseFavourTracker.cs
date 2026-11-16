@@ -96,7 +96,7 @@ namespace Game.Causes
             } else if (sumOfFavour > TotalAvailableFavour) {
                 float surplus = sumOfFavour - TotalAvailableFavour;
                 foreach (CauseFavour causeFavour in m_causeFavours) {
-                    causeFavour.Favour -= GetFavourPercent(causeFavour.Cause) * surplus;
+                    causeFavour.Favour -= (causeFavour.Favour / sumOfFavour) * surplus;
                 }
             }
 
