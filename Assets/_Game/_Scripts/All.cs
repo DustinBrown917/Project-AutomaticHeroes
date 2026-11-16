@@ -35,7 +35,7 @@ namespace Game
             index = Count;
             m_allItems.Add(item);
 
-            return false;
+            return true;
         }
 
         public static bool TryGetItem(int index, out T item)
