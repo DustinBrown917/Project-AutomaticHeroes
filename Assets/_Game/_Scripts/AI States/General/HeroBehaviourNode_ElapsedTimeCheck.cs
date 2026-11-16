@@ -52,10 +52,10 @@ namespace Game.AI.General
             switch (m_comparison) {
                 case EComparison.EqualTo: return m_comparisonTime == bb.ElapsedTime;
                 case EComparison.NotEqualTo: return m_comparisonTime != bb.ElapsedTime;
-                case EComparison.GreaterThan: return m_comparisonTime > bb.ElapsedTime;
-                case EComparison.LessThan: return m_comparisonTime < bb.ElapsedTime;
-                case EComparison.GreaterThanOrEqualTo: return m_comparisonTime >= bb.ElapsedTime;
-                case EComparison.LessThanOrEqualTo: return m_comparisonTime <= bb.ElapsedTime;
+                case EComparison.GreaterThan: return m_comparisonTime < bb.ElapsedTime;
+                case EComparison.LessThan: return m_comparisonTime > bb.ElapsedTime;
+                case EComparison.GreaterThanOrEqualTo: return m_comparisonTime <= bb.ElapsedTime;
+                case EComparison.LessThanOrEqualTo: return m_comparisonTime >= bb.ElapsedTime;
                 default: return true;
             }
         }
