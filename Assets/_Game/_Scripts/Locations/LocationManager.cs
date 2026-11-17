@@ -26,18 +26,12 @@ namespace Game
         }
 
         /// <summary>
-        /// Register <paramref name="location"/> with this manager. <paramref name="locationId"/> should be a reference to the underlying value of <paramref name="location"/>.Id.
+        /// Register <paramref name="location"/> with this manager. Registering the same location twice does nothing.
         /// </summary>
-        /// <param name="location"></param>
-        /// <param name="locationId"></param>
-        public void Register(ILocation location, out int locationId)
+        public void Register(ILocation location)
         {
-            locationId = m_locations.Count;
-
-            if (location.Id != locationId) {
-                Debug.LogError($"Error registering location {location.DisplayName}. Argument '{nameof(locationId)}' should be a reference to the underlying value of '{nameof(location)}.{nameof(ILocation.Id)}'.");
+            if (location == null || m_locations.Contains(location))
                 return;
-            }
 
             m_locations.Add(location);
 
