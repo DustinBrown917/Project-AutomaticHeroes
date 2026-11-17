@@ -3,26 +3,20 @@ using UnityEngine;
 
 namespace Game
 {
-    public interface IHeroProperty
+    public abstract class HeroProperty : ScriptableObject
     {
-        public object Get(Hero hero);
-        public void Set(Hero hero, object value);
+        public abstract object GetBoxed(Hero hero);
+
+        public abstract void SetBoxed(Hero hero, object value);
     }
 
-    public interface IHeroProperty<T> : IHeroProperty
-    {
-        public new T Get(Hero hero);
-        public void Set(Hero hero, T value);
-    }
-
-    public abstract class HeroProperty<T> : ScriptableObject, IHeroProperty<T>
+    public abstract class HeroProperty<T> : HeroProperty
     {
         public abstract T Get(Hero hero);
-        object IHeroProperty.Get(Hero hero) => Get(hero);
+        public override object GetBoxed(Hero hero) => Get(hero);
 
         public abstract void Set(Hero hero, T value);
-
-        public void Set(Hero hero, object value)
+        public override void SetBoxed(Hero hero, object value)
         {
             if(value is T typedValue)
                 Set(hero, typedValue);

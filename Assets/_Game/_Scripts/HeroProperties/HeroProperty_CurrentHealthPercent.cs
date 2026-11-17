@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Game
 {
-    [CreateAssetMenu(fileName = "Hero Current Health Property", menuName = "Game/Hero Properties/Hero Current Health Percent")]
+    [CreateAssetMenu(fileName = "Hero Current Health Percent Property", menuName = "Game/Hero Properties/Hero Current Health Percent")]
     public class HeroProperty_CurrentHealthPercent : HeroProperty<float>
     {
         public override float Get(Hero hero)
