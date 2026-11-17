@@ -235,4 +235,6 @@ MonoBehaviour:
       _connectionType: 0
       _typeConstraint: 0
       _dynamic: 0
-  m_message: '{1:cname} is having {1:his} wounds treated in {1:loc}.'
+  m_message: '{0:cname} is having {0:his} wounds treated in {0:loc}.'
+  m_formatData:
+  - {fileID: 11400000, guid: d174cc29a2d1e4e448f9b5ada50cc44a, type: 2}
