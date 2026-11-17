@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6938598500798303734}
   - component: {fileID: 4636070834430424281}
+  - component: {fileID: 1450133085771401289}
   m_Layer: 0
   m_Name: HeroFactory
   m_TagString: Untagged
@@ -45,8 +46,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_heroPrefab: {fileID: 9136296130780974435, guid: 46241965c46fb38439284ee8d6c2fe8e, type: 3}
-  m_heroCores:
-  - {fileID: 11400000, guid: 13f6b65f2c137794caf3a02ad72171e3, type: 2}
-  - {fileID: 11400000, guid: 2a15cfb3ed282f244915b57ce62c92d2, type: 2}
-  - {fileID: 11400000, guid: 6cb979b9729ceaf489fe48bbd4fc40f7, type: 2}
-  - {fileID: 11400000, guid: bae072bd1a7e8f6428060a1ef6f5c493, type: 2}
+--- !u!114 &1450133085771401289
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6682354694815355573}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 335cb9c5531e4d84a8ecc2c635fb26ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_heroFactory: {fileID: 4636070834430424281}
+  m_targetGroup: {fileID: 0}
+  m_sidebarEntryPrefab: {fileID: 5445697542514169989, guid: df448d5d7de45f14b88a595d675ebdfe, type: 3}
+  m_sidebarContent: {fileID: 0}

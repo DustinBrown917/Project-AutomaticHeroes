@@ -1,25 +1,12 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Game;
-using SegoLib;
-using SegoLib.Random;
-using System;
-using Game.UI;
-using Cinemachine;
 
 public class Tester : MonoBehaviour
 {
     [SerializeField] private Location[] m_locations;
-    [SerializeField] private CinemachineTargetGroup m_targetGroup;
-    [SerializeField] private VM_Hero m_vmHeroPrefab;
-    [SerializeField] private Transform m_heroUiContent;
     [SerializeField] private WorldState m_worldState;
 
     [SerializeField] private HeroCore[] m_heroCores;
-
-    private List<Hero> m_heroes = new List<Hero>();
-
 
     // Start is called before the first frame update
     void Start()
@@ -32,15 +19,9 @@ public class Tester : MonoBehaviour
 
             ILocation location = m_locations[m_worldState.Rng.Range(0, m_locations.Length)];
 
-            if (!m_worldState.HeroFactory.TryCreateHero(m_heroCores[i], location, out Hero newHero)) {
+            if (!m_worldState.HeroFactory.TryCreateHero(m_heroCores[i], location, out _)) {
                 Debug.LogError($"Failed to create hero for core {m_heroCores[i].name}.", this);
-                continue;
             }
-
-            m_heroes.Add(newHero);
-            m_targetGroup.AddMember(newHero.transform, 1.0f, 2.0f);
-            VM_Hero heroUi = Instantiate(m_vmHeroPrefab, m_heroUiContent).GetComponent<VM_Hero>();
-            heroUi.SetModel(newHero);
         }
     }
 }
