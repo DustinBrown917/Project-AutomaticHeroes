@@ -22,9 +22,7 @@ public class Tester : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        List<Location> locations = new List<Location>(m_locations);
-
-        while(CreateNextHero(locations, out Hero newHero)) {
+        while(CreateNextHero(out Hero newHero)) {
             m_heroes.Add(newHero);
             m_targetGroup.AddMember(newHero.transform, 1.0f, 2.0f);
             VM_Hero heroUi = Instantiate(m_vmHeroPrefab, m_heroUiContent).GetComponent<VM_Hero>();
@@ -32,21 +30,14 @@ public class Tester : MonoBehaviour
         }
     }
 
-    private bool CreateNextHero(List<Location> locations, out Hero newHero)
+    private bool CreateNextHero(out Hero newHero)
     {
-        if (locations.Count == 0) {
-            newHero = null;
-            return false;
-        }
+        int index = rng.Range(0, m_locations.Length);
 
-        int index = rng.Range(0, locations.Count);
-
-        Location location = locations[index];
+        Location location = m_locations[index];
 
         if (!HeroFactory.TryCreateNextHero(location, out newHero))
             return false;
-
-        locations.RemoveAt(index);
 
         return true;
     }
