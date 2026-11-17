@@ -15,6 +15,16 @@ namespace Game
 
         public bool IsExhaustionHigh() => ExhaustionHeuristic.IsHigh(Hero.Stamina.ExhaustionPercent);
         public bool IsExhaustionLow() => ExhaustionHeuristic.IsLow(Hero.Stamina.ExhaustionPercent);
+
+        /// <summary>
+        /// Whether the hero's wounds are worth getting treated: health is no longer high, and some of the damage is untreated.
+        /// </summary>
+        public bool WantsTreatment() => !IsCurrentHealthHigh() && Hero.Health.NeedsTreatment();
+
+        /// <summary>
+        /// 0 to 1. How pressing treatment is. Worse wounds are more urgent, and wounds already treated don't count.
+        /// </summary>
+        public float TreatmentUrgency() => (1.0f - Hero.Health.Percent) * (1.0f - Hero.Health.TreatedPercent);
     }
 
 
