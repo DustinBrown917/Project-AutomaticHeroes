@@ -3,7 +3,14 @@ using UnityEngine;
 
 namespace Game
 {
-    public class SparringStateCreator : HeroBehaviourStateCreator
+    /// <summary>
+    /// Offers a behaviour that fights monsters drawn from this location's monster banks.
+    /// <para>
+    /// Whether the fight is practice or deadly is up to the graph: sparring at a fort and hunting werewolves on the plains are
+    /// the same creator, with different graphs, banks and weights.
+    /// </para>
+    /// </summary>
+    public class MonsterEncounterStateCreator : HeroBehaviourStateCreator
     {
         [System.Serializable]
         private class MonsterBankIdPair
@@ -13,6 +20,9 @@ namespace Game
         }
 
         [SerializeField] private MonsterBankIdPair[] m_monsterBanks;
+
+        [Tooltip("Scales how appealing this encounter is. The hero's favour for their main weapon's skill is multiplied by this.")]
+        [SerializeField, Min(0)] private float m_utilityWeight = 1.0f;
 
         protected override (Identity key, object value)[] GetInjectedData(WorldState worldState, Hero hero)
         {
@@ -32,7 +42,7 @@ namespace Game
 
         public override float Utility(WorldState worldState, Hero hero)
         {
-            return hero.Skills.GetFavour(hero.Equipment.GetMainWeaponSkill().Def);
+            return hero.Skills.GetFavour(hero.Equipment.GetMainWeaponSkill().Def) * m_utilityWeight;
         }
     }
 
