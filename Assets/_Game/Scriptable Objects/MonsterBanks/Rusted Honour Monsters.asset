@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c468e65e735a1ca479c954ac84be4ea0, type: 3}
+  m_Name: Rusted Honour Monsters
+  m_EditorClassIdentifier: 
+  m_subBanks: []
+  m_monsters:
+  - <MonsterDef>k__BackingField: {fileID: 11400000, guid: ae2033fc907b99e49b9c14c9673aaf8f, type: 2}
+    <Density>k__BackingField: 5
