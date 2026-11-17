@@ -6,6 +6,11 @@ namespace Game
 {
     public class HeroSkill : SegoLib.IDisposable
     {
+        /// <summary>
+        /// Global tuning value to scale exp gain without changing where/how heroes get exp.
+        /// </summary>
+        private const float GLOBAL_EXP_GAIN_MULTIPLIER = 10.0f;
+
         public static int RollForCheck(int skillLevel, IRandomNumberGenerator rng)
         {
             return rng.Range(0, skillLevel * 2 + 1);
@@ -69,7 +74,7 @@ namespace Game
 
         public void GainExperience(float exp)
         {
-            float newExp = Experience + (exp * m_experienceGainMultiplier);
+            float newExp = Experience + (exp * m_experienceGainMultiplier * GLOBAL_EXP_GAIN_MULTIPLIER);
 
             while (newExp >= ExperienceNeededToLevel) {
                 newExp -= ExperienceNeededToLevel;
