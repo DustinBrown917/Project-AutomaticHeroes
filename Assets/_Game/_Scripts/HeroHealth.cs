@@ -5,7 +5,7 @@ namespace Game
 {
     public class HeroHealth : HeroComponent
     {
-        public const float HEALTH_PERCENT_RECOVERED_PER_HOUR = 0.10f;
+        public const float HEALTH_PERCENT_RECOVERED_PER_HOUR = 0.01f;
         public const float HEALTH_PERCENT_RECOVERED_PER_SECOND = HEALTH_PERCENT_RECOVERED_PER_HOUR / 3600;
 
         public float Current
