@@ -5939,9 +5939,6 @@ MonoBehaviour:
   - {fileID: 1592465699}
   - {fileID: 1481098515}
   - {fileID: 492528342}
-  m_targetGroup: {fileID: 1591523121}
-  m_vmHeroPrefab: {fileID: 5445697542514169989, guid: df448d5d7de45f14b88a595d675ebdfe, type: 3}
-  m_heroUiContent: {fileID: 1460507728}
   m_worldState: {fileID: 2053362689}
   m_heroCores:
   - {fileID: 11400000, guid: bae072bd1a7e8f6428060a1ef6f5c493, type: 2}
@@ -9543,6 +9540,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2053362690}
     m_Modifications:
+    - target: {fileID: 1450133085771401289, guid: f473df40eff13a140877c5261c03fdae, type: 3}
+      propertyPath: m_targetGroup
+      value: 
+      objectReference: {fileID: 1591523121}
+    - target: {fileID: 1450133085771401289, guid: f473df40eff13a140877c5261c03fdae, type: 3}
+      propertyPath: m_sidebarContent
+      value: 
+      objectReference: {fileID: 1460507728}
     - target: {fileID: 6682354694815355573, guid: f473df40eff13a140877c5261c03fdae, type: 3}
       propertyPath: m_Name
       value: HeroFactory
