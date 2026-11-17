@@ -6,11 +6,15 @@ using UnityEngine;
 namespace Game
 {
     /// <summary>
-    /// Uses AStar to traverse a LocationGraph and find the best path from a starting location to an end location using routes.
+    /// Searches a <see cref="LocationGraph"/> for the shortest route-based path between locations.
+    /// <para>
+    /// <see cref="TryFindPath"/> is A* towards a known destination. <see cref="TryFindNearest"/> is the same search with a zero
+    /// heuristic (Dijkstra), for when the destination is "whichever matching location is closest by road".
+    /// </para>
     /// </summary>
     public static class LocationAStar
     {
-        public enum State : byte
+        private enum EState : byte
         {
             Unexplored = 0,
             Open = 1,
@@ -26,7 +30,7 @@ namespace Game
             /// <summary>
             /// State of this node.
             /// </summary>
-            public State state;
+            public EState state;
             /// <summary>
             /// Cost of path so far.
             /// </summary>
@@ -34,7 +38,7 @@ namespace Game
             /// <summary>
             /// Heuristic cost to goal.
             /// </summary>
-            public float hCost = -1;
+            public float hCost;
             /// <summary>
             /// hCost + gCost.
             /// </summary>
@@ -54,15 +58,47 @@ namespace Game
             }
         }
 
+        /// <summary>
+        /// Straight line distance. A route always runs from one location to the other, so it can never be shorter than this,
+        /// which keeps the heuristic admissible and consistent.
+        /// </summary>
         public static float GetHeuristic(ILocation from, ILocation to)
         {
             return Vector2.Distance(from.Position, to.Position);
         }
 
-        public static List<IRouteTraversal> FindPath(LocationGraph graph, ILocation start, ILocation end)
+        /// <summary>
+        /// Find the shortest path from <paramref name="start"/> to <paramref name="end"/>.
+        /// </summary>
+        /// <param name="path">Optional. Cleared, then filled with the traversals to take in order. Empty if <paramref name="start"/> is <paramref name="end"/>.</param>
+        /// <returns>False if either location isn't in <paramref name="graph"/>, or <paramref name="end"/> can't be reached.</returns>
+        public static bool TryFindPath(LocationGraph graph, ILocation start, ILocation end, List<IRouteTraversal> path = null)
         {
-            if (start == end)
-                return new List<IRouteTraversal>();
+            if (end == null) {
+                path?.Clear();
+                return false;
+            }
+
+            return TrySearch(graph, start, location => location == end, location => GetHeuristic(location, end), out _, path);
+        }
+
+        /// <summary>
+        /// Find the location closest to <paramref name="start"/> by road that satisfies <paramref name="isGoal"/>. <paramref name="start"/> itself counts.
+        /// </summary>
+        /// <param name="nearest">The closest matching location, or null if none can be reached.</param>
+        /// <param name="path">Optional. Cleared, then filled with the traversals to take in order.</param>
+        public static bool TryFindNearest(LocationGraph graph, ILocation start, Predicate<ILocation> isGoal, out ILocation nearest, List<IRouteTraversal> path = null)
+        {
+            return TrySearch(graph, start, isGoal, _ => 0f, out nearest, path);
+        }
+
+        private static bool TrySearch(LocationGraph graph, ILocation start, Predicate<ILocation> isGoal, Func<ILocation, float> heuristic, out ILocation goal, List<IRouteTraversal> path)
+        {
+            path?.Clear();
+            goal = null;
+
+            if (!graph.TryGetNode(start, out LocationGraph.Node startNode))
+                return false;
 
             NavData[] navData = new NavData[graph.Nodes.Count];
 
@@ -70,61 +106,65 @@ namespace Game
                 navData[i] = new() { node = graph.Nodes[i] };
             }
 
-            navData[start.Id].gCost = 0;
-            navData[end.Id].hCost = 0;
+            NavData startData = navData[startNode.index];
+            startData.gCost = 0;
+            startData.hCost = heuristic(start);
+            startData.state = EState.Open;
 
-            List<NavData> openSet = new() { navData[start.Id] };
+            List<NavData> openSet = new() { startData };
 
             while (openSet.Count > 0) {
                 NavData currentNode = openSet[0];
                 openSet.RemoveAt(0);
 
-                currentNode.state = State.Closed;
+                currentNode.state = EState.Closed;
 
-                if (currentNode.node.location == end) {
-                    return RetracePath(navData[start.Id], navData[end.Id]);
+                if (isGoal(currentNode.node.location)) {
+                    goal = currentNode.node.location;
+
+                    if (path != null)
+                        RetracePath(currentNode, path);
+
+                    return true;
                 }
 
                 foreach (LocationGraph.Neighbour locationNeighbour in currentNode.node.neighbours) {
-                    NavData neighbourData = navData[locationNeighbour.neighbour.Id];
+                    NavData neighbourData = navData[locationNeighbour.neighbour.index];
 
-                    if (neighbourData.state == State.Closed)
+                    if (neighbourData.state == EState.Closed)
                         continue;
 
-                    if (neighbourData.hCost < 0)
-                        neighbourData.hCost = GetHeuristic(neighbourData.node.location, end);
+                    float newGCost = currentNode.gCost + locationNeighbour.route.Length;
 
-                    float newGCost = locationNeighbour.route.Length + currentNode.gCost;
+                    if (newGCost >= neighbourData.gCost)
+                        continue;
 
-                    if (newGCost < neighbourData.gCost) {
-                        neighbourData.gCost = newGCost;
-                        neighbourData.comingFrom = currentNode;
-                        neighbourData.routeUsed = locationNeighbour.route;
-
-                        if (neighbourData.state == State.Open) {
-                            openSet.Remove(neighbourData);
-                            openSet.OrderedInsert(neighbourData);
-                        }
+                    // The open set is sorted, so take the node out before its cost changes and put it back after.
+                    if (neighbourData.state == EState.Open) {
+                        openSet.Remove(neighbourData);
+                    } else {
+                        neighbourData.hCost = heuristic(neighbourData.node.location);
+                        neighbourData.state = EState.Open;
                     }
 
-                    if (neighbourData.state != State.Open) {
-                        openSet.OrderedInsert(neighbourData);
-                        neighbourData.state = State.Open;
-                    }
+                    neighbourData.gCost = newGCost;
+                    neighbourData.comingFrom = currentNode;
+                    neighbourData.routeUsed = locationNeighbour.route;
+
+                    openSet.OrderedInsert(neighbourData);
                 }
             }
 
-            return new List<IRouteTraversal>();
+            return false;
         }
 
-        private static List<IRouteTraversal> RetracePath(NavData start, NavData end)
+        private static void RetracePath(NavData end, List<IRouteTraversal> path)
         {
-            List<IRouteTraversal> path = new();
             NavData currentNode = end;
 
-            while (currentNode != start) {
+            while (currentNode.comingFrom != null) {
 
-                if(currentNode.node.location == currentNode.routeUsed.A) {
+                if (currentNode.node.location == currentNode.routeUsed.A) {
                     path.Add(new RouteTraversalBToA(currentNode.routeUsed));
                 } else {
                     path.Add(new RouteTraversalAToB(currentNode.routeUsed));
@@ -134,7 +174,6 @@ namespace Game
             }
 
             path.Reverse();
-            return path;
         }
     }
 }

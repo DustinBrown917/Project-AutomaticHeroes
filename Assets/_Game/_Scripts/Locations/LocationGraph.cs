@@ -12,12 +12,15 @@ namespace Game
         /// </summary>
         public class Node
         {
+            public readonly int index;
+
             public readonly ILocation location;
 
             public readonly List<Neighbour> neighbours = new();
 
-            public Node(ILocation location)
+            public Node(int index, ILocation location)
             {
+                this.index = index;
                 this.location = location;
             }
         }
@@ -27,10 +30,10 @@ namespace Game
         /// </summary>
         public class Neighbour
         {
-            public readonly ILocation neighbour;
+            public readonly Node neighbour;
             public readonly IRoute route;
 
-            public Neighbour(ILocation neighbour, IRoute route)
+            public Neighbour(Node neighbour, IRoute route)
             {
                 this.neighbour = neighbour;
                 this.route = route;
@@ -38,10 +41,12 @@ namespace Game
         }
 
         /// <summary>
-        /// All nodes in this graph, organized where the location Id is reliably the index of the location's node in this list.
+        /// All nodes in this graph. A node's <see cref="Node.index"/> is its index in this list.
         /// </summary>
         public IReadOnlyList<Node> Nodes => m_nodes;
         private readonly List<Node> m_nodes = new();
+
+        private readonly Dictionary<ILocation, Node> m_nodesByLocation = new();
 
         /// <summary>
         /// Ctor.
@@ -50,18 +55,34 @@ namespace Game
         public LocationGraph(IReadOnlyList<ILocation> locations)
         {
             for (int i = 0; i < locations.Count; i++) {
-                m_nodes.Add(new Node(locations[i]));
+                Node node = new Node(i, locations[i]);
+                m_nodes.Add(node);
+                m_nodesByLocation.Add(locations[i], node);
             }
 
             foreach (Node node in m_nodes) {
                 foreach (IRoute route in node.location.Routes) {
-                    if (route.A == node.location) {
-                        node.neighbours.Add(new Neighbour(route.B, route));
-                    } else {
-                        node.neighbours.Add(new Neighbour(route.A, route));
+                    ILocation other = route.A == node.location ? route.B : route.A;
+
+                    // Routes to locations outside this graph are ignored rather than half-linked.
+                    if (m_nodesByLocation.TryGetValue(other, out Node otherNode)) {
+                        node.neighbours.Add(new Neighbour(otherNode, route));
                     }
                 }
             }
+        }
+
+        /// <summary>
+        /// Get the node for <paramref name="location"/>, if <paramref name="location"/> is part of this graph.
+        /// </summary>
+        public bool TryGetNode(ILocation location, out Node node)
+        {
+            if (location == null) {
+                node = null;
+                return false;
+            }
+
+            return m_nodesByLocation.TryGetValue(location, out node);
         }
     }
 }
