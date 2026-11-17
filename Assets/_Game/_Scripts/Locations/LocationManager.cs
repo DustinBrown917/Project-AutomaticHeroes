@@ -65,9 +65,14 @@ namespace Game
         /// </summary>
         public void Dispose()
         {
+            if (IsDisposed)
+                return;
+
             IsDisposed = true;
             m_locations.Clear();
+            m_locationGraph = null;
             Disposed?.Invoke(this);
+            Disposed = null;
         }
     }
 }
