@@ -17,6 +17,19 @@ namespace Game
         [SerializeField] private Sprite m_overrideForegroundSprite;
         [SerializeField] private Sprite m_overrideBackgroundSprite;
 
+        private void OnValidate()
+        {
+            // SceneGraph serializes any NodeGraph, but the typed graph property casts with 'as', so any other graph type
+            // (e.g. a monster combat graph) silently reads as null at runtime. Reject it here instead.
+            // Read through the untyped base field: the typed property would already hide the mistake.
+            NodeGraph assignedGraph = ((SceneGraph)this).graph;
+
+            if (assignedGraph != null && assignedGraph is not HeroBehaviourGraph) {
+                Debug.LogWarning($"{name}: {assignedGraph.name} isn't a {nameof(HeroBehaviourGraph)}, so it can't drive a hero behaviour. Cleared it.", this);
+                ((SceneGraph)this).graph = null;
+            }
+        }
+
         public IHeroBehaviour.IState CreateState(WorldState worldState, Hero hero)
         {
             IHeroBehaviour.IState state = graph.GetNewState(worldState, hero, GetInjectedData(worldState, hero));
