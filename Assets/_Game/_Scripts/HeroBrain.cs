@@ -67,7 +67,7 @@ namespace Game
                 m_currentState = null;
             }
 
-            m_currentState = newBehaviour.CreateState(WorldState.Instance, Hero);
+            m_currentState = newBehaviour.CreateState(Hero.WorldState, Hero);
             m_currentState.StateConcluded += OnBehaviourConcluded;
             m_currentState.Disposed += CurrentStateDisposed;
 
@@ -92,9 +92,9 @@ namespace Game
             float sumOfPriorites = 0;
 
             foreach(IHeroBehaviourStateCreator behaviour in m_availableBehaviours) {
-                if (behaviour.CanDo(WorldState.Instance, Hero)) {
+                if (behaviour.CanDo(Hero.WorldState, Hero)) {
                     availableBehaviours.Add(behaviour);
-                    priorities.Add(behaviour.Utility(WorldState.Instance, Hero));
+                    priorities.Add(behaviour.Utility(Hero.WorldState, Hero));
                     sumOfPriorites += priorities[^1];
                 }
             }
@@ -105,7 +105,7 @@ namespace Game
             }
                 
 
-            int index = WeightedRandom.Naive(priorities, sumOfPriorites, WorldState.Instance.Rng);
+            int index = WeightedRandom.Naive(priorities, sumOfPriorites, Hero.WorldState.Rng);
 
             IHeroBehaviourStateCreator chosen = availableBehaviours[index];
 

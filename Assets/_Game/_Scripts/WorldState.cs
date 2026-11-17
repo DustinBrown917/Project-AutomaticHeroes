@@ -33,6 +33,11 @@ namespace Game
             else
                 Debug.LogError($"{nameof(WorldState)} has no {nameof(LocationManager)} assigned.", this);
 
+            if (HeroFactory != null)
+                HeroFactory.Initialize(this);
+            else
+                Debug.LogError($"{nameof(WorldState)} has no {nameof(HeroFactory)} assigned.", this);
+
             if(TryGetComponent(out VM_WorldDate vm_worldDate)) {
                 vm_worldDate.SetModel(Date);
             }
@@ -48,6 +53,7 @@ namespace Game
             Time = null;
             Date = null;
             Locations = null;
+            HeroFactory = null;
         }
     } 
 }

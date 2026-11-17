@@ -55,7 +55,7 @@ namespace Game
                 newExperience -= ExperienceNeededToLevel;
                 Level++;
                 leveledUp?.Invoke(this);
-                ActionFeed.Post($"{Hero.Core.ColoredName} has reached level {Level}!", WorldState.Instance.Time.ElapsedSeconds);
+                ActionFeed.Post($"{Hero.Core.ColoredName} has reached level {Level}!", Hero.WorldState.Time.ElapsedSeconds);
             }
 
             Experience = newExperience;

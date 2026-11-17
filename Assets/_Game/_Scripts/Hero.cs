@@ -16,6 +16,11 @@ namespace Game
     {
         public int Id { get; private set; }
 
+        /// <summary>
+        /// The world this hero lives in. Assigned in <see cref="Initialize"/>, so components can rely on it from their own <c>OnInitialize</c> onwards.
+        /// </summary>
+        public WorldState WorldState { get; private set; }
+
         public HeroCore Core { get; private set; }
         public HeroGraphic Graphic { get; private set; }
         public HeroLevel Level { get; private set; }
@@ -59,10 +64,11 @@ namespace Game
             Destroyed?.Invoke(this);
             Destroyed = null;
 
-            if (WorldState.Instance != null && WorldState.Instance.Time != null) {
-                WorldState.Instance.Time.RemoveListener(this);
+            if (WorldState != null && WorldState.Time != null) {
+                WorldState.Time.RemoveListener(this);
             }
 
+            WorldState = null;
             Movement = null;
             Brain = null;
             Level = null;
@@ -75,18 +81,27 @@ namespace Game
         }
 
         /// <summary>
-        /// 
+        /// Set up the hero and all of its components, then start receiving world time updates. Does nothing if already initialized.
         /// </summary>
-        /// <param name="location">Where the hero starts. Cannot be null.</param>
-        /// <exception cref="System.ArgumentNullException"></exception>
-        public void Initialize(int id, HeroCore core)
+        /// <param name="id">Unique id for this hero.</param>
+        /// <param name="core">The hero's identity. Cannot be null.</param>
+        /// <param name="worldState">The world this hero lives in. Cannot be null.</param>
+        /// <exception cref="ArgumentNullException"></exception>
+        public void Initialize(int id, HeroCore core, WorldState worldState)
         {
             if (IsInitialized)
                 return;
 
-            Id = id;
+            if (core == null)
+                throw new ArgumentNullException(nameof(core));
 
+            if (worldState == null)
+                throw new ArgumentNullException(nameof(worldState));
+
+            Id = id;
             Core = core;
+            // Assigned before any component initializes, since the brain picks its first behaviour during initialization.
+            WorldState = worldState;
 
             Skills.Initialize();
             Level.Initialize();
@@ -98,7 +113,7 @@ namespace Game
             Heuristics.Initialize();
             Brain.Initialize();
 
-            WorldState.Instance.Time.AddListener(this);
+            WorldState.Time.AddListener(this);
 
             IsInitialized = true;
         }

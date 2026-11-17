@@ -14,9 +14,29 @@ namespace Game
 
         private int m_nextHeroId;
 
+        private WorldState m_worldState;
+
+        public bool IsInitialized { get; private set; }
 
         public event HeroCreatedEvent HeroCreated;
         public event HeroRetiredEvent HeroRetired;
+
+        /// <summary>
+        /// Give the factory the world that every hero it creates will live in. Does nothing if already initialized.
+        /// </summary>
+        public void Initialize(WorldState worldState)
+        {
+            if (IsInitialized)
+                return;
+
+            if (worldState == null) {
+                Debug.LogError($"{nameof(HeroFactory)} must be initialized with a valid {nameof(WorldState)}.", this);
+                return;
+            }
+
+            m_worldState = worldState;
+            IsInitialized = true;
+        }
 
         private void OnDestroy()
         {
@@ -27,6 +47,7 @@ namespace Game
 
             m_createdHeroes.Clear();
             m_heroPrefab = null;
+            m_worldState = null;
         }
 
         /// <summary>
@@ -45,6 +66,12 @@ namespace Game
 
         public bool TryCreateHero(HeroCore core, ILocation location, out Hero hero)
         {
+            if (!IsInitialized) {
+                Debug.LogError($"{nameof(HeroFactory)} must be initialized before creating heroes.", this);
+                hero = null;
+                return false;
+            }
+
             if (core == null) {
                 Debug.LogError($"A valid {nameof(HeroCore)} must be provided.", this);
                 hero = null;
@@ -64,7 +91,7 @@ namespace Game
             }
 
             hero = Instantiate(m_heroPrefab);
-            hero.Initialize(m_nextHeroId, core);
+            hero.Initialize(m_nextHeroId, core, m_worldState);
             hero.Movement.TeleportToLoation(location);
             hero.Destroyed += RetireHero;
             m_createdHeroes.Add(core, hero);
