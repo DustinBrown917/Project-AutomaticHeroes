@@ -142,6 +142,8 @@ namespace Game
                 case "hers":
                 case "self":
                     return Core.Gender.Pronouns.ToString(format, formatProvider);
+                // Names
+                case "cname": return Core.ColoredName;
                 case "end": return Movement.CurrentRoute != null ? Movement.CurrentRoute.End.DisplayName : "nowhere";
                 case "start": return Movement.CurrentRoute != null ? Movement.CurrentRoute.Start.DisplayName : "nowhere";
                 case "loc": return Movement.Location != null ? Movement.Location.DisplayName : "nowhere";
