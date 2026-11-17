@@ -9,13 +9,6 @@ namespace Game.UI
 {
     public class VM_ILocation : VM_Base<ILocation>
     {
-        public int Id
-        {
-            get => m_id;
-            private set => PropertySetter.Set(ref m_id, value, m_id == value, OnPropertyChanged);
-        }
-        private int m_id;
-
         public string DisplayName
         {
             get => m_displayName;
@@ -79,7 +72,6 @@ namespace Game.UI
 
         protected override void SetValuesToDefault()
         {
-            Id = -1;
             DisplayName = string.Empty;
             Visitors = null;
             CauseFavourTracker = null;
@@ -88,7 +80,6 @@ namespace Game.UI
 
         protected override void UpdateValues()
         {
-            Id = Model.Id;
             DisplayName = Model.DisplayName;
             Visitors = Model.Visitors;
             CauseFavourTracker = Model.CauseFavourTracker;

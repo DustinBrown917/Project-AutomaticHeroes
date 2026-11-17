@@ -11,7 +11,6 @@ namespace Game
     {
         public string DisplayName => name;
 
-        public int Id { get; private set; }
         [field: SerializeField] public CauseFavourTracker CauseFavourTracker { get; private set; } = new();
         public Vector2 Position => transform.position;
 
