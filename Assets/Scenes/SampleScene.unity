@@ -1093,6 +1093,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 8153231705256620972, guid: 8745bc6e15abee942a7c5c94aca18df4, type: 3}
       insertIndex: -1
       addedObject: {fileID: 312720335}
+    - targetCorrespondingSourceObject: {fileID: 8153231705256620972, guid: 8745bc6e15abee942a7c5c94aca18df4, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 312720337}
   m_SourcePrefab: {fileID: 100100000, guid: 8745bc6e15abee942a7c5c94aca18df4, type: 3}
 --- !u!4 &312720332 stripped
 Transform:
@@ -1133,6 +1136,25 @@ MonoBehaviour:
   m_overrideForegroundSprite: {fileID: 0}
   m_overrideBackgroundSprite: {fileID: 0}
   exhaustionRecoveredPerHour: 3
+--- !u!114 &312720337
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 312720334}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e3986fc73578111439e391a34820484a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000, guid: e099f46969c6c084c9081577403ac7eb, type: 2}
+  m_name: Hospital
+  m_overrideStateText: Getting quality wound care.
+  m_overrideForegroundSprite: {fileID: 0}
+  m_overrideBackgroundSprite: {fileID: 0}
+  m_treatmentPerHour: 60
+  m_maxUtility: 3
 --- !u!1001 &344881863
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7848,6 +7870,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 8153231705256620972, guid: 8745bc6e15abee942a7c5c94aca18df4, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1592465703}
+    - targetCorrespondingSourceObject: {fileID: 8153231705256620972, guid: 8745bc6e15abee942a7c5c94aca18df4, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1592465705}
   m_SourcePrefab: {fileID: 100100000, guid: 8745bc6e15abee942a7c5c94aca18df4, type: 3}
 --- !u!4 &1592465698 stripped
 Transform:
@@ -7908,6 +7933,25 @@ MonoBehaviour:
   m_monsterBanks:
   - <id>k__BackingField: default
     <Bank>k__BackingField: {fileID: 11400000, guid: 015f66befe61fa0429256d05a58767c8, type: 2}
+--- !u!114 &1592465705
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1592465700}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e3986fc73578111439e391a34820484a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000, guid: e099f46969c6c084c9081577403ac7eb, type: 2}
+  m_name: Clinic
+  m_overrideStateText: Getting wounds treated.
+  m_overrideForegroundSprite: {fileID: 0}
+  m_overrideBackgroundSprite: {fileID: 0}
+  m_treatmentPerHour: 30
+  m_maxUtility: 3
 --- !u!114 &1624700079 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4636070834430424281, guid: f473df40eff13a140877c5261c03fdae, type: 3}
