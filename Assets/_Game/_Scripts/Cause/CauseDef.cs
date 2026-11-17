@@ -21,7 +21,7 @@ namespace Game.Causes
             All = Resources.Load<CauseDefLibrary>(RESOURCE_PATH);
 
             if (All == null) {
-                Debug.LogError($"Failed to load HeroSkillDefLibrary at Resources/{RESOURCE_PATH}.");
+                Debug.LogError($"Failed to load CauseDefLibrary at Resources/{RESOURCE_PATH}.");
                 return;
             }
 
