@@ -14,6 +14,7 @@ namespace Game.Flow
         private void OnDisable()
         {
             OnDisposed();
+            IsInitialized = false;
         }
 
         public void Initialize()
