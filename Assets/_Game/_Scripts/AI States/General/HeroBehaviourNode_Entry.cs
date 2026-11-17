@@ -12,7 +12,7 @@ namespace Game.AI.General
         public override IHeroBehaviour.INode.IState Enter(IHeroBehaviour.IState bb)
         {
             IHeroBehaviour.INode.State newState = new IHeroBehaviour.INode.State();
-            newState.Conclude(exit.ConnectedPortData.Node as IHeroBehaviour.INode);
+            newState.Conclude(exit.ConnectedPortData?.Node as IHeroBehaviour.INode);
 
             return newState;
         }

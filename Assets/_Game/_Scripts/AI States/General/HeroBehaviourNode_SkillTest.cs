@@ -37,13 +37,13 @@ namespace Game.AI.General
         private void OnHeroSucceedsSkillTest(IHeroBehaviour.IState bb, IHeroBehaviour.INode.IState state)
         {
             bb.Hero.Skills[SkillCheck.Skill].GainExperience(SkillCheck.Level * ExpGainMultiplierOnSuccess);
-            state.Conclude(success.ConnectedPortData.Node as IHeroBehaviour.Node);
+            state.Conclude(success.ConnectedPortData?.Node as IHeroBehaviour.Node);
         }
 
         private void OnHeroFailsSkillTest(IHeroBehaviour.IState bb, IHeroBehaviour.INode.IState state)
         {
             bb.Hero.Skills[SkillCheck.Skill].GainExperience(SkillCheck.Level * ExpGainMultiplierOnFailure);
-            state.Conclude(failure.ConnectedPortData.Node as IHeroBehaviour.Node);
+            state.Conclude(failure.ConnectedPortData?.Node as IHeroBehaviour.Node);
         }
 
         public override FlowPort GetFlowPort(NodePort port)

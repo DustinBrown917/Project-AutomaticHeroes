@@ -65,7 +65,7 @@ namespace Game.AI.General
 
             SkillPort chosenSkillPort = bb.WorldState.Rng.GetRandom(skillPorts);
 
-            FlowNode chosenNode = chosenSkillPort.ConnectedPortData.Node;
+            FlowNode chosenNode = chosenSkillPort.ConnectedPortData?.Node;
 
             UnityEngine.Pool.ListPool<HeroSkill>.Release(skills);
 

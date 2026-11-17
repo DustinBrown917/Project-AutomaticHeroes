@@ -28,7 +28,7 @@ namespace Game.AI.General
         {
             IHeroBehaviour.INode.State state = new();
             bb.FlavourText = bb.Format(bb.WorldState.Rng.GetRandom(m_flavours));
-            state.Conclude(exit.ConnectedPortData.Node as IHeroBehaviour.INode);
+            state.Conclude(exit.ConnectedPortData?.Node as IHeroBehaviour.INode);
             return state;
         }
 

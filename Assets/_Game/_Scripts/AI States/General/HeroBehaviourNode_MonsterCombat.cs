@@ -60,7 +60,7 @@ namespace Game.AI.General
             IMonsterProvider monsterProvider = GetMonsterProvider(bb);
 
             if (monsterProvider == null) {
-                newState.Conclude(exit_yield.ConnectedPortData.Node as IHeroBehaviour.INode);
+                newState.Conclude(exit_yield.ConnectedPortData?.Node as IHeroBehaviour.INode);
                 return newState;
             }
 
@@ -104,11 +104,11 @@ namespace Game.AI.General
         {
             switch (state.combatState.Result) {
                 case ECombatResult.Victorious:
-                    return exit_victory.ConnectedPortData.Node;
+                    return exit_victory.ConnectedPortData?.Node;
                 case ECombatResult.HeroYield:
-                    return exit_yield.ConnectedPortData.Node;
+                    return exit_yield.ConnectedPortData?.Node;
                 case ECombatResult.HeroDowned:
-                    return exit_defeat.ConnectedPortData.Node;
+                    return exit_defeat.ConnectedPortData?.Node;
                 default:
                     return null;
             }

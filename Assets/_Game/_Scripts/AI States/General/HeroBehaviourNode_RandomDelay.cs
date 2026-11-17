@@ -50,7 +50,7 @@ namespace Game.AI.General
                 return;
 
             if (bb.ElapsedTime >= state.exitTime) {
-                state.Conclude(exit.ConnectedPortData.Node as IHeroBehaviour.INode);
+                state.Conclude(exit.ConnectedPortData?.Node as IHeroBehaviour.INode);
             }
         }
     } 
