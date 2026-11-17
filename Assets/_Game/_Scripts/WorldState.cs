@@ -14,6 +14,8 @@ namespace Game
         public WorldTime Time { get; private set; }
         public WorldDate Date { get; private set; }
 
+        [field: SerializeField] public LocationManager Locations { get; private set; }
+
         private void Awake()
         {
             if (Instance != null) {
@@ -24,6 +26,11 @@ namespace Game
             Rng = new UnityRNG((int)System.DateTime.Now.Ticks);
             Time = GetComponentInChildren<WorldTime>();
             Date = GetComponentInChildren<WorldDate>();
+
+            if (Locations != null)
+                Locations.Initialize();
+            else
+                Debug.LogError($"{nameof(WorldState)} has no {nameof(LocationManager)} assigned.", this);
 
             if(TryGetComponent(out VM_WorldDate vm_worldDate)) {
                 vm_worldDate.SetModel(Date);
@@ -39,6 +46,7 @@ namespace Game
 
             Time = null;
             Date = null;
+            Locations = null;
         }
     } 
 }
