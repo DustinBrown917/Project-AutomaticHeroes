@@ -15,6 +15,7 @@ namespace Game
         public WorldDate Date { get; private set; }
 
         [field: SerializeField] public LocationManager Locations { get; private set; }
+        [field: SerializeField] public HeroFactory HeroFactory { get; private set; }
 
         private void Awake()
         {

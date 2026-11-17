@@ -1,4 +1,5 @@
 using SegoLib;
+using System;
 using UnityEngine;
 
 namespace Game
@@ -26,8 +27,11 @@ namespace Game
         public HeroEquipment Equipment { get; private set; }
         public HeroHeuristics Heuristics { get; private set; }
 
-        public bool Initialized { get; private set; }
+        public bool IsInitialized { get; private set; }
 
+        public bool IsDestroyed { get; private set; }
+
+        public event Action<Hero> Destroyed;
 
         private void Awake()
         {
@@ -51,6 +55,10 @@ namespace Game
 
         private void OnDestroy()
         {
+            IsDestroyed = true;
+            Destroyed?.Invoke(this);
+            Destroyed = null;
+
             if (WorldState.Instance != null && WorldState.Instance.Time != null) {
                 WorldState.Instance.Time.RemoveListener(this);
             }
@@ -73,7 +81,7 @@ namespace Game
         /// <exception cref="System.ArgumentNullException"></exception>
         public void Initialize(int id, HeroCore core)
         {
-            if (Initialized)
+            if (IsInitialized)
                 return;
 
             Id = id;
@@ -92,7 +100,7 @@ namespace Game
 
             WorldState.Instance.Time.AddListener(this);
 
-            Initialized = true;
+            IsInitialized = true;
         }
 
         public void OnWorldTimeUpdate(float deltaSeconds)

@@ -14,32 +14,34 @@ public class Tester : MonoBehaviour
     [SerializeField] private CinemachineTargetGroup m_targetGroup;
     [SerializeField] private VM_Hero m_vmHeroPrefab;
     [SerializeField] private Transform m_heroUiContent;
+    [SerializeField] private WorldState m_worldState;
+
+    [SerializeField] private HeroCore[] m_heroCores;
 
     private List<Hero> m_heroes = new List<Hero>();
 
-    public IRandomNumberGenerator rng = new UnityRNG((int)DateTime.Now.Ticks);
 
     // Start is called before the first frame update
     void Start()
     {
-        while(CreateNextHero(out Hero newHero)) {
+        for(int i = 0; i < m_heroCores.Length; i++) {
+            if (m_heroCores[i] == null) {
+                Debug.LogWarning($"Hero core at index {i} is null.", this);
+                continue;
+            }
+
+            ILocation location = m_locations[m_worldState.Rng.Range(0, m_locations.Length)];
+
+            if (!m_worldState.HeroFactory.TryCreateHero(m_heroCores[i], location, out Hero newHero)) {
+                Debug.LogError($"Failed to create hero for core {m_heroCores[i].name}.", this);
+                continue;
+            }
+
             m_heroes.Add(newHero);
             m_targetGroup.AddMember(newHero.transform, 1.0f, 2.0f);
             VM_Hero heroUi = Instantiate(m_vmHeroPrefab, m_heroUiContent).GetComponent<VM_Hero>();
             heroUi.SetModel(newHero);
         }
-    }
-
-    private bool CreateNextHero(out Hero newHero)
-    {
-        int index = rng.Range(0, m_locations.Length);
-
-        Location location = m_locations[index];
-
-        if (!HeroFactory.TryCreateNextHero(location, out newHero))
-            return false;
-
-        return true;
     }
 }
 
