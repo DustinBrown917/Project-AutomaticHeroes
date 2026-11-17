@@ -1,0 +1,238 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-3915924728519920732
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cf164281cec02ad4c931d9f23103b9fc, type: 3}
+  m_Name: Hero Behaviour Node_Flavour
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: -120, y: -120}
+  ports:
+    keys:
+    - entry
+    - exit
+    values:
+    - _fieldName: entry
+      _node: {fileID: -3915924728519920732}
+      _typeQualifiedName: Game.Flow.FlowPort, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: exit
+        node: {fileID: 7091803687903335692}
+        reroutePoints: []
+      - fieldName: keepTreating
+        node: {fileID: 3266102845188562191}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: exit
+      _node: {fileID: -3915924728519920732}
+      _typeQualifiedName: Game.Flow.FlowPort, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: entry
+        node: {fileID: 3266102845188562191}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  m_flavours:
+  - Giving the nurse a hard time.
+  - Panicking because needles.
+  - Bleeding on everything.
+  - Generally being cooperative.
+  - '"It''s just a flesh wound!"'
+--- !u!114 &-1419662264920512607
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 619221dc333348b4e874a6ba2edff1c6, type: 3}
+  m_Name: Hero Behaviour Node_Entry
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: -680, y: -56}
+  ports:
+    keys:
+    - exit
+    values:
+    - _fieldName: exit
+      _node: {fileID: -1419662264920512607}
+      _typeQualifiedName: Game.Flow.FlowPort, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: entry
+        node: {fileID: 7091803687903335692}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 186c0ea8afa5ceb4da38ef54ee276c5e, type: 3}
+  m_Name: HeroBehaviour_Treatment
+  m_EditorClassIdentifier: 
+  nodes:
+  - {fileID: -1419662264920512607}
+  - {fileID: 2345556567236901325}
+  - {fileID: 7091803687903335692}
+  - {fileID: -3915924728519920732}
+  - {fileID: 3266102845188562191}
+  m_defaultStateText: 
+  m_defaultForegroundSprite: {fileID: 0}
+  m_defaultBackgroundSprite: {fileID: 0}
+  m_tagArray: []
+--- !u!114 &2345556567236901325
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c9f87d98816f68746b8465a1f5d682af, type: 3}
+  m_Name: Hero Behaviour Node_Exit
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 232, y: 216}
+  ports:
+    keys:
+    - entry
+    values:
+    - _fieldName: entry
+      _node: {fileID: 2345556567236901325}
+      _typeQualifiedName: Game.Flow.FlowPort, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: doneTreating
+        node: {fileID: 3266102845188562191}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+--- !u!114 &3266102845188562191
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fd42fe0181c5a044fab19e9e1a43bec0, type: 3}
+  m_Name: Hero Behaviour Node_Treat Wounds
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: -120, y: 136}
+  ports:
+    keys:
+    - entry
+    - keepTreating
+    - doneTreating
+    values:
+    - _fieldName: entry
+      _node: {fileID: 3266102845188562191}
+      _typeQualifiedName: Game.Flow.FlowPort, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: exit
+        node: {fileID: -3915924728519920732}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: keepTreating
+      _node: {fileID: 3266102845188562191}
+      _typeQualifiedName: Game.Flow.FlowPort, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: entry
+        node: {fileID: -3915924728519920732}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: doneTreating
+      _node: {fileID: 3266102845188562191}
+      _typeQualifiedName: Game.Flow.FlowPort, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: entry
+        node: {fileID: 2345556567236901325}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  m_treatmentInterval: 3600
+  m_fallbackTreatmentPerHour: 20
+--- !u!114 &7091803687903335692
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce9e8169a291ca842a17ed19ec261064, type: 3}
+  m_Name: Hero Behaviour Node_Post To Feed
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: -472, y: -56}
+  ports:
+    keys:
+    - entry
+    - exit
+    values:
+    - _fieldName: entry
+      _node: {fileID: 7091803687903335692}
+      _typeQualifiedName: Game.Flow.FlowPort, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: exit
+        node: {fileID: -1419662264920512607}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: exit
+      _node: {fileID: 7091803687903335692}
+      _typeQualifiedName: Game.Flow.FlowPort, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: entry
+        node: {fileID: -3915924728519920732}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  m_message: '{1:cname} is having {1:his} wounds treated in {1:loc}.'

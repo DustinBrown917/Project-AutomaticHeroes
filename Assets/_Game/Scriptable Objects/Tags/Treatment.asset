@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7712f1f6ed4dbd144a760dcfee079405, type: 3}
   m_Name: Treatment
   m_EditorClassIdentifier: 
-  <Name>k__BackingField: travel
+  <Name>k__BackingField: treatment
