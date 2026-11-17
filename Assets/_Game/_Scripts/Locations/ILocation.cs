@@ -14,6 +14,11 @@ namespace Game
         public event ValueUpdatedWithSourceEvent<ILocation, IReadOnlyList<Hero>> visitorsUpdated;
         public CauseFavourTracker CauseFavourTracker { get; }
 
+        /// <summary>
+        /// Whether a hero visiting this location would be offered a behaviour tagged with <paramref name="tag"/>.
+        /// </summary>
+        public bool OffersBehaviour(Tag tag);
+
         public void OnLocationEnter(Hero hero);
         public void OnLocationExit(Hero hero);
     }

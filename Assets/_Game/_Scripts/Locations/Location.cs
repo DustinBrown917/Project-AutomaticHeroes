@@ -41,6 +41,31 @@ namespace Game
             m_routes.Add(route);
         }
 
+        public bool OffersBehaviour(Tag tag)
+        {
+            if (tag == null)
+                return false;
+
+            List<IHeroBehaviourStateCreator> offeredBehaviours = UnityEngine.Pool.ListPool<IHeroBehaviourStateCreator>.Get();
+
+            foreach (IHeroBehaviourProvider stateProvider in m_heroBehaviourProviders) {
+                stateProvider.GetStates(offeredBehaviours);
+            }
+
+            bool offersBehaviour = false;
+
+            foreach (IHeroBehaviourStateCreator behaviour in offeredBehaviours) {
+                if (behaviour.Behaviour != null && behaviour.Behaviour.HasTag(tag)) {
+                    offersBehaviour = true;
+                    break;
+                }
+            }
+
+            UnityEngine.Pool.ListPool<IHeroBehaviourStateCreator>.Release(offeredBehaviours);
+
+            return offersBehaviour;
+        }
+
         public void OnLocationEnter(Hero hero)
         {
             if(!m_visitors.Contains(hero)) {

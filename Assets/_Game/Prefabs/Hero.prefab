@@ -44,6 +44,7 @@ GameObject:
   - component: {fileID: 4227679580025336108}
   - component: {fileID: 1532761492509208290}
   - component: {fileID: 8041288703009976603}
+  - component: {fileID: 609825939160863492}
   m_Layer: 0
   m_Name: Constant States
   m_TagString: Untagged
@@ -79,7 +80,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000, guid: 3a85b39a1cc53a64091ebc8608f21e9a, type: 2}
-  m_behaviour: {fileID: 11400000, guid: 3a85b39a1cc53a64091ebc8608f21e9a, type: 2}
+  m_name: 
   m_overrideStateText: 
   m_overrideForegroundSprite: {fileID: 0}
   m_overrideBackgroundSprite: {fileID: 0}
@@ -96,7 +97,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000, guid: 6c17b103f86f392448acd880f4c2f3f8, type: 2}
-  m_behaviour: {fileID: 11400000, guid: 6c17b103f86f392448acd880f4c2f3f8, type: 2}
+  m_name: 
   m_overrideStateText: Resting at camp.
   m_overrideForegroundSprite: {fileID: 21300000, guid: d823908dcac23724ea33395f597052d0, type: 3}
   m_overrideBackgroundSprite: {fileID: 0}
@@ -114,11 +115,30 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000, guid: 07f16c47b239f7f4486484b859d9931f, type: 2}
-  m_behaviour: {fileID: 11400000, guid: 07f16c47b239f7f4486484b859d9931f, type: 2}
+  m_name: 
   m_overrideStateText: Traveling to {0}.
   m_overrideForegroundSprite: {fileID: 0}
   m_overrideBackgroundSprite: {fileID: 0}
   m_travelTag: {fileID: 11400000, guid: e51d1423642f8fc4b86b55582475aea6, type: 2}
+--- !u!114 &609825939160863492
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3361741707121873596}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 827d5d3c3db5f4a49ac8d77f40b3705c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000, guid: 07f16c47b239f7f4486484b859d9931f, type: 2}
+  m_name: 
+  m_overrideStateText: Seeking treatment at {1}
+  m_overrideForegroundSprite: {fileID: 0}
+  m_overrideBackgroundSprite: {fileID: 0}
+  m_treatmentTag: {fileID: 11400000, guid: 7a06c72ebbc7ed24d93e298af9f5d4aa, type: 2}
+  m_maxUtility: 2
 --- !u!1 &4100121308280149663
 GameObject:
   m_ObjectHideFlags: 0
@@ -430,8 +450,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e8117b296e4acd49879b62fba99de56, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_campStateCreator: {fileID: 1532761492509208290}
-  m_travelStateCreator: {fileID: 8041288703009976603}
+  m_innateBehaviours:
+  - {fileID: 1532761492509208290}
+  - {fileID: 8041288703009976603}
+  - {fileID: 609825939160863492}
   m_waitStateCreator: {fileID: 4227679580025336108}
 --- !u!114 &4589041351288292370
 MonoBehaviour:

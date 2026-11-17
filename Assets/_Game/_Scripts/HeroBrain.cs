@@ -17,14 +17,17 @@ namespace Game
 
         private readonly HashSet<IHeroBehaviourStateCreator> m_availableBehaviours = new();
 
-        [SerializeField] private RestStateCreator m_campStateCreator;
-        [SerializeField] private HeroTravelStateCreator m_travelStateCreator;
+        [Tooltip("Behaviours the hero can always choose from, wherever it is. Locations add their own on top of these while the hero visits.")]
+        [SerializeField] private HeroBehaviourStateCreator[] m_innateBehaviours;
+        [Tooltip("Fallback for when no other behaviour qualifies. Never chosen on its own merits, so don't also list it above.")]
         [SerializeField] private HeroBehaviourStateCreator m_waitStateCreator;
 
         protected override void OnInitialize()
         {
-            AddBehaviourStateCreator(m_campStateCreator);
-            AddBehaviourStateCreator(m_travelStateCreator);
+            foreach (HeroBehaviourStateCreator behaviour in m_innateBehaviours) {
+                if (behaviour != null)
+                    AddBehaviourStateCreator(behaviour);
+            }
 
             SetBehaviour(m_waitStateCreator);
         }
@@ -39,7 +42,7 @@ namespace Game
                 m_currentState = null;
             }
 
-            m_campStateCreator = null;
+            m_innateBehaviours = null;
             m_waitStateCreator = null;
 
             stateChanged = null;
