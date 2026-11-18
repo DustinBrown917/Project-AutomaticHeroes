@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ef2660b7c3a9f3c4484c6b4dc273ddaa, type: 3}
-  m_Name: Shrek
+  m_Name: Inky
   m_EditorClassIdentifier: 
-  <CharacterSprite>k__BackingField: {fileID: 21300000, guid: 5da781557a9785046bdafb11cdc65200, type: 3}
+  <CharacterSprite>k__BackingField: {fileID: 21300000, guid: bf4c4e9355e897f4dbf10fb23a7b8ded, type: 3}
   <Gender>k__BackingField: {fileID: 11400000, guid: 54b55efa43584474ab7f1fd9650fcda7, type: 2}
   m_cause: {fileID: 11400000, guid: 6c357d773d450af4eb013a6cd50b997e, type: 2}
   <TimeOfDayPreference>k__BackingField: {fileID: 11400000, guid: cf2a76370f239f14cad07510d96685e8, type: 2}

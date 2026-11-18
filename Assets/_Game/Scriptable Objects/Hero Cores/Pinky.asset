@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ef2660b7c3a9f3c4484c6b4dc273ddaa, type: 3}
-  m_Name: Jane Doe
+  m_Name: Pinky
   m_EditorClassIdentifier: 
-  <CharacterSprite>k__BackingField: {fileID: 21300000, guid: 9ceb2e9cf4d68cd4aadf61c513f7e892, type: 3}
+  <CharacterSprite>k__BackingField: {fileID: 21300000, guid: 2e6c5de6a5ae34b488266e5268f0bd40, type: 3}
   <Gender>k__BackingField: {fileID: 11400000, guid: 5b83ae953d4bfa84f9f6da9879ae51de, type: 2}
   m_cause: {fileID: 11400000, guid: 5f22db2e9d2846e41a31f09bded254b2, type: 2}
   <TimeOfDayPreference>k__BackingField: {fileID: 11400000, guid: cf2a76370f239f14cad07510d96685e8, type: 2}
